@@ -9,4 +9,18 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <servlet>  
+    <servlet-name>Speed Typer</servlet-name>  
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>  
+    <init-param>  
+      <param-name>com.sun.jersey.config.property.packages</param-name>  
+      <param-value>rest.webservice.speedtyper</param-value>  
+    </init-param>  
+    <load-on-startup>1</load-on-startup>  
+  </servlet>  
+  <servlet-mapping>  
+    <servlet-name>Speed Typer</servlet-name>  
+    <url-pattern>/api/*</url-pattern>  
+  </servlet-mapping>
 </web-app>
