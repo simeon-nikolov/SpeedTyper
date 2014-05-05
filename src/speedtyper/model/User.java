@@ -25,7 +25,7 @@ public class User {
 	@JoinTable(name="users_rooms",
 	    joinColumns=@JoinColumn(name="user_id"),
 	    inverseJoinColumns=@JoinColumn(name="room_id"))
-	private Collection rooms;
+	private Collection<Room> rooms;
 
 	public User() {
 		this(0, null, null, null, 0);

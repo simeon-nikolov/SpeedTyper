@@ -9,6 +9,6 @@ public interface UserDao {
 	public void edit(User user);
 	public void delete(int userId);
 	public User getUser(int userId);
-	public List<E> getAllUsers();
+	public List<User> getAllUsers();
 	
 }

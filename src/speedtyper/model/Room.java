@@ -18,7 +18,7 @@ public class Room {
 	@JoinTable(name="users_rooms",
 	          joinColumns=@JoinColumn(name="room_id"),
 	          inverseJoinColumns=@JoinColumn(name="user_id"))
-	private Collection users;
+	private Collection<User> users;
 	@ManyToOne
 	@JoinColumn(name="text_id")
 	private Text text;
@@ -27,7 +27,7 @@ public class Room {
 		this(0, 0, 0, null, null);
 	}
 	
-	public Room(int id, int status, int participantsCount, Collection users, Text text) {
+	public Room(int id, int status, int participantsCount, Collection<User> users, Text text) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -60,11 +60,11 @@ public class Room {
 		this.participantsCount = participantsCount;
 	}
 
-	public Collection getUsers() {
+	public Collection<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Collection users) {
+	public void setUsers(Collection<User> users) {
 		this.users = users;
 	}
 	
