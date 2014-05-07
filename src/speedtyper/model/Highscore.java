@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
+@Table(name="highscores")
 public class Highscore {
 	@Id
 	@Column
@@ -16,9 +17,9 @@ public class Highscore {
 	@ManyToOne
 	@JoinColumn(name="room_id")
 	private Room room;
-	@Column(name="tiem_praticipated")
+	@Column(name="tiem_started")
 	private Date timeStarted;
-	@Column(name="time_in_seconds")
+	@Column(name="time_to_finish")
 	private int timeToFinish;
 	
 	public Highscore() {

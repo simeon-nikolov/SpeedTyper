@@ -3,6 +3,7 @@ package speedtyper.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name="texts")
 public class Text {
 	@Id
 	@Column

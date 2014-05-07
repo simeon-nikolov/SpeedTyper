@@ -3,8 +3,10 @@ package speedtyper.model;
 import java.util.Collection;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
+@Table(name="rooms")
 public class Room {
 	@Id
 	@Column
@@ -14,6 +16,8 @@ public class Room {
 	private int status;
 	@Column(name="participants_count")
 	private int participantsCount;
+	@Column(name="max_participants")
+	private int maxParticipants;
 	@ManyToMany
 	@JoinTable(name="users_rooms",
 	          joinColumns=@JoinColumn(name="room_id"),
@@ -58,6 +62,14 @@ public class Room {
 
 	public void setParticipantsCount(int participantsCount) {
 		this.participantsCount = participantsCount;
+	}
+	
+	public int getMaxParticipants() {
+		return maxParticipants;
+	}
+
+	public void setMaxParticipants(int maxParticipants) {
+		this.maxParticipants = maxParticipants;
 	}
 
 	public Collection<User> getUsers() {
