@@ -3,7 +3,6 @@ package speedtyper.model;
 import java.util.Collection;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="rooms")
