@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,7 +25,7 @@ import speedtyper.service.UserService;
 public class UserController {
 	private static final int MIN_USERNAME_LENGTH = 6;
 	private static final int MAX_USERNAME_LENGTH = 30;
-	private static final String VALID_USERNAME_CHARACTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
+	private static final String VALID_USERNAME_CHARACTERS = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_";
 	private static final int MIN_PASSWORD_LENGTH = 6;
 	private static final int MAX_PASSWORD_LENGTH = 30;
 	private static final int SESSION_KEY_LENGTH = 50;
@@ -35,9 +36,9 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody
-	LoggedUserModel register(@ModelAttribute UserRegisterModel userRegModel,
-			BindingResult result) throws InvalidActivityException {
+	@ResponseBody
+	public LoggedUserModel register(@RequestBody UserRegisterModel userRegModel, BindingResult result)
+			throws InvalidActivityException {
 		this.ValidateUsername(userRegModel.getUsername());
 		this.ValidatePassword(userRegModel.getPassword());
 		this.ValidateEmail(userRegModel.getEmail());
@@ -57,11 +58,11 @@ public class UserController {
 		user = userService.getUserByUsername(user.getUsername());
 		user.setSessionKey(this.GenerateSessionKey(user.getId()));
 		userService.edit(user);
-		
+
 		LoggedUserModel loggedUser = new LoggedUserModel();
 		loggedUser.setUsername(user.getUsername());
 		loggedUser.setSessionKey(user.getSessionKey());
-		
+
 		return loggedUser;
 	}
 
