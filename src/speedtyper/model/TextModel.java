@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="texts")
-public class Text {
+public class TextModel {
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -14,11 +14,11 @@ public class Text {
 	@Column(name="words_count")
 	private int wordsCount;
 	
-	public Text () {
+	public TextModel () {
 		this(0, null, 0);
 	}
 	
-	public Text(int id, String text, int wordsCount) {
+	public TextModel(int id, String text, int wordsCount) {
 		super();
 		this.id = id;
 		this.text = text;

@@ -2,13 +2,13 @@ package speedtyper.dao;
 
 import java.util.List;
 
-import speedtyper.model.User;
+import speedtyper.model.UserModel;
 
 public interface UserDao {
-	public void add(User user);
-	public void edit(User user);
+	public void add(UserModel user);
+	public void edit(UserModel user);
 	public void delete(int userId);
-	public User getUser(int userId);
-	public List<User> getAllUsers();
+	public UserModel getUser(int userId);
+	public List<UserModel> getAllUsers();
 	
 }

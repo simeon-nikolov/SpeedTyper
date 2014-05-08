@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import speedtyper.dao.UserDao;
-import speedtyper.model.User;
+import speedtyper.model.UserModel;
 import speedtyper.service.UserService;
 
 @Service
@@ -17,12 +17,12 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	
 	@Transactional
-	public void add(User user) {
+	public void add(UserModel user) {
 		this.userDao.add(user);
 	}
 
 	@Transactional
-	public void edit(User user) {
+	public void edit(UserModel user) {
 		this.userDao.edit(user);
 	}
 
@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public User getUser(int userId) {
+	public UserModel getUser(int userId) {
 		return this.userDao.getUser(userId);
 	}
 
 	@Transactional
-	public List<User> getAllUsers() {
+	public List<UserModel> getAllUsers() {
 		return this.userDao.getAllUsers();
 	}
 

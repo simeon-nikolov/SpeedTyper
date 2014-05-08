@@ -2,12 +2,12 @@ package speedtyper.dao;
 
 import java.util.List;
 
-import speedtyper.model.Room;
+import speedtyper.model.RoomModel;
 
 public interface RoomDao {
-	public void add(Room room);
-	public void edit(Room room);
+	public void add(RoomModel room);
+	public void edit(RoomModel room);
 	public void delete(int roomId);
-	public Room getRoom(int roomId);
-	public List<Room> getAllRooms();
+	public RoomModel getRoom(int roomId);
+	public List<RoomModel> getAllRooms();
 }

@@ -6,27 +6,27 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="highscores")
-public class Highscore {
+public class HighscoreModel {
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private User user;
+	private UserModel user;
 	@ManyToOne
 	@JoinColumn(name="room_id")
-	private Room room;
+	private RoomModel room;
 	@Column(name="tiem_started")
 	private Date timeStarted;
 	@Column(name="time_to_finish")
 	private int timeToFinish;
 	
-	public Highscore() {
+	public HighscoreModel() {
 		this(0, null, null, null, 0);
 	}
 	
-	public Highscore(int id, User user, Room room, Date timeStarted,
+	public HighscoreModel(int id, UserModel user, RoomModel room, Date timeStarted,
 			int timeToFinish) {
 		super();
 		this.id = id;
@@ -44,19 +44,19 @@ public class Highscore {
 		this.id = id;
 	}
 
-	public User getUser() {
+	public UserModel getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserModel user) {
 		this.user = user;
 	}
 
-	public Room getRoom() {
+	public RoomModel getRoom() {
 		return room;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoom(RoomModel room) {
 		this.room = room;
 	}
 

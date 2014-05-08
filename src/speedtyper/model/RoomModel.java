@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="rooms")
-public class Room {
+public class RoomModel {
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,16 +21,16 @@ public class Room {
 	@JoinTable(name="users_rooms",
 	          joinColumns=@JoinColumn(name="room_id"),
 	          inverseJoinColumns=@JoinColumn(name="user_id"))
-	private Collection<User> users;
+	private Collection<UserModel> users;
 	@ManyToOne
 	@JoinColumn(name="text_id")
-	private Text text;
+	private TextModel text;
 	
-	public Room () {
+	public RoomModel () {
 		this(0, 0, 0, null, null);
 	}
 	
-	public Room(int id, int status, int participantsCount, Collection<User> users, Text text) {
+	public RoomModel(int id, int status, int participantsCount, Collection<UserModel> users, TextModel text) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -71,19 +71,19 @@ public class Room {
 		this.maxParticipants = maxParticipants;
 	}
 
-	public Collection<User> getUsers() {
+	public Collection<UserModel> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Collection<User> users) {
+	public void setUsers(Collection<UserModel> users) {
 		this.users = users;
 	}
 	
-	public Text getText() {
+	public TextModel getText() {
 		return text;
 	}
 
-	public void setText(Text text) {
+	public void setText(TextModel text) {
 		this.text = text;
 	}
 	

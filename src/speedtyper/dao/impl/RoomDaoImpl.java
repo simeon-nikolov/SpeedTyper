@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import speedtyper.dao.RoomDao;
-import speedtyper.model.Room;
+import speedtyper.model.RoomModel;
 
 @Repository
 public class RoomDaoImpl implements RoomDao {
@@ -15,12 +15,12 @@ public class RoomDaoImpl implements RoomDao {
 	private SessionFactory session;
 	
 	@Override
-	public void add(Room room) {
+	public void add(RoomModel room) {
 		session.getCurrentSession().save(room);
 	}
 
 	@Override
-	public void edit(Room room) {
+	public void edit(RoomModel room) {
 		session.getCurrentSession().update(room);
 	}
 
@@ -30,12 +30,12 @@ public class RoomDaoImpl implements RoomDao {
 	}
 
 	@Override
-	public Room getRoom(int roomId) {
-		return (Room)session.getCurrentSession().get(Room.class, roomId);
+	public RoomModel getRoom(int roomId) {
+		return (RoomModel)session.getCurrentSession().get(RoomModel.class, roomId);
 	}
 
 	@Override
-	public List<Room> getAllRooms() {
+	public List<RoomModel> getAllRooms() {
 		return session.getCurrentSession().createQuery("from Room").list();
 	}
 

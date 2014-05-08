@@ -7,17 +7,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import speedtyper.model.UserModel;
 import speedtyper.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class User {
+public class UserController {
 	@Autowired
 	private UserService userService;
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String register(@ModelAttribute User user, BindingResult result) {
+	public @ResponseBody String register(@ModelAttribute UserModel user, BindingResult result) {
 		
 		return "register";
 	}

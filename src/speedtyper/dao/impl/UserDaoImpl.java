@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import speedtyper.dao.UserDao;
-import speedtyper.model.User;
+import speedtyper.model.UserModel;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -15,12 +15,12 @@ public class UserDaoImpl implements UserDao {
 	private SessionFactory session;
 
 	@Override
-	public void add(User user) {
+	public void add(UserModel user) {
 		session.getCurrentSession().save(user);
 	}
 
 	@Override
-	public void edit(User user) {
+	public void edit(UserModel user) {
 		session.getCurrentSession().update(user);
 	}
 
@@ -30,12 +30,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User getUser(int userId) {
-		return (User)session.getCurrentSession().get(User.class, userId);
+	public UserModel getUser(int userId) {
+		return (UserModel)session.getCurrentSession().get(UserModel.class, userId);
 	}
 
 	@Override
-	public List<User> getAllUsers() {
+	public List<UserModel> getAllUsers() {
 		return session.getCurrentSession().createQuery("from User").list();
 	}
 

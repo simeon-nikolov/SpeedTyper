@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import speedtyper.dao.RoomDao;
-import speedtyper.model.Room;
+import speedtyper.model.RoomModel;
 import speedtyper.service.RoomService;
 
 @Service
@@ -17,12 +17,12 @@ public class RoomServiceImpl implements RoomService {
 	private RoomDao roomDao;
 	
 	@Transactional
-	public void add(Room room) {
+	public void add(RoomModel room) {
 		this.roomDao.add(room);
 	}
 
 	@Transactional
-	public void edit(Room room) {
+	public void edit(RoomModel room) {
 		this.roomDao.edit(room);
 	}
 
@@ -32,12 +32,12 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Transactional
-	public Room getRoom(int roomId) {
+	public RoomModel getRoom(int roomId) {
 		return this.getRoom(roomId);
 	}
 
 	@Transactional
-	public List<Room> getAllRooms() {
+	public List<RoomModel> getAllRooms() {
 		return this.getAllRooms();
 	}
 

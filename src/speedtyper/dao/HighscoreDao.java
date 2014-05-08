@@ -2,13 +2,13 @@ package speedtyper.dao;
 
 import java.util.List;
 
-import speedtyper.model.Highscore;
+import speedtyper.model.HighscoreModel;
 
 public interface HighscoreDao {
-	public void add(Highscore highscore);
-	public void edit(Highscore highscore);
+	public void add(HighscoreModel highscore);
+	public void edit(HighscoreModel highscore);
 	public void delete(int id);
-	public Highscore getHighscoreByUserId(int userId);
-	public Highscore getHighscoreById(int id);
-	public List<Highscore> getAll();
+	public HighscoreModel getHighscoreByUserId(int userId);
+	public HighscoreModel getHighscoreById(int id);
+	public List<HighscoreModel> getAll();
 }

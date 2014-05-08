@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import speedtyper.dao.TextDao;
-import speedtyper.model.Text;
+import speedtyper.model.TextModel;
 
 @Repository
 public class TextDaoImpl implements TextDao {
@@ -15,12 +15,12 @@ public class TextDaoImpl implements TextDao {
 	private SessionFactory session;
 	
 	@Override
-	public void add(Text text) {
+	public void add(TextModel text) {
 		session.getCurrentSession().save(text);
 	}
 
 	@Override
-	public void edit(Text text) {
+	public void edit(TextModel text) {
 		session.getCurrentSession().update(text);
 	}
 
@@ -30,12 +30,12 @@ public class TextDaoImpl implements TextDao {
 	}
 
 	@Override
-	public Text getText(int textId) {
-		return (Text)session.getCurrentSession().get(Text.class, textId);
+	public TextModel getText(int textId) {
+		return (TextModel)session.getCurrentSession().get(TextModel.class, textId);
 	}
 
 	@Override
-	public List<Text> getAllTexts() {
+	public List<TextModel> getAllTexts() {
 		return session.getCurrentSession().createQuery("from Text").list();
 	}
 

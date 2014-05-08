@@ -2,12 +2,12 @@ package speedtyper.dao;
 
 import java.util.List;
 
-import speedtyper.model.Text;
+import speedtyper.model.TextModel;
 
 public interface TextDao {
-	public void add(Text text);
-	public void edit(Text text);
+	public void add(TextModel text);
+	public void edit(TextModel text);
 	public void delete(int textId);
-	public Text getText(int textId);
-	public List<Text> getAllTexts();
+	public TextModel getText(int textId);
+	public List<TextModel> getAllTexts();
 }

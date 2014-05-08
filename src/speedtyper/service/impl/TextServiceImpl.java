@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import speedtyper.dao.TextDao;
-import speedtyper.model.Text;
+import speedtyper.model.TextModel;
 import speedtyper.service.TextService;
 
 @Service
@@ -17,12 +17,12 @@ public class TextServiceImpl implements TextService {
 	private TextDao textDao;
 	
 	@Transactional
-	public void add(Text text) {
+	public void add(TextModel text) {
 		this.textDao.add(text);
 	}
 
 	@Transactional
-	public void edit(Text text) {
+	public void edit(TextModel text) {
 		this.textDao.edit(text);
 	}
 
@@ -32,12 +32,12 @@ public class TextServiceImpl implements TextService {
 	}
 
 	@Transactional
-	public Text getText(int textId) {
+	public TextModel getText(int textId) {
 		return this.textDao.getText(textId);
 	}
 
 	@Transactional
-	public List<Text> getAllTexts() {
+	public List<TextModel> getAllTexts() {
 		return this.textDao.getAllTexts();
 	}
 

@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="users")
-public class User {
+public class UserModel {
 	@Id
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,13 +26,13 @@ public class User {
 	@JoinTable(name="users_rooms",
 	    joinColumns=@JoinColumn(name="user_id"),
 	    inverseJoinColumns=@JoinColumn(name="room_id"))
-	private Collection<Room> rooms;
+	private Collection<RoomModel> rooms;
 
-	public User() {
+	public UserModel() {
 		this(0, null, null, null, 0);
 	}
 	
-	public User(int id, String username, String password, String email,
+	public UserModel(int id, String username, String password, String email,
 			int wordsPerMinute) {
 		super();
 		this.id = id;

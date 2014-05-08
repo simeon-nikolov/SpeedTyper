@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import speedtyper.dao.HighscoreDao;
-import speedtyper.model.Highscore;
+import speedtyper.model.HighscoreModel;
 
 @Repository
 public class HighscoreDaoImpl implements HighscoreDao {
@@ -15,12 +15,12 @@ public class HighscoreDaoImpl implements HighscoreDao {
 	private SessionFactory session;
 	
 	@Override
-	public void add(Highscore highscore) {
+	public void add(HighscoreModel highscore) {
 		session.getCurrentSession().save(highscore);
 	}
 
 	@Override
-	public void edit(Highscore highscore) {
+	public void edit(HighscoreModel highscore) {
 		session.getCurrentSession().update(highscore);
 	}
 
@@ -30,17 +30,17 @@ public class HighscoreDaoImpl implements HighscoreDao {
 	}
 
 	@Override
-	public Highscore getHighscoreByUserId(int userId) {
+	public HighscoreModel getHighscoreByUserId(int userId) {
 		return null; // TO DO ...
 	}
 
 	@Override
-	public Highscore getHighscoreById(int id) {
-		return (Highscore)session.getCurrentSession().get(Highscore.class, id);
+	public HighscoreModel getHighscoreById(int id) {
+		return (HighscoreModel)session.getCurrentSession().get(HighscoreModel.class, id);
 	}
 
 	@Override
-	public List<Highscore> getAll() {
+	public List<HighscoreModel> getAll() {
 		return session.getCurrentSession().createQuery("from Highscore").list();
 	}
 
