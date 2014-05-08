@@ -36,7 +36,7 @@ public class TextDaoImpl implements TextDao {
 
 	@Override
 	public List<TextModel> getAllTexts() {
-		return session.getCurrentSession().createQuery("from Text").list();
+		return session.getCurrentSession().createQuery("from texts").list();
 	}
 
 }

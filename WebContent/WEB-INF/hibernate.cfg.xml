@@ -5,9 +5,9 @@
     
 <hibernate-configuration>
     <session-factory>        
-        <mapping class="speedtyper.model.User" />
-        <mapping class="speedtyper.model.Room" />
-        <mapping class="speedtyper.model.Text" />
-        <mapping class="speedtyper.model.Highscore" />
+        <mapping class="speedtyper.model.UserModel" />
+        <mapping class="speedtyper.model.RoomModel" />
+        <mapping class="speedtyper.model.TextModel" />
+        <mapping class="speedtyper.model.HighscoreModel" />
     </session-factory>         
 </hibernate-configuration>

@@ -33,9 +33,29 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	public UserModel getUser(int userId) {
-		return this.userDao.getUser(userId);
+		return this.userDao.getUserById(userId);
 	}
 
+	@Transactional
+	public UserModel getUserById(int userId) {
+		return this.userDao.getUserById(userId);
+	}
+
+	@Transactional
+	public UserModel getUserByUsername(String username) {
+		return this.userDao.getUserByUsername(username);
+	}
+
+	@Transactional
+	public UserModel getUserBySessionKey(String sessionKey) {
+		return this.userDao.getUserBySessionKey(sessionKey);
+	}
+
+	@Transactional
+	public UserModel getUserByEmail(String email) {
+		return this.userDao.getUserByEmail(email);
+	}
+	
 	@Transactional
 	public List<UserModel> getAllUsers() {
 		return this.userDao.getAllUsers();

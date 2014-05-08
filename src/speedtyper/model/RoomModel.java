@@ -26,13 +26,9 @@ public class RoomModel {
 	@JoinColumn(name="text_id")
 	private TextModel text;
 	
-	public RoomModel () {
-		this(0, 0, 0, null, null);
-	}
-	
-	public RoomModel(int id, int status, int participantsCount, Collection<UserModel> users, TextModel text) {
-		super();
-		this.id = id;
+	public RoomModel () {}
+	public RoomModel(int status, int participantsCount, Collection<UserModel> users, 
+			TextModel text) {
 		this.status = status;
 		this.participantsCount = participantsCount;
 		this.users = users;

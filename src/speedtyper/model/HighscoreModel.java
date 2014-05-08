@@ -22,14 +22,9 @@ public class HighscoreModel {
 	@Column(name="time_to_finish")
 	private int timeToFinish;
 	
-	public HighscoreModel() {
-		this(0, null, null, null, 0);
-	}
-	
-	public HighscoreModel(int id, UserModel user, RoomModel room, Date timeStarted,
+	public HighscoreModel() {}
+	public HighscoreModel(UserModel user, RoomModel room, Date timeStarted,
 			int timeToFinish) {
-		super();
-		this.id = id;
 		this.user = user;
 		this.room = room;
 		this.timeStarted = timeStarted;

@@ -14,13 +14,8 @@ public class TextModel {
 	@Column(name="words_count")
 	private int wordsCount;
 	
-	public TextModel () {
-		this(0, null, 0);
-	}
-	
-	public TextModel(int id, String text, int wordsCount) {
-		super();
-		this.id = id;
+	public TextModel () {}
+	public TextModel(String text, int wordsCount) {
 		this.text = text;
 		this.wordsCount = wordsCount;
 	}

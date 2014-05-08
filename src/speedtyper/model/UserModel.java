@@ -30,14 +30,9 @@ public class UserModel {
 	    inverseJoinColumns=@JoinColumn(name="room_id"))
 	private Collection<RoomModel> rooms;
 
-	public UserModel() {
-		this(0, null, null, null, null, 0);
-	}
-	
-	public UserModel(int id, String username, String password, String sessionKey,
+	public UserModel() {}
+	public UserModel(String username, String password, String sessionKey,
 			String email, int wordsPerMinute) {
-		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.sessionKey = sessionKey;
