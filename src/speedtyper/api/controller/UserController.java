@@ -114,7 +114,7 @@ public class UserController {
 			int index = randomGenerator
 					.nextInt(SESSION_KEY_CHARACTERS.length());
 			sessionKey.append(SESSION_KEY_CHARACTERS.charAt(index));
-		}a
+		}
 
 		return sessionKey.toString();
 	}
