@@ -17,6 +17,8 @@ public class UserModel {
 	private String username;
 	@Column
 	private String password;
+	@Column(name="session_key")
+	private String sessionKey;
 	@Column
 	@Email
 	private String email;
@@ -29,15 +31,16 @@ public class UserModel {
 	private Collection<RoomModel> rooms;
 
 	public UserModel() {
-		this(0, null, null, null, 0);
+		this(0, null, null, null, null, 0);
 	}
 	
-	public UserModel(int id, String username, String password, String email,
-			int wordsPerMinute) {
+	public UserModel(int id, String username, String password, String sessionKey,
+			String email, int wordsPerMinute) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.sessionKey = sessionKey;
 		this.email = email;
 		this.wordsPerMinute = wordsPerMinute;
 	}
@@ -64,6 +67,14 @@ public class UserModel {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
 	}
 
 	public String getEmail() {
