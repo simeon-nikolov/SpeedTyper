@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public UserModel getUserByUsername(String username) {
 		Query query = session.getCurrentSession().
-				createQuery("SELECT * FROM users WHERE username = :username");
+				createSQLQuery("SELECT * FROM users WHERE username = :username");
 		query.setString("username", username);
 		return (UserModel)query.uniqueResult();
 	}
@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public UserModel getUserBySessionKey(String sessionKey) {
 		Query query = session.getCurrentSession().
-				createQuery("SELECT * FROM users WHERE session_key = :sessionKey");
+				createSQLQuery("SELECT * FROM users WHERE session_key = :sessionKey");
 		query.setString("sessionKey", sessionKey);
 		return (UserModel)query.uniqueResult();
 	}
@@ -54,7 +54,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public UserModel getUserByEmail(String email) {
 		Query query = session.getCurrentSession().
-				createQuery("SELECT * FROM users WHERE email = :email");
+				createSQLQuery("SELECT * FROM users WHERE email = :email");
 		query.setString("email", email);
 		return (UserModel)query.uniqueResult();
 	}
