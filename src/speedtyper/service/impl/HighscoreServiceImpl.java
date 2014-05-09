@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import speedtyper.dao.HighscoreDao;
 import speedtyper.model.HighscoreModel;
+import speedtyper.service.HighscoreService;
 
 @Service
-public class HighscoreServiceImpl implements HighscoreDao {
+public class HighscoreServiceImpl implements HighscoreService {
 
 	@Autowired
 	private HighscoreDao highscoreDao;
@@ -21,8 +22,8 @@ public class HighscoreServiceImpl implements HighscoreDao {
 	}
 
 	@Transactional
-	public void edit(HighscoreModel highscore) {
-		this.highscoreDao.edit(highscore);
+	public void update(HighscoreModel highscore) {
+		this.highscoreDao.update(highscore);
 	}
 
 	@Transactional

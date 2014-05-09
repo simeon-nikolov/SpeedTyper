@@ -22,8 +22,8 @@ public class TextServiceImpl implements TextService {
 	}
 
 	@Transactional
-	public void edit(TextModel text) {
-		this.textDao.edit(text);
+	public void update(TextModel text) {
+		this.textDao.update(text);
 	}
 
 	@Transactional

@@ -6,7 +6,7 @@ import speedtyper.model.UserModel;
 
 public interface UserDao {
 	public void add(UserModel user);
-	public void edit(UserModel user);
+	public void update(UserModel user);
 	public void delete(int userId);
 	public UserModel getUserById(int userId);
 	public UserModel getUserByUsername(String username);

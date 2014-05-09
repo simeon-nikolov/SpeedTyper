@@ -20,7 +20,7 @@ public class TextDaoImpl implements TextDao {
 	}
 
 	@Override
-	public void edit(TextModel text) {
+	public void update(TextModel text) {
 		session.getCurrentSession().update(text);
 	}
 

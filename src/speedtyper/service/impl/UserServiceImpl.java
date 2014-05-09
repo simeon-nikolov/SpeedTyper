@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public void edit(UserModel user) {
-		this.userDao.edit(user);
+	public void update(UserModel user) {
+		this.userDao.update(user);
 	}
 
 	@Transactional

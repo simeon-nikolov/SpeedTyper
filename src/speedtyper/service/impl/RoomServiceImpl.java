@@ -22,8 +22,8 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Transactional
-	public void edit(RoomModel room) {
-		this.roomDao.edit(room);
+	public void update(RoomModel room) {
+		this.roomDao.update(room);
 	}
 
 	@Transactional

@@ -6,7 +6,7 @@ import speedtyper.model.RoomModel;
 
 public interface RoomService {
 	public void add(RoomModel room);
-	public void edit(RoomModel room);
+	public void update(RoomModel room);
 	public void delete(int roomId);
 	public RoomModel getRoom(int roomId);
 	public List<RoomModel> getAllRooms();

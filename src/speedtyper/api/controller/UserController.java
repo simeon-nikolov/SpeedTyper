@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,7 +56,7 @@ public class UserController {
 		userService.add(user);
 		user = userService.getUserByUsername(user.getUsername());
 		user.setSessionKey(this.GenerateSessionKey(user.getId()));
-		userService.edit(user);
+		userService.update(user);
 
 		LoggedUserModel loggedUser = new LoggedUserModel();
 		loggedUser.setUsername(user.getUsername());

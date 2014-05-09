@@ -20,7 +20,7 @@ public class RoomDaoImpl implements RoomDao {
 	}
 
 	@Override
-	public void edit(RoomModel room) {
+	public void update(RoomModel room) {
 		session.getCurrentSession().update(room);
 	}
 

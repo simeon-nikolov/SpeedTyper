@@ -20,7 +20,7 @@ public class HighscoreDaoImpl implements HighscoreDao {
 	}
 
 	@Override
-	public void edit(HighscoreModel highscore) {
+	public void update(HighscoreModel highscore) {
 		session.getCurrentSession().update(highscore);
 	}
 
