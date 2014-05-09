@@ -1,5 +1,6 @@
 package speedtyper.api.controller;
 
+import java.util.Map;
 import java.util.Random;
 
 import javax.activity.InvalidActivityException;
@@ -8,14 +9,13 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import speedtyper.api.viewmodel.JsonResponse;
 import speedtyper.api.viewmodel.LoggedUserModel;
 import speedtyper.api.viewmodel.UserRegisterModel;
 import speedtyper.model.UserModel;
@@ -38,8 +38,7 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
-	public LoggedUserModel register(
-			@RequestBody UserRegisterModel userRegModel)
+	public LoggedUserModel register(@RequestBody UserRegisterModel userRegModel)
 			throws InvalidActivityException {
 		this.ValidateUsername(userRegModel.getUsername());
 		this.ValidatePassword(userRegModel.getPassword());
@@ -66,6 +65,24 @@ public class UserController {
 		loggedUser.setSessionKey(user.getSessionKey());
 
 		return loggedUser;
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.PUT)
+	@ResponseBody
+	public JsonResponse Logout(@RequestBody Map<String, String> sessionKeyMap) {
+		String sessionKey = sessionKeyMap.get("sessionKey");
+		
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		
+		if (user == null)
+        {
+            throw new IllegalArgumentException("There is no user with such sessionKey!");
+        }
+		
+		user.setSessionKey(null);
+		userService.update(user);
+		
+		return new JsonResponse("OK", "");
 	}
 
 	private void ValidateUsername(String username) {
