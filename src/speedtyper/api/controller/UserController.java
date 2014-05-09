@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import speedtyper.api.viewmodel.JsonResponse;
 import speedtyper.api.viewmodel.LoggedUserModel;
 import speedtyper.api.viewmodel.LoginUserModel;
+import speedtyper.api.viewmodel.UserProfileModel;
 import speedtyper.api.viewmodel.UserRegisterModel;
 import speedtyper.model.UserModel;
 import speedtyper.service.UserService;
@@ -32,6 +34,7 @@ public class UserController {
 	private static final int MAX_PASSWORD_LENGTH = 30;
 	private static final int SESSION_KEY_LENGTH = 50;
 	private static final String SESSION_KEY_CHARACTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+	private static final String SESSION_KEY_PARAM_NAME = "sessionKey";
 	private static Random randomGenerator = new Random();
 
 	@Autowired
@@ -41,9 +44,9 @@ public class UserController {
 	@ResponseBody
 	public LoggedUserModel register(@RequestBody UserRegisterModel userRegModel)
 			throws InvalidActivityException {
-		this.ValidateUsername(userRegModel.getUsername());
-		this.ValidatePassword(userRegModel.getPassword());
-		this.ValidateEmail(userRegModel.getEmail());
+		this.validateUsername(userRegModel.getUsername());
+		this.validatePassword(userRegModel.getPassword());
+		this.validateEmail(userRegModel.getEmail());
 
 		UserModel user = userService.getUserByUsername(userRegModel
 				.getUsername());
@@ -58,7 +61,7 @@ public class UserController {
 		user = this.userRegisterModelToUserModel(userRegModel);
 		userService.add(user);
 		user = userService.getUserByUsername(user.getUsername());
-		user.setSessionKey(this.GenerateSessionKey(user.getId()));
+		user.setSessionKey(this.generateSessionKey(user.getId()));
 		userService.update(user);
 
 		LoggedUserModel loggedUser = new LoggedUserModel();
@@ -67,22 +70,22 @@ public class UserController {
 
 		return loggedUser;
 	}
-	
-	@RequestMapping(value="/login", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public LoggedUserModel login(@RequestBody LoginUserModel loginUserModel) {
 		LoggedUserModel loggedUserModel = new LoggedUserModel();
 		String username = loginUserModel.getUsername();
 		UserModel user = userService.getUserByUsername(username);
-		
+
 		if (user == null) {
 			throw new IllegalArgumentException("Username is incorect");
 		}
-		
+
 		String password = loginUserModel.getPassword();
-		
+
 		if (BCrypt.checkpw(password, user.getPassword())) {
-			String sessionKey = this.GenerateSessionKey(user.getId());
+			String sessionKey = this.generateSessionKey(user.getId());
 			user.setSessionKey(sessionKey);
 			userService.update(user);
 			loggedUserModel.setUsername(username);
@@ -90,29 +93,61 @@ public class UserController {
 		} else {
 			throw new IllegalArgumentException("Password is incorrect!");
 		}
-		
+
 		return loggedUserModel;
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.PUT)
 	@ResponseBody
 	public JsonResponse logout(@RequestBody Map<String, String> sessionKeyMap) {
-		String sessionKey = sessionKeyMap.get("sessionKey");
-		
+		String sessionKey = sessionKeyMap.get(SESSION_KEY_PARAM_NAME);
+
 		UserModel user = userService.getUserBySessionKey(sessionKey);
-		
-		if (user == null)
-        {
-            throw new IllegalArgumentException("There is no user with such sessionKey!");
-        }
-		
+
+		if (user == null) {
+			throw new IllegalArgumentException(
+					"There is no user with such sessionKey!");
+		}
+
 		user.setSessionKey(null);
 		userService.update(user);
-		
+
 		return new JsonResponse("OK", "");
 	}
 
-	private void ValidateUsername(String username) {
+	@RequestMapping(value = "/viewprofile", method = RequestMethod.GET)
+	@ResponseBody
+	public UserProfileModel viewProfile(
+			@RequestHeader Map<String, String> sessionKeyMap) {
+		String sessionKey = sessionKeyMap.get(SESSION_KEY_PARAM_NAME.toLowerCase());
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+
+		if (user == null) {
+			throw new IllegalArgumentException(
+					"There is no user with such sessionKey!");
+		}
+
+		UserProfileModel userProfle = userModelToUserProfileModel(user);
+
+		return userProfle;
+	}
+	
+	@RequestMapping(value="/edit", method=RequestMethod.PUT)
+	@ResponseBody
+	public UserProfileModel edit(@RequestBody Map<String, String> sessionKeyMap,
+			@RequestBody UserProfileModel userProfile) {
+		String sessionKey = sessionKeyMap.get(SESSION_KEY_PARAM_NAME);
+		String email = userProfile.getEmail();
+		this.validateEmail(email);
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		user.setEmail(email);
+		userService.update(user);
+		UserProfileModel userProfle = userModelToUserProfileModel(user);
+		
+		return userProfle;
+	}
+
+	private void validateUsername(String username) {
 		if (username == null) {
 			throw new IllegalArgumentException("Username can not be null!");
 		} else if (username.startsWith("_")) {
@@ -135,7 +170,7 @@ public class UserController {
 		}
 	}
 
-	private void ValidatePassword(String password) {
+	private void validatePassword(String password) {
 		if (password == null) {
 			throw new IllegalArgumentException("Password can not be null!");
 		} else if (password.length() < MIN_PASSWORD_LENGTH) {
@@ -147,14 +182,14 @@ public class UserController {
 		}
 	}
 
-	private void ValidateEmail(String email) {
+	private void validateEmail(String email) {
 		EmailValidator validator = EmailValidator.getInstance();
 		if (!validator.isValid(email)) {
 			throw new IllegalArgumentException("Email addres is not valid!");
 		}
 	}
 
-	private String GenerateSessionKey(int id) {
+	private String generateSessionKey(int id) {
 		StringBuilder sessionKey = new StringBuilder();
 		sessionKey.append(id);
 		while (sessionKey.length() < SESSION_KEY_LENGTH) {
@@ -176,5 +211,14 @@ public class UserController {
 				userRegModel.getEmail(), wordsPerMinute);
 
 		return userModel;
+	}
+	
+	private UserProfileModel userModelToUserProfileModel (UserModel user) {
+		UserProfileModel userProfle = new UserProfileModel();
+		userProfle.setUsername(user.getUsername());
+		userProfle.setEmail(user.getEmail());
+		userProfle.setWordsPerMinute(user.getWordsPerMinute());
+		
+		return userProfle;
 	}
 }
