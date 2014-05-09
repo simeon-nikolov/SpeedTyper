@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
 import speedtyper.api.viewmodel.LoggedUserModel;
+import speedtyper.api.viewmodel.LoginUserModel;
 import speedtyper.api.viewmodel.UserRegisterModel;
 import speedtyper.model.UserModel;
 import speedtyper.service.UserService;
@@ -66,10 +67,36 @@ public class UserController {
 
 		return loggedUser;
 	}
+	
+	@RequestMapping(value="/login", method = RequestMethod.POST)
+	@ResponseBody
+	public LoggedUserModel login(@RequestBody LoginUserModel loginUserModel) {
+		LoggedUserModel loggedUserModel = new LoggedUserModel();
+		String username = loginUserModel.getUsername();
+		UserModel user = userService.getUserByUsername(username);
+		
+		if (user == null) {
+			throw new IllegalArgumentException("Username is incorect");
+		}
+		
+		String password = loginUserModel.getPassword();
+		
+		if (BCrypt.checkpw(password, user.getPassword())) {
+			String sessionKey = this.GenerateSessionKey(user.getId());
+			user.setSessionKey(sessionKey);
+			userService.update(user);
+			loggedUserModel.setUsername(username);
+			loggedUserModel.setSessionKey(sessionKey);
+		} else {
+			throw new IllegalArgumentException("Password is incorrect!");
+		}
+		
+		return loggedUserModel;
+	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.PUT)
 	@ResponseBody
-	public JsonResponse Logout(@RequestBody Map<String, String> sessionKeyMap) {
+	public JsonResponse logout(@RequestBody Map<String, String> sessionKeyMap) {
 		String sessionKey = sessionKeyMap.get("sessionKey");
 		
 		UserModel user = userService.getUserBySessionKey(sessionKey);
