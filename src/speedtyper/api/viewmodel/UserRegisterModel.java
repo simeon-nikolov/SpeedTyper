@@ -4,6 +4,8 @@ public class UserRegisterModel {
 	private String username;
 	private String password;
 	private String email;
+	
+	public UserRegisterModel() {}
 
 	public String getUsername() {
 		return username;

@@ -3,6 +3,8 @@ package speedtyper.api.viewmodel;
 public class LoggedUserModel {
 	private String username;
 	private String sessionKey;
+	
+	public LoggedUserModel() {}
 
 	public String getUsername() {
 		return username;
