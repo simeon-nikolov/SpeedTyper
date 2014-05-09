@@ -32,36 +32,52 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public UserModel getUserById(int userId) {
-		return (UserModel)session.getCurrentSession().get(UserModel.class, userId);
+		return (UserModel) session.getCurrentSession().get(UserModel.class,
+				userId);
 	}
 
 	@Override
 	public UserModel getUserByUsername(String username) {
-		Query query = session.getCurrentSession().
-				createSQLQuery("SELECT * FROM users WHERE username = :username");
+		Query query = session.getCurrentSession().createQuery(
+				"from UserModel user where user.username = :username");
 		query.setString("username", username);
-		return (UserModel)query.uniqueResult();
+		query.setMaxResults(1);
+		List result = query.list();
+		if (result == null || result.size() == 0) {
+			return null;
+		}
+		return (UserModel) result.get(0);
 	}
 
 	@Override
 	public UserModel getUserBySessionKey(String sessionKey) {
-		Query query = session.getCurrentSession().
-				createSQLQuery("SELECT * FROM users WHERE session_key = :sessionKey");
+		Query query = session.getCurrentSession().createQuery(
+				"from UserModel user where user.sessionKey = :sessionKey");
 		query.setString("sessionKey", sessionKey);
-		return (UserModel)query.uniqueResult();
+		query.setMaxResults(1);
+		List result = query.list();
+		if (result == null || result.size() == 0) {
+			return null;
+		}
+		return (UserModel) result.get(0);
 	}
 
 	@Override
 	public UserModel getUserByEmail(String email) {
-		Query query = session.getCurrentSession().
-				createSQLQuery("SELECT * FROM users WHERE email = :email");
+		Query query = session.getCurrentSession().createQuery(
+				"from UserModel user where user.email = :email");
 		query.setString("email", email);
-		return (UserModel)query.uniqueResult();
+		query.setMaxResults(1);
+		List result = query.list();
+		if (result == null || result.size() == 0) {
+			return null;
+		}
+		return (UserModel) result.get(0);
 	}
-	
+
 	@Override
 	public List<UserModel> getAllUsers() {
-		return session.getCurrentSession().createQuery("from users").list();
+		return session.getCurrentSession().createQuery("from UserModel").list();
 	}
 
 }
