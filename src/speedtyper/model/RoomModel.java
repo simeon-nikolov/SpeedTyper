@@ -11,6 +11,9 @@ public class RoomModel {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	@ManyToOne
+    @JoinColumn(name="creator_id")
+	private UserModel creator;
 	@Column
 	private String status;
 	@Column(name="participants_count")
