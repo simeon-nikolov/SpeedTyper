@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.activity.InvalidActivityException;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
@@ -34,7 +34,7 @@ public class UserController {
 	private static final int MAX_PASSWORD_LENGTH = 30;
 	private static final int SESSION_KEY_LENGTH = 50;
 	private static final String SESSION_KEY_CHARACTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
-	private static final String SESSION_KEY_PARAM_NAME = "sessionKey";
+	private static final String SESSION_KEY_PARAM_NAME = "sessionkey";
 	private static Random randomGenerator = new Random();
 
 	@Autowired
@@ -73,7 +73,8 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public LoggedUserModel login(@RequestBody LoginUserModel loginUserModel) {
+	public LoggedUserModel login(@RequestBody LoginUserModel loginUserModel, 
+			HttpServletResponse response) {
 		LoggedUserModel loggedUserModel = new LoggedUserModel();
 		String username = loginUserModel.getUsername();
 		UserModel user = userService.getUserByUsername(username);
@@ -99,8 +100,8 @@ public class UserController {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.PUT)
 	@ResponseBody
-	public JsonResponse logout(@RequestBody Map<String, String> sessionKeyMap) {
-		String sessionKey = sessionKeyMap.get(SESSION_KEY_PARAM_NAME);
+	public JsonResponse logout(@RequestHeader Map<String, String> headers) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 
 		UserModel user = userService.getUserBySessionKey(sessionKey);
 
@@ -118,8 +119,8 @@ public class UserController {
 	@RequestMapping(value = "/viewprofile", method = RequestMethod.GET)
 	@ResponseBody
 	public UserProfileModel viewProfile(
-			@RequestHeader Map<String, String> sessionKeyMap) {
-		String sessionKey = sessionKeyMap.get(SESSION_KEY_PARAM_NAME.toLowerCase());
+			@RequestHeader Map<String, String> headers) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		UserModel user = userService.getUserBySessionKey(sessionKey);
 
 		if (user == null) {
@@ -134,12 +135,18 @@ public class UserController {
 	
 	@RequestMapping(value="/edit", method=RequestMethod.PUT)
 	@ResponseBody
-	public UserProfileModel edit(@RequestBody Map<String, String> sessionKeyMap,
+	public UserProfileModel edit(@RequestHeader Map<String, String> headers,
 			@RequestBody UserProfileModel userProfile) {
-		String sessionKey = sessionKeyMap.get(SESSION_KEY_PARAM_NAME);
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		String email = userProfile.getEmail();
 		this.validateEmail(email);
 		UserModel user = userService.getUserBySessionKey(sessionKey);
+		
+		if (user == null) {
+			throw new IllegalArgumentException(
+					"There is no user with such sessionKey!");
+		}
+		
 		user.setEmail(email);
 		userService.update(user);
 		UserProfileModel userProfle = userModelToUserProfileModel(user);
