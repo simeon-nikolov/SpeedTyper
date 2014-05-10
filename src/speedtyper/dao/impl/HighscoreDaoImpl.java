@@ -41,7 +41,7 @@ public class HighscoreDaoImpl implements HighscoreDao {
 
 	@Override
 	public List<HighscoreModel> getAll() {
-		return session.getCurrentSession().createQuery("from highscores").list();
+		return session.getCurrentSession().createQuery("from HighscoreModel").list();
 	}
 
 }
