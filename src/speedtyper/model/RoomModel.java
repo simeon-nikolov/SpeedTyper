@@ -12,7 +12,7 @@ public class RoomModel {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@Column
-	private int status;
+	private String status;
 	@Column(name="participants_count")
 	private int participantsCount;
 	@Column(name="max_participants")
@@ -27,7 +27,7 @@ public class RoomModel {
 	private TextModel text;
 	
 	public RoomModel () {}
-	public RoomModel(int status, int participantsCount, Collection<UserModel> users, 
+	public RoomModel(String status, int participantsCount, Collection<UserModel> users, 
 			TextModel text) {
 		this.status = status;
 		this.participantsCount = participantsCount;
@@ -43,11 +43,11 @@ public class RoomModel {
 		this.id = id;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
