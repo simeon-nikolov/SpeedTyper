@@ -73,7 +73,7 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public LoggedUserModel login(@RequestBody LoginUserModel loginUserModel, 
+	public LoggedUserModel login(@RequestBody LoginUserModel loginUserModel,
 			HttpServletResponse response) {
 		LoggedUserModel loggedUserModel = new LoggedUserModel();
 		String username = loginUserModel.getUsername();
@@ -103,12 +103,7 @@ public class UserController {
 	public JsonResponse logout(@RequestHeader Map<String, String> headers) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 
-		UserModel user = userService.getUserBySessionKey(sessionKey);
-
-		if (user == null) {
-			throw new IllegalArgumentException(
-					"There is no user with such sessionKey!");
-		}
+		UserModel user = this.getUserBySessionKey(sessionKey);
 
 		user.setSessionKey(null);
 		userService.update(user);
@@ -121,36 +116,26 @@ public class UserController {
 	public UserProfileModel viewProfile(
 			@RequestHeader Map<String, String> headers) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
-		UserModel user = userService.getUserBySessionKey(sessionKey);
-
-		if (user == null) {
-			throw new IllegalArgumentException(
-					"There is no user with such sessionKey!");
-		}
+		UserModel user = this.getUserBySessionKey(sessionKey);
 
 		UserProfileModel userProfle = userModelToUserProfileModel(user);
 
 		return userProfle;
 	}
-	
-	@RequestMapping(value="/edit", method=RequestMethod.PUT)
+
+	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	@ResponseBody
 	public UserProfileModel edit(@RequestHeader Map<String, String> headers,
 			@RequestBody UserProfileModel userProfile) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		String email = userProfile.getEmail();
 		this.validateEmail(email);
-		UserModel user = userService.getUserBySessionKey(sessionKey);
-		
-		if (user == null) {
-			throw new IllegalArgumentException(
-					"There is no user with such sessionKey!");
-		}
-		
+		UserModel user = this.getUserBySessionKey(sessionKey);
+
 		user.setEmail(email);
 		userService.update(user);
 		UserProfileModel userProfle = userModelToUserProfileModel(user);
-		
+
 		return userProfle;
 	}
 
@@ -208,6 +193,17 @@ public class UserController {
 		return sessionKey.toString();
 	}
 
+	private UserModel getUserBySessionKey(String sessionKey) {
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+
+		if (user == null) {
+			throw new IllegalArgumentException(
+					"There is no user with such sessionKey!");
+		}
+		
+		return user;
+	}
+
 	private UserModel userRegisterModelToUserModel(
 			UserRegisterModel userRegModel) {
 		String sessionKey = null;
@@ -219,13 +215,13 @@ public class UserController {
 
 		return userModel;
 	}
-	
-	private UserProfileModel userModelToUserProfileModel (UserModel user) {
+
+	private UserProfileModel userModelToUserProfileModel(UserModel user) {
 		UserProfileModel userProfle = new UserProfileModel();
 		userProfle.setUsername(user.getUsername());
 		userProfle.setEmail(user.getEmail());
 		userProfle.setWordsPerMinute(user.getWordsPerMinute());
-		
+
 		return userProfle;
 	}
 }
