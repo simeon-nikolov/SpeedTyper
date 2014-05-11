@@ -1,7 +1,7 @@
 package speedtyper.model;
 
 public enum RoomStatus {
-	AVAIBLE, STARTED, FINISHED;
+	AVAIBLE, FULL, STARTED, FINISHED;
 
 	@Override
 	public String toString() {
