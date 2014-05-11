@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
@@ -26,7 +25,6 @@ import speedtyper.model.UserModel;
 import speedtyper.service.RoomService;
 import speedtyper.service.TextService;
 import speedtyper.service.UserService;
-import speedtyper.service.impl.UserServiceImpl;
 
 @Controller
 @RequestMapping(value = "/rooms")
