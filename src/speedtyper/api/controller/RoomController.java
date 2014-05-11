@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.RoomViewModel;
 import speedtyper.model.RoomModel;
+import speedtyper.model.UserModel;
 import speedtyper.service.RoomService;
+import speedtyper.service.UserService;
+import speedtyper.service.impl.UserServiceImpl;
 
 @Controller
 @RequestMapping(value="/rooms")
@@ -22,6 +25,8 @@ public class RoomController {
 	
 	@Autowired
 	RoomService roomService;
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	@ResponseBody
@@ -29,7 +34,7 @@ public class RoomController {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		List<RoomViewModel> rooms = null;
 		
-		if (true) {
+		if (this.isAuthenticated(sessionKey)) {
 			List<RoomModel> roomsModel = roomService.getAvaibleRooms();
 			rooms = listRoomModelToViewModel(roomsModel);
 		} else {
@@ -44,6 +49,7 @@ public class RoomController {
 		for (RoomModel roomModel : rooms) {
 			RoomViewModel roomVM = new RoomViewModel();
 			roomVM.setId(roomModel.getId());
+			roomVM.setCreator(roomModel.getCreator().getUsername());
 			roomVM.setParticipants(roomModel.getParticipantsCount());
 			roomVM.setMaxParticipants(roomModel.getMaxParticipants());
 			roomVM.setStatus(roomModel.getStatus());
@@ -52,6 +58,16 @@ public class RoomController {
 		}
 		
 		return roomsViewModel;
+	}
+	
+	private boolean isAuthenticated(String sessionKey) {
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		
+		if (user == null) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }
