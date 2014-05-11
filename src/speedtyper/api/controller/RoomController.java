@@ -5,15 +5,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import speedtyper.api.viewmodel.JsonResponse;
 import speedtyper.api.viewmodel.RoomCreateModel;
+import speedtyper.api.viewmodel.RoomDetailsModel;
 import speedtyper.api.viewmodel.RoomViewModel;
 import speedtyper.model.RoomModel;
 import speedtyper.model.RoomStatus;
@@ -70,6 +75,75 @@ public class RoomController {
 		
 		return roomViewModel;
 	}
+	
+	@RequestMapping(value="/join/{roomId}", method=RequestMethod.PUT)
+	@ResponseBody
+	public RoomDetailsModel join(@RequestHeader Map<String, String> headers, 
+			@PathVariable int roomId) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		RoomDetailsModel roomResult = null;
+		
+		if (isAuthenticated(sessionKey)) {
+			RoomModel room = roomService.getRoom(roomId);
+			if (room.getStatus().equals(RoomStatus.AVAIBLE.toString())) {
+				UserModel user = userService.getUserBySessionKey(sessionKey);
+				Collection<UserModel> usersCollection = room.getUsers();
+				usersCollection.add(user);
+				room.setUsers(usersCollection);
+				room.setParticipantsCount(room.getParticipantsCount() + 1);
+				
+				if (room.getParticipantsCount() == room.getMaxParticipants()) {
+					room.setStatus(RoomStatus.FULL.toString());
+				}
+				
+				roomService.update(room);
+				roomResult = roomModelToRoomDetailModel(room);
+			} else {
+				throw new IllegalArgumentException("Room is not avaible!");
+			}
+		} else {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		return roomResult;
+	}
+	
+	@RequestMapping(value="/leave/{roomId}", method=RequestMethod.PUT)
+	@ResponseBody
+	public JsonResponse leave(@RequestHeader Map<String, String> headers,
+			@PathVariable int roomId) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		
+		if (isAuthenticated(sessionKey)) {
+			UserModel user = userService.getUserBySessionKey(sessionKey);
+			RoomModel room = roomService.getRoom(roomId);
+			Collection<UserModel> users = room.getUsers();
+			user = getUserFromRoom(user, room);
+			if (users.remove(user)) {
+				room.setUsers(users);
+				room.setParticipantsCount(room.getParticipantsCount() - 1);
+				room.setStatus(RoomStatus.AVAIBLE.toString());
+				roomService.update(room);
+			} else {
+				throw new IllegalArgumentException("User does not belong to this room!");
+			}
+		} else {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		return new JsonResponse("OK", "You have successfully left the room!");
+	}
+
+	private UserModel getUserFromRoom(UserModel user, RoomModel room) {
+		for (UserModel userInRoom : room.getUsers()) {
+			if (user.getId() == userInRoom.getId()) {
+				user = userInRoom;
+				break;
+			}
+		}
+		
+		return user;
+	}
 
 	private List<RoomViewModel> listRoomModelToViewModel(List<RoomModel> rooms) {
 		List<RoomViewModel> roomsViewModel = new ArrayList<RoomViewModel>();
@@ -78,6 +152,26 @@ public class RoomController {
 		}
 
 		return roomsViewModel;
+	}
+	
+	private RoomDetailsModel roomModelToRoomDetailModel(RoomModel room) {
+		RoomDetailsModel roomDM = new RoomDetailsModel();
+		roomDM.setId(room.getId());
+		roomDM.setCreator(room.getCreator().getUsername());
+		roomDM.setMaxParticipants(room.getMaxParticipants());
+		roomDM.setParticipantsCount(room.getParticipantsCount());
+		roomDM.setStatus(room.getStatus());
+		
+		List<String> participants = new ArrayList<String>();
+		
+		for (UserModel user : room.getUsers()) {
+			participants.add(user.getUsername());
+		}
+		
+		roomDM.setParticipants(participants);
+		roomDM.setText(room.getText().getText());
+		
+		return roomDM;
 	}
 	
 	private RoomViewModel roomModelToRoomViewModel(RoomModel roomModel) {
