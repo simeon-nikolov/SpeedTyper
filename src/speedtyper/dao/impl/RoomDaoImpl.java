@@ -2,6 +2,7 @@ package speedtyper.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,10 @@ public class RoomDaoImpl implements RoomDao {
 
 	@Override
 	public RoomModel getRoom(int roomId) {
-		return (RoomModel) session.getCurrentSession().get(RoomModel.class,
+		RoomModel room = (RoomModel) session.getCurrentSession().get(RoomModel.class,
 				roomId);
+		Hibernate.initialize(room.getUsers());
+		return room;
 	}
 
 	@Override
