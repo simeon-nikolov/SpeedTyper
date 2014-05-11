@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import speedtyper.dao.RoomDao;
 import speedtyper.model.RoomModel;
+import speedtyper.model.UserModel;
 import speedtyper.service.RoomService;
 
 @Service
@@ -33,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Transactional
 	public RoomModel getRoom(int roomId) {
-		return this.getRoom(roomId);
+		return this.roomDao.getRoom(roomId);
 	}
 
 	@Transactional
