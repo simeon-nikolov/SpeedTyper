@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import speedtyper.dao.RoomDao;
 import speedtyper.model.RoomModel;
-import speedtyper.model.UserModel;
 import speedtyper.service.RoomService;
 
 @Service
