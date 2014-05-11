@@ -10,4 +10,5 @@ public interface RoomService {
 	public void delete(int roomId);
 	public RoomModel getRoom(int roomId);
 	public List<RoomModel> getAllRooms();
+	public List<RoomModel> getAvaibleRooms();
 }

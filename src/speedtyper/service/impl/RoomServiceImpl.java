@@ -38,7 +38,12 @@ public class RoomServiceImpl implements RoomService {
 
 	@Transactional
 	public List<RoomModel> getAllRooms() {
-		return this.getAllRooms();
+		return this.roomDao.getAllRooms();
+	}
+
+	@Override
+	public List<RoomModel> getAvaibleRooms() {
+		return this.roomDao.getAvaibleRooms();
 	}
 
 }

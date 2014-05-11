@@ -39,4 +39,9 @@ public class RoomDaoImpl implements RoomDao {
 		return session.getCurrentSession().createQuery("from RoomModel").list();
 	}
 
+	@Override
+	public List<RoomModel> getAvaibleRooms() {
+		return session.getCurrentSession().createQuery("from RoomModel room where room.status=avaible").list();
+	}
+
 }
