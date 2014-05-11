@@ -108,7 +108,7 @@ public class UserController {
 		user.setSessionKey(null);
 		userService.update(user);
 
-		return new JsonResponse("OK", "");
+		return new JsonResponse("OK", "You have been logged out successfully!");
 	}
 
 	@RequestMapping(value = "/viewprofile", method = RequestMethod.GET)
