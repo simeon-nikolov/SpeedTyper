@@ -133,6 +133,29 @@ public class RoomController {
 		
 		return new JsonResponse("OK", "You have successfully left the room!");
 	}
+	
+	@RequestMapping(value="/{roomId}/start", method=RequestMethod.PUT)
+	@ResponseBody
+	public JsonResponse start(@RequestHeader Map<String, String> headers,
+			@PathVariable int roomId) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		
+		if (isAuthenticated(sessionKey)) {
+			UserModel user = userService.getUserBySessionKey(sessionKey);
+			RoomModel room = roomService.getRoom(roomId);
+			
+			if (room.getCreator().getId() != user.getId()) {
+				throw new IllegalArgumentException("You don't have rights to start the game!");
+			}
+			
+			room.setStatus(RoomStatus.STARTED.toString());
+			roomService.update(room);
+		} else {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		return new JsonResponse("OK", "The game successfully started!");
+	}
 
 	private UserModel getUserFromRoom(UserModel user, RoomModel room) {
 		for (UserModel userInRoom : room.getUsers()) {
