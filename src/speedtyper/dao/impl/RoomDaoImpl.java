@@ -37,6 +37,7 @@ public class RoomDaoImpl implements RoomDao {
 		RoomModel room = (RoomModel) session.getCurrentSession().get(RoomModel.class,
 				roomId);
 		Hibernate.initialize(room.getUsers());
+		Hibernate.initialize(room.getCreator());
 		return room;
 	}
 
