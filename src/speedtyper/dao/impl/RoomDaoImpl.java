@@ -2,18 +2,20 @@ package speedtyper.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import speedtyper.dao.RoomDao;
 import speedtyper.model.RoomModel;
+import speedtyper.model.RoomStatus;
 
 @Repository
 public class RoomDaoImpl implements RoomDao {
 	@Autowired
 	private SessionFactory session;
-	
+
 	@Override
 	public void add(RoomModel room) {
 		session.getCurrentSession().save(room);
@@ -31,7 +33,8 @@ public class RoomDaoImpl implements RoomDao {
 
 	@Override
 	public RoomModel getRoom(int roomId) {
-		return (RoomModel)session.getCurrentSession().get(RoomModel.class, roomId);
+		return (RoomModel) session.getCurrentSession().get(RoomModel.class,
+				roomId);
 	}
 
 	@Override
@@ -41,7 +44,10 @@ public class RoomDaoImpl implements RoomDao {
 
 	@Override
 	public List<RoomModel> getAvaibleRooms() {
-		return session.getCurrentSession().createQuery("from RoomModel room where room.status=avaible").list();
+		Query query = session.getCurrentSession().createQuery(
+				"from RoomModel room where room.status=:status");
+		query.setString("status", RoomStatus.AVAIBLE.toString());
+		
+		return query.list();
 	}
-
 }
