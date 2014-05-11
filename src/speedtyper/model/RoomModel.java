@@ -45,6 +45,14 @@ public class RoomModel {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public UserModel getCreator() {
+		return creator;
+	}
+
+	public void setCreator(UserModel creator) {
+		this.creator = creator;
+	}
 
 	public String getStatus() {
 		return status;
