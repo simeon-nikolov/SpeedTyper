@@ -29,8 +29,8 @@ public class RoomController {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		List<RoomViewModel> rooms = null;
 		
-		if (UserAuthenticator.isAuthenticated(sessionKey)) {
-			List<RoomModel> roomsModel = roomService.getAllRooms();
+		if (true) {
+			List<RoomModel> roomsModel = roomService.getAvaibleRooms();
 			rooms = listRoomModelToViewModel(roomsModel);
 		} else {
 			throw new IllegalArgumentException("User is not authenticated!");
