@@ -34,28 +34,4 @@
 		<url-pattern>/WEB-INF/views/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- <servlet> -->
-	<!-- <servlet-name>spring</servlet-name> -->
-	<!-- <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> -->
-	<!-- <load-on-startup>1</load-on-startup> -->
-	<!-- </servlet> -->
-	<!-- <servlet-mapping> -->
-	<!-- <servlet-name>spring</servlet-name> -->
-	<!-- <url-pattern>/*</url-pattern> -->
-	<!-- </servlet-mapping> -->
-
-	<!-- <servlet-mapping> -->
-	<!-- <servlet-name>spring</servlet-name> -->
-	<!-- <url-pattern>/WEB-INF/views/*</url-pattern> -->
-	<!-- </servlet-mapping> -->
-	<!-- <servlet-mapping> -->
-	<!-- <servlet-name>spring</servlet-name> -->
-	<!-- <url-pattern>*.html</url-pattern> -->
-	<!-- </servlet-mapping> -->
-
-	<!-- <servlet-mapping> -->
-	<!-- <servlet-name>DispatcherServlet</servlet-name> -->
-	<!-- <url-pattern>*.htm</url-pattern> -->
-	<!-- </servlet-mapping> -->
-
 </web-app>
