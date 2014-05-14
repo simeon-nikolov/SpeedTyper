@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="WebContent"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/views/Scripts/libs/angular.js"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/views/Scripts/app.js"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/views/Scripts/libs/kendo.ui.core.min.js"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/views/Scripts/libs/jquery.min.js"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
 		<attributes>
