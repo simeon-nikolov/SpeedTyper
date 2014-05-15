@@ -11,6 +11,11 @@ angular.module("SpeedTyperSPA", [])
 				template: "Scripts/partials/login-form.html",
 				controller: LoginController
 			})
+			.when("/register", 
+			{
+				template: "Scripts/partials/register-form.html",
+				controller: RegisterController
+			})
 			.when("/rooms/", 
 			{ 
 				templateUrl: "Scripts/partials/all-rooms.html", 
