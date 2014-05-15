@@ -1,10 +1,6 @@
 <h1>Speed Typer</h1>
-<div id="menu">
-	<a href="#" class="">Home</a>
-	<a href="#" class="">Play</a>
-	<a href="#" class="">Highscore</a>
-	<a href="#" class="">Profile</a>
-	<a href="#" class="">Logout</a>
+<div id="menu" ng-repeat="link in menuLinks">
+	<a href="{{link.address}}" class="" title="{{link.title}}">{{link.name}}</a>
 </div>
 <p>Speed Typer is a speed typing race game where you compete with others.</p>
 <a href="#">Join Random</a>
