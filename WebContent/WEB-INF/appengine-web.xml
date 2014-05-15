@@ -1,0 +1,3 @@
+<static-files>
+  <include path="/views/Scripts/libs/jquery.min.js" expiration="1d" />   
+</static-files>
