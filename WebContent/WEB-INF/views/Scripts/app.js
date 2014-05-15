@@ -3,12 +3,12 @@ angular.module("SpeedTyperSPA", [])
 	    $routeProvider
 			.when("/", 
 			{ 
-				templateUrl: "", 
+				templateUrl: "Scripts/partials/home.html", 
 				controller: HomeController 
 			})
 			.when("/rooms/", 
 			{ 
-				templateUrl: "", 
+				templateUrl: "Scripts/partials/all-rooms.html", 
 				controller: RoomsController 
 			})
 			.otherwise(
