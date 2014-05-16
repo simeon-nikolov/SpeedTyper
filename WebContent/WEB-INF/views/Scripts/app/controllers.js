@@ -13,3 +13,7 @@ function LoginController($scope, $http) {
 function RegisterController($scope, $http) {
 	
 }
+
+function RoomsController($scope, $http) {
+	
+}
