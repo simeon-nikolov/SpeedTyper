@@ -1,14 +1,29 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html ng-app="SpeedTyperSPA">
 <head>
-	<meta charset="utf-8" />
-	<title>SppedTyper - a typing race game</title>
-	<script src="Scripts/libs/jquery.min.js"></script>
-	<script src="Scripts/libs/angular.min.js"></script>
-	<script src="Scripts/libs/kendo.ui.core.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="Styles/kendo.black.min.css" />
+<meta charset="utf-8" />
+<title>SpeedTyper - a typing race game</title>
+<script src="Scripts/libs/jquery.min.js"></script>
+<script src="Scripts/libs/angular.min.js"></script>
+<script src="Scripts/libs/angular-route.min.js"></script>
+<script src="Scripts/libs/kendo.ui.core.min.js"></script>
+<script src="Scripts/app/controllers.js"></script>
+<script src="Scripts/app.js"></script>
+<link rel="stylesheet" type="text/css" href="Styles/kendo.black.min.css" />
 </head>
-<body ng-controller="HomeController">
-	
+<body>
+	<div id="wrapper">
+		<header>
+			<h1>Speed Typer</h1>
+		</header>
+
+		<div ng-view></div>
+	</div>
+
+	<script>
+		$("#menu").ready(function() {
+			$("#menu").kendoMenu();
+		});
+	</script>
 </body>
 </html>
