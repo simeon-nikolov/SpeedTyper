@@ -12,11 +12,11 @@
 	"title" : "Highscore",
 	"name" : "Highscore"
 }, {
-	"address" : "#/user/view",
+	"address" : "#/profile",
 	"title" : "View profile",
 	"name" : "Profile"
 }, {
-	"address" : "#/user/logout",
+	"address" : "#/logout",
 	"title" : "Logout",
 	"name" : "Logout"
 }],
@@ -27,7 +27,7 @@
     "title" : "Home",
 	"name" : "Home"
 }, {
-	"address" : "#/user/register",
+	"address" : "#/register",
 	"title" : "Register",
 	"name" : "Register"
 }, {
