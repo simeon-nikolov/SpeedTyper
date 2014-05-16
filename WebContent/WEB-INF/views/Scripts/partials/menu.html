@@ -1,0 +1,12 @@
+<ul id="menu" ng-controller="MenuController">
+	<li ng-repeat="link in menuLinks"><a href="{{link.address}}"
+		title="{{link.title}}">{{link.name}}</a></li>
+</ul>
+
+<script type="text/javascript">
+<!--
+	$(document).ready(function () {
+		$("#menu").kendoMenu();
+	});
+//-->
+</script>

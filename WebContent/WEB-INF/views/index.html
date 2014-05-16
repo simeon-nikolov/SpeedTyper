@@ -13,11 +13,12 @@
 <link rel="stylesheet" type="text/css" href="Styles/kendo.common.min.css" />
 <link rel="stylesheet" type="text/css" href="Styles/kendo.flat.min.css" />
 </head>
-<body ng-controller="HomeController">
+<body>
 	<div id="wrapper">
 		<header>
 			<h1>Speed Typer</h1>
 		</header>
+		<div ng-include src="'Scripts/partials/menu.html'"></div>
 
 		<div ng-view></div>
 	</div>
