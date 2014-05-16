@@ -1,11 +1,16 @@
-<div ng-repeat="link in menuLinks">
+<div>
 	<ul id="menu">
-		<li>
-			<a href="{{link.address}}" class="" title="{{link.title}}">{{link.name}}</a>
-		</li>
+		<li ng-repeat="link in menuLinks"><a href="{{link.address}}" title="{{link.title}}">{{link.name}}</li>
 	</ul>
 </div>
-<p>Speed Typer is a speed typing race game where you compete with
-	others.</p>
+<p>Speed Typer is a speed typing race game where you compete with others.</p>
 <a href="#">Join Random</a>
 <a href="#">Create Game</a>
+
+<script type="text/javascript">
+<!--
+	$(document).ready(function () {
+		$("#menu").kendoMenu();
+	});
+//-->
+</script>
