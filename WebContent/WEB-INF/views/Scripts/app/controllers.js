@@ -3,11 +3,17 @@ function HomeController($scope, $http) {
 }
 
 function MenuController($scope, $http) {
-	$http.get("Scripts/data/menuLinks.js").success(function(links) {
-		$scope.menuLinks =  links;
-	});
-}
+	var sessionkey = localStorage.getItem("sessionkey");
 
+	$http.get("Scripts/data/menuLinks.js").success(function(menu) {
+		if (sessionkey == null) {
+			$scope.menuLinks = menu.loggedOutMenu;
+		} else {
+			$scope.menuLinks = menu.loggedInMenu;
+		}
+	});
+
+}
 
 function LoginController($scope, $http) {
 

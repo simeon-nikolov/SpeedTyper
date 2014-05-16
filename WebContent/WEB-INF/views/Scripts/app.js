@@ -8,12 +8,12 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 			})
 			.when("/login", 
 			{
-				template: "Scripts/partials/login-form.html",
+				templateUrl: "Scripts/partials/login-form.html",
 				controller: LoginController
 			})
 			.when("/register", 
 			{
-				template: "Scripts/partials/register-form.html",
+				templateUrl: "Scripts/partials/register-form.html",
 				controller: RegisterController
 			})
 			.when("/rooms/", 

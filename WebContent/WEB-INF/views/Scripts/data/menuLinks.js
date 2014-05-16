@@ -1,5 +1,6 @@
-[ {
-	"address" : "#/",
+{"loggedInMenu":
+[{
+    "address" : "#/",
 	"title" : "Home",
 	"name" : "Home"
 }, {
@@ -18,4 +19,19 @@
 	"address" : "#/user/logout",
 	"title" : "Logout",
 	"name" : "Logout"
-} ]
+}],
+
+"loggedOutMenu":
+[{
+    "address" : "#/",
+    "title" : "Home",
+	"name" : "Home"
+}, {
+	"address" : "#/user/register",
+	"title" : "Register",
+	"name" : "Register"
+}, {
+	"address" : "#/login",
+	"title" : "Login",
+	"name" : "Login"
+}]}
