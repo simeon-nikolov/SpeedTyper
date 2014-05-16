@@ -1,4 +1,4 @@
-angular.module("SpeedTyperSPA", [])
+angular.module("SpeedTyperSPA", ['ngRoute'])
 	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider
 			.when("/", 
