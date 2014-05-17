@@ -69,8 +69,8 @@ function RegisterController($rootScope, $http, $location) {
 	};
 }
 
-function RoomsController($rootScope, $http) {
-	this.rooms = [];
+function RoomsController($scope, $http) {
+	$scope.rooms = [];
 	
 	$http({
 		method : 'GET',
@@ -79,12 +79,8 @@ function RoomsController($rootScope, $http) {
 			'sessionkey' : sessionkey
 		}
 	}).success(function(rooms) {
-		console.log(rooms);
-		self.rooms = rooms;
-		console.log(self.rooms);
+		$scope.rooms = rooms;
 	});
-	
-	console.log(this.rooms);
 }
 
 function ViewProfileController($rootScope, $http) {

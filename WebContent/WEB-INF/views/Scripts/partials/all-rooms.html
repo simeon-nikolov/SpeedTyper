@@ -1,3 +1,37 @@
-<ul ng-controller="RoomsController as roomsCtrl" ng-repeat="room in roomsCtrl.rooms">
-	<li>{{room.creator}}</li>
-</ul>
+<div id="rooms-grid"></div>
+
+<script>
+$(document).ready(function () {
+    $("#rooms-grid").kendoGrid({
+        dataSource: {
+            type: "json",
+            transport: {
+                read: ""
+            },
+            pageSize: 10
+        },
+        groupable: true,
+        sortable: true,
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        },
+        columns: [{
+            field: "ContactName",
+            title: "Contact Name",
+            width: 200
+        }, {
+            field: "ContactTitle",
+            title: "Contact Title",
+            width: 250
+        }, {
+            field: "CompanyName",
+            title: "Company Name"
+        }, {
+            field: "Country",
+            width: 150
+        }]
+    });
+});
+</script>
