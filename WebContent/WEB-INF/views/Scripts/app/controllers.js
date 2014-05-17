@@ -1,12 +1,11 @@
 var url = "/SpeedTyper";
+var sessionkey = localStorage.getItem("sessionkey");
 
 function HomeController($rootScope, $http) {
 
 }
 
-function MenuController($rootScope, $http) {
-	var sessionkey = localStorage.getItem("sessionkey");
-	
+function MenuController($rootScope, $http) {	
 	$rootScope.menuFilter = "loggedIn";
 
 	$http.get("Scripts/data/menuLinks.js").success(function(links) {
@@ -23,8 +22,6 @@ function MenuController($rootScope, $http) {
 }
 
 function LogoutController($rootScope, $http, $location) {
-	var sessionkey = localStorage.getItem("sessionkey");
-
 	$http({
 		method : 'PUT',
 		url : url + "/user/logout",
@@ -73,17 +70,30 @@ function RegisterController($rootScope, $http, $location) {
 }
 
 function RoomsController($rootScope, $http) {
-
+	this.rooms = [];
+	
+	$http({
+		method : 'GET',
+		url : url + "/rooms/",
+		headers : {
+			'sessionkey' : sessionkey
+		}
+	}).success(function(rooms) {
+		console.log(rooms);
+		self.rooms = rooms;
+		console.log(self.rooms);
+	});
+	
+	console.log(this.rooms);
 }
 
 function ViewProfileController($rootScope, $http) {
-	var sessionkey = localStorage.getItem("sessionkey");
-	
 	this.userModel = {
 			"username": "",
 			"email": "",
 			"wordsPerMinute": ""
 	};
+	
 	var self = this;
 	
 	$http({
