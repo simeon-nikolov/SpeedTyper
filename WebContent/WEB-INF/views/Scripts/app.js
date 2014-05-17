@@ -26,6 +26,11 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 				templateUrl: "Scripts/partials/all-rooms.html", 
 				controller: RoomsController 
 			})
+			.when("/profile", 
+			{
+				templateUrl: "Scripts/partials/profile.html",
+				controller: ViewProfileController
+			})
 			.otherwise(
 			{ 
 				redirectTo: "/" }
