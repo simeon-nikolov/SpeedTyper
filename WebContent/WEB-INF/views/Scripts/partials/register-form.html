@@ -1,32 +1,28 @@
+<form name="registerForm" ng-controller="RegisterController as registerCtrl" novalidate ng-submit="registerForm.$valid && registerCtrl.register()">
 <fieldset>
     <legend>Register</legend>
     <div id="register-form-content" class="k-content">
         <div>
             <ul class="forms">
                 <li>
-                    <label for="tb-usernameReg">Username</label>
-                    <input class="k-textbox" type="text" id="tb-usernameReg" />
+                    <label for="tb-usernameReg">Username: </label>
+                    <input type="text" id="tb-usernameReg" ng-model="registerCtrl.registerModel.username" required ng-minlength="6" ng-maxlength="20" class="k-textbox" />
+                    <em>(between 6 - 20 characters)</em>
                 </li>
                 <li>
-                    <label for="tb-passwordReg">Password</label>
-                    <input class="k-textbox" type="password" id="tb-passwordReg" />
+                    <label for="tb-passwordReg">Password: </label>
+                    <input type="password" id="tb-passwordReg" ng-model="registerCtrl.registerModel.password" required ng-minlength="6" ng-maxlength="25" class="k-textbox" />
+                    <em>(between 6 - 25 characters)</em>
                 </li>
                 <li>
-                    <label for="tb-firstName">First Name</label>
-                    <input  class="k-textbox" type="text" id="tb-firstName" />
+                    <label for="tb-email">E-mail: </label>
+                    <input type="email" id="tb-email" ng-model="registerCtrl.registerModel.email" required class="k-textbox" />
                 </li>
                 <li>
-                    <label for="tb-lastName">Last Name</label>
-                    <input class="k-textbox" type="text" id="tb-lastName" />
-                </li>
-                <li>
-                    <label for="tb-email">Email</label>
-                    <input class="k-textbox" type="text" id="tb-email" />
-                </li>
-                <li>
-                    <button class="k-button">Register</button>
+                    <button class="k-button" type="submit">Register</button>
                 </li>
             </ul>
         </div>
     </div>
 </fieldset>
+</form>

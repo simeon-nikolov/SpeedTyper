@@ -6,6 +6,11 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 				templateUrl: "Scripts/partials/home.html", 
 				controller: HomeController 
 			})
+			.when("/logout", 
+			{
+				templateUrl: "Scripts/partials/logout.html",
+				controller: LogoutController
+			})
 			.when("/login", 
 			{
 				templateUrl: "Scripts/partials/login-form.html",

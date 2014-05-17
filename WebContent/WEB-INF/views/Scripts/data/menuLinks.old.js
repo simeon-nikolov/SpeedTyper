@@ -1,36 +1,37 @@
+{"loggedInMenu":
 [{
     "address" : "#/",
 	"title" : "Home",
-	"name" : "Home",
-	"category": "loggedIn loggedOut"
+	"name" : "Home"
 }, {
 	"address" : "#/rooms",
 	"title" : "Create or join a typing race",
-	"name" : "Play",
-	"category": "loggedIn"
+	"name" : "Play"
 }, {
 	"address" : "#/highscore",
 	"title" : "Highscore",
-	"name" : "Highscore",
-	"category": "loggedIn"
+	"name" : "Highscore"
 }, {
 	"address" : "#/profile",
 	"title" : "View profile",
-	"name" : "Profile",
-	"category": "loggedIn"
+	"name" : "Profile"
 }, {
 	"address" : "#/logout",
 	"title" : "Logout",
-	"name" : "Logout",
-	"category": "loggedIn"
+	"name" : "Logout"
+}],
+
+"loggedOutMenu":
+[{
+    "address" : "#/",
+    "title" : "Home",
+	"name" : "Home"
 }, {
 	"address" : "#/register",
 	"title" : "Register",
-	"name" : "Register",
-	"category": "loggedOut"
+	"name" : "Register"
 }, {
 	"address" : "#/login",
 	"title" : "Login",
-	"name" : "Login",
-	"category": "loggedOut"
-}]
+	"name" : "Login"
+}]}
