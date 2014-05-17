@@ -76,6 +76,29 @@ function RoomsController($rootScope, $http) {
 
 }
 
+function ViewProfileController($rootScope, $http) {
+	var sessionkey = localStorage.getItem("sessionkey");
+	
+	this.userModel = {
+			"username": "",
+			"email": "",
+			"wordsPerMinute": ""
+	};
+	var self = this;
+	
+	$http({
+		method : 'GET',
+		url : url + "/user/viewprofile",
+		headers : {
+			'sessionkey' : sessionkey
+		}
+	}).success(function(user) {
+		self.userModel.username = user.username;
+		self.userModel.email = user.email;
+		self.userModel.wordsPerMinute = user.wordsPerMinute;
+	});
+}
+
 function isAuthenticated(sessionkey) {
 	if (sessionkey == null || sessionkey == "") {
 		return false;

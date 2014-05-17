@@ -1,0 +1,14 @@
+<fieldset>
+	<legend>User Profile</legend>
+	<div ng-controller="ViewProfileController as viewProfileCtrl">
+		<div>
+			<strong>Username:</strong> <em>{{viewProfileCtrl.userModel.username}}</em>
+		</div>
+		<div>
+			<strong>E-mail:</strong> <em>{{viewProfileCtrl.userModel.email}}</em>
+		</div>
+		<div>
+			<strong>Average words per minute speed:</strong> <em>{{viewProfileCtrl.userModel.wordsPerMinute}}</em>
+		</div>
+	</div>
+</fieldset>
