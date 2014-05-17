@@ -1,0 +1,12 @@
+.forms {
+	float: left;
+}
+
+.forms li {
+	margin-bottom: 5px;
+	list-style: none;
+}
+
+.forms li>* {
+	width: 200px;
+}

@@ -1,20 +1,22 @@
+<form name="loginForm" ng-controller="LoginController as loginCtrl" novalidate ng-submit="loginCtrl.login()">
 <fieldset>
 	<legend>Login</legend>
     <div id="lodin-form-content" class="k-content">
         <div>
             <ul class="forms">
                 <li>
-                    <label for="tb-username">Username</label>
-                    <input data-bind="value: username" class="k-textbox" type="text" id="tb-username" />
+                    <label for="tb-username">Username:</label>
+                    <input ng-model="loginCtrl.loginModel.username" class="k-textbox" type="text" id="tb-username" />
                 </li>
                 <li>
-                    <label for="tb-password">Password</label>
-                    <input class="k-textbox" type="password" id="tb-password" />
+                    <label for="tb-password">Password:</label>
+                    <input ng-model="loginCtrl.loginModel.password" class="k-textbox" type="password" id="tb-password" />
                 </li>
                 <li>
-                    <button class="k-button">Login</button>
+                    <button class="k-button" type="submit">Login</button>
                 </li>
             </ul>
         </div>
     </div>
 </fieldset>
+</form>

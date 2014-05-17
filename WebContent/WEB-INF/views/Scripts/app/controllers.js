@@ -1,3 +1,5 @@
+var url = "/SpeedTyper";
+
 function HomeController($scope, $http) {
 
 }
@@ -15,8 +17,21 @@ function MenuController($scope, $http) {
 
 }
 
-function LoginController($scope, $http) {
-
+function LoginController($scope, $http, $location) {
+	this.loginModel = 
+	{
+		"username": "",
+		"password": ""
+	};
+	
+	this.login = function() {
+		$http.post(url + "/user/login", this.loginModel)
+			.success(function(data) {
+				localStorage.setItem("sessionkey", data.sessionKey);
+				$location.path('/');
+				//$window.location.href = '/signin';
+		});
+	}
 }
 
 function RegisterController($scope, $http) {
