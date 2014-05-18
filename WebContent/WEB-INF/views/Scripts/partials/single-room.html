@@ -1,16 +1,22 @@
-<div class="k-block k-info-colored">
-	<canvas id="progress-canvas" width="200px" height="100px"></canvas>
+<!-- <div class="k-block k-info-colored"> -->
+	<div class="names-container clearfix">
+		<div class="name">You: </div>
+		<div class="name" ng-repeat="name in roomDetails.participants | filter:usernameFilter">{{name}}: </div>
+	</div>
+	<canvas class="clearfix" id="progress-canvas" width="200px" height="100px"></canvas>
 
 	<p id="text">{{roomDetails.text}}</p>
 
 	<div>
 		<input type="text" class="k-input" />
 	</div>
-</div>
+<!-- </div> -->
 
 <script>
-	var c = document.getElementById("progress-canvas");
-	var ctx = c.getContext("2d");
-	ctx.fillStyle = "#0000FF";
-	ctx.fillRect(5, 10, 7, 10);
+	
+
+// 	var c = document.getElementById("progress-canvas");
+// 	var ctx = c.getContext("2d");
+// 	ctx.fillStyle = "#0000FF";
+// 	ctx.fillRect(5, 10, 7, 10);
 </script>
