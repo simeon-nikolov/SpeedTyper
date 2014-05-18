@@ -81,6 +81,7 @@ function RoomsController($scope, $http) {
 		}
 	}).success(function(rooms) {
 		$scope.rooms = rooms;
+		showRoomsGrid($scope);
 	});
 }
 
@@ -104,6 +105,35 @@ function ViewProfileController($rootScope, $http) {
 		self.userModel.email = user.email;
 		self.userModel.wordsPerMinute = user.wordsPerMinute;
 	});
+}
+
+function showRoomsGrid($scope) {
+	$("#rooms-grid").kendoGrid({
+    	dataSource: $scope.rooms,
+    	groupable: false,
+        sortable: true,
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        },
+        columns: [{
+            field: "creator",
+            title: "Creator",
+        }, {
+            field: "status",
+            title: "Status",
+        }, {
+            field: "participants",
+            title: "Participants"
+        }, {
+            field: "maxParticipants",
+            title: "Max Participants"
+        }, {
+            field: "text",
+            title: "Text"
+        }]
+    });
 }
 
 function isAuthenticated(sessionkey) {
