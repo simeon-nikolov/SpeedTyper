@@ -1,9 +1,9 @@
-<div id="rooms-grid"></div>
+<div id="rooms-grid" ng-repeat="room in rooms">{{room.text}}</div>
 
 <script>
 $(document).ready(function () {
     $("#rooms-grid").kendoGrid({
-
+    	
     });
 });
 </script>

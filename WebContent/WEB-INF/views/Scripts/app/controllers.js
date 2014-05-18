@@ -45,7 +45,8 @@ function LoginController($rootScope, $http, $location) {
 	this.login = function() {
 		$http.post(url + "/user/login", this.loginModel).success(
 				function(data) {
-					localStorage.setItem("sessionkey", data.sessionKey);
+					sessionkey = data.sessionKey;
+					localStorage.setItem("sessionkey", sessionkey);
 					$location.path('/');
 					$rootScope.menuFilter = "loggedIn";
 				});
