@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
@@ -80,14 +81,17 @@ public class RoomController {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		RoomDetailsModel roomResult = null;
 		
-		if (isAuthenticated(sessionKey)) {
+		if (this.isAuthenticated(sessionKey)) {
 			RoomModel room = roomService.getRoom(roomId);
 			if (room.getStatus().equals(RoomStatus.AVAIBLE.toString())) {
 				UserModel user = userService.getUserBySessionKey(sessionKey);
 				Collection<UserModel> usersCollection = room.getUsers();
-				usersCollection.add(user);
-				room.setUsers(usersCollection);
-				room.setParticipantsCount(room.getParticipantsCount() + 1);
+				
+				if (!usersCollection.contains(user)) {
+					usersCollection.add(user);
+					room.setUsers(usersCollection);
+					room.setParticipantsCount(room.getParticipantsCount() + 1);
+				}
 				
 				if (room.getParticipantsCount() == room.getMaxParticipants()) {
 					room.setStatus(RoomStatus.FULL.toString());
@@ -105,7 +109,32 @@ public class RoomController {
 		return roomResult;
 	}
 	
-	@RequestMapping(value="/leave/{roomId}", method=RequestMethod.PUT)
+	@RequestMapping(value = "/details/{roomId}", method = RequestMethod.GET)
+	@ResponseBody
+	public RoomDetailsModel getRoomDetails(@RequestHeader Map<String, String> headers,
+			@PathVariable int roomId) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		RoomDetailsModel roomResult = null;
+		
+		if (this.isAuthenticated(sessionKey)) {
+			RoomModel room = roomService.getRoom(roomId);
+			UserModel user = userService.getUserBySessionKey(sessionKey);
+			Collection<UserModel> usersCollection = room.getUsers();
+			user = this.getUserFromRoom(user, room);
+			
+			if (usersCollection.contains(user)) {
+				roomResult = this.roomModelToRoomDetailModel(room);
+			} else {
+				throw new IllegalArgumentException("User does not participate in this room!");
+			}
+		} else {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		return roomResult;
+	}
+	
+	@RequestMapping(value = "/leave/{roomId}", method = RequestMethod.PUT)
 	@ResponseBody
 	public JsonResponse leave(@RequestHeader Map<String, String> headers,
 			@PathVariable int roomId) {
