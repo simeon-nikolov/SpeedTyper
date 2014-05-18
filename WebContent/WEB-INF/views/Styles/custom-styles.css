@@ -22,12 +22,24 @@
 }
 
 #progress-canvas {
-	margin-top: 20px;
-	margin-left: 20px;
-	margin-right: 30px;
-	margin-bottom: 25px;
+/* 	margin-top: 20px; */
+/* 	margin-left: 20px; */
+/* 	margin-right: 30px; */
+/* 	margin-bottom: 25px; */
 	border: 1px solid #000;
 	width: 500px;
 	height: 150px;
-	display: inline-block;
+	background-color: #ccc;
+	float: left;
 }
+
+.name {
+	padding-bottom: 10px;
+}
+
+.names-container {
+	background-color: #ccc;
+	float: left;
+	text-align: right;
+}
+
