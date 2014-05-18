@@ -85,7 +85,7 @@ function RoomsController($scope, $http) {
 	});
 }
 
-function ViewProfileController($rootScope, $http) {
+function ViewProfileController($http) {
 	this.userModel = {
 			"username": "",
 			"email": "",
@@ -104,6 +104,35 @@ function ViewProfileController($rootScope, $http) {
 		self.userModel.username = user.username;
 		self.userModel.email = user.email;
 		self.userModel.wordsPerMinute = user.wordsPerMinute;
+	});
+}
+
+function JoinRoomController($rootScope, $http, $routeParams, $location) {
+	var id = $routeParams.id;
+	
+	$http({
+		method : "PUT",
+		url : url + "/rooms/join/" + id,
+		headers : {
+			"sessionkey" : sessionkey
+		}
+	}).success(function(roomDetails) {
+		$rootScope.roomDetails = roomDetails;
+		$location.path("/rooms/details/" + id);
+	});
+}
+
+function SingleRoomController($rootScope, $http, $routeParams) {
+	var id = $routeParams.id;
+	
+	$http({
+		method : "GET",
+		url : url + "/rooms/details/" + id,
+		headers : {
+			"sessionkey" : sessionkey
+		}
+	}).success(function(roomDetails) {
+		$rootScope.roomDetails = roomDetails;
 	});
 }
 
@@ -132,6 +161,10 @@ function showRoomsGrid($scope) {
         }, {
             field: "text",
             title: "Text"
+        }, {
+        	title: "Action",
+        	template: "<a href='\\#/rooms/join/#=id#' class='k-button' title='Join game'>Join</a>", 
+        	filterable: false
         }]
     });
 }
