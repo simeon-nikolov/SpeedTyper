@@ -16,8 +16,18 @@
 	border-width: 2px;
 }
 
-!
 .ng-valid.ng-dirty {
 	border-color: #78FA89;
 	border-width: 2px;
+}
+
+#progress-canvas {
+	margin-top: 20px;
+	margin-left: 20px;
+	margin-right: 30px;
+	margin-bottom: 25px;
+	border: 1px solid #000;
+	width: 500px;
+	height: 150px;
+	display: inline-block;
 }
