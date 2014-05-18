@@ -26,6 +26,16 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 				templateUrl: "Scripts/partials/all-rooms.html", 
 				controller: RoomsController 
 			})
+			.when("/rooms/join/:id", 
+			{ 
+				templateUrl: "Scripts/partials/join-room.html", 
+				controller: JoinRoomController 
+			})
+			.when("/rooms/details/:id", 
+			{ 
+				templateUrl: "Scripts/partials/single-room.html", 
+				controller: SingleRoomController 
+			})
 			.when("/profile", 
 			{
 				templateUrl: "Scripts/partials/profile.html",
