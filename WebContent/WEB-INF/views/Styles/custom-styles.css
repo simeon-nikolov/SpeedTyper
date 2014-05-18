@@ -21,6 +21,10 @@
 	border-width: 2px;
 }
 
+.left {
+	float: left;
+}
+
 #progress-canvas {
 /* 	margin-top: 20px; */
 /* 	margin-left: 20px; */
@@ -30,7 +34,6 @@
 	width: 500px;
 	height: 150px;
 	background-color: #ccc;
-	float: left;
 }
 
 .name {
@@ -39,7 +42,16 @@
 
 .names-container {
 	background-color: #ccc;
-	float: left;
 	text-align: right;
 }
 
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
