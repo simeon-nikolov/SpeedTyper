@@ -44,11 +44,13 @@ function LoginController($rootScope, $http, $location) {
 
 	this.login = function() {
 		$http.post(url + "/user/login", this.loginModel).success(
-				function(data) {
-					sessionkey = data.sessionKey;
-					localStorage.setItem("sessionkey", sessionkey);
-					$location.path('/');
+				function(userModel) {
 					$rootScope.menuFilter = "loggedIn";
+					sessionkey = userModel.sessionKey;					
+					$rootScope.username = userModel.username;
+					localStorage.setItem("sessionkey", sessionkey);
+					localStorage.setItem("username", $rootScope.username);
+					$location.path('/');
 				});
 	};
 }
@@ -62,10 +64,13 @@ function RegisterController($rootScope, $http, $location) {
 	
 	this.register = function() {
 		$http.post(url + "/user/register", this.registerModel).success(
-				function(data) {
-					localStorage.setItem("sessionkey", data.sessionKey);
-					$location.path('/');
+				function(userModel) {
 					$rootScope.menuFilter = "loggedIn";
+					sessionkey = userModel.sessionKey;					
+					$rootScope.username = userModel.username;
+					localStorage.setItem("sessionkey", sessionkey);
+					localStorage.setItem("username", $rootScope.username);
+					$location.path('/');
 				});
 	};
 }
@@ -134,6 +139,11 @@ function SingleRoomController($rootScope, $http, $routeParams) {
 	}).success(function(roomDetails) {
 		$rootScope.roomDetails = roomDetails;
 	});
+	
+	var username = localStorage.getItem("username");
+	$rootScope.usernameFilter = function(otherUsername) {
+		return username !== otherUsername;
+	};
 }
 
 function showRoomsGrid($scope) {
