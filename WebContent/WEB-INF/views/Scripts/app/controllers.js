@@ -1,5 +1,6 @@
 var url = "/SpeedTyper";
 var sessionkey = localStorage.getItem("sessionkey");
+var userId = localStorage.getItem("userId");
 
 function HomeController($rootScope, $http) {
 
@@ -29,7 +30,9 @@ function LogoutController($rootScope, $http, $location) {
 			'sessionkey' : sessionkey
 		}
 	}).success(function(data) {
+		userId = "";
 		sessionkey = "";
+		localStorage.setItem("userId", userId);
 		localStorage.setItem("sessionkey", sessionkey);
 		$location.path('/');
 		$rootScope.menuFilter = "loggedOut";
@@ -48,8 +51,10 @@ function LoginController($rootScope, $http, $location) {
 					$rootScope.menuFilter = "loggedIn";
 					sessionkey = userModel.sessionKey;					
 					$rootScope.username = userModel.username;
+					userId = userModel.id;
 					localStorage.setItem("sessionkey", sessionkey);
 					localStorage.setItem("username", $rootScope.username);
+					localStorage.setItem("userId", userId);
 					$location.path('/');
 				});
 	};
@@ -68,8 +73,10 @@ function RegisterController($rootScope, $http, $location) {
 					$rootScope.menuFilter = "loggedIn";
 					sessionkey = userModel.sessionKey;					
 					$rootScope.username = userModel.username;
+					userId = userModel.id;
 					localStorage.setItem("sessionkey", sessionkey);
 					localStorage.setItem("username", $rootScope.username);
+					localStorage.setItem("userId", userId);
 					$location.path('/');
 				});
 	};
@@ -88,6 +95,28 @@ function RoomsController($scope, $http) {
 		$scope.rooms = rooms;
 		showRoomsGrid($scope);
 	});
+}
+
+function CreateRoomController($scope, $http) {
+	this.roomModel = {
+		"creatorId" : userId,
+		"maxParticipants" : "",
+		"textId" : ""
+	};
+	
+	$http({
+		method : 'GET',
+		url : url + "/texts/all",
+		headers : {
+			'sessionkey' : sessionkey
+		}
+	}).success(function(texts) {
+		$scope.texts = texts;
+	});
+	
+	this.create = function() {
+		
+	}
 }
 
 function ViewProfileController($http) {

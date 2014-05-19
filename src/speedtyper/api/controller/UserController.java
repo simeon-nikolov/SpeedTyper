@@ -67,6 +67,7 @@ public class UserController {
 		LoggedUserModel loggedUser = new LoggedUserModel();
 		loggedUser.setUsername(user.getUsername());
 		loggedUser.setSessionKey(user.getSessionKey());
+		loggedUser.setId(user.getId());
 
 		return loggedUser;
 	}
@@ -91,6 +92,7 @@ public class UserController {
 			userService.update(user);
 			loggedUserModel.setUsername(username);
 			loggedUserModel.setSessionKey(sessionKey);
+			loggedUserModel.setId(user.getId());
 		} else {
 			throw new IllegalArgumentException("Password is incorrect!");
 		}
