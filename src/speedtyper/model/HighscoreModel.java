@@ -17,7 +17,7 @@ public class HighscoreModel {
 	@ManyToOne
 	@JoinColumn(name="room_id")
 	private RoomModel room;
-	@Column(name="tiem_started")
+	@Column(name="time_started")
 	private Date timeStarted;
 	@Column(name="time_to_finish")
 	private int timeToFinish;
