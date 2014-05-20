@@ -213,8 +213,18 @@ public class RoomController {
 				getGameProgress(user.getId(), room.getId());
 		TextModel text = room.getText();
 		int wordIndex = progress.getCurrentWordIndex();
+		String[] words = text.getText().split("\\s+");
 		
+		if (!word.equals(words[wordIndex])) {
+			throw new IllegalArgumentException("The word does not match!");
+		}
 		
+		wordIndex++;
+		progress.setCurrentWordIndex(wordIndex);
+		progressService.update(progress);
+		List<ProgressModel> gameProgresses = progressService.
+				getGamePregressesByRoom(roomId);
+		List<ProgressViewModel> result = listProgressModelToProgressVm(gameProgresses);
 		
 		return null;
 	}
@@ -231,6 +241,20 @@ public class RoomController {
 //				getHighscore(user.getId(), room.getId());
 //		
 		// TO DO ...
+	}
+	
+	private List<ProgressViewModel> listProgressModelToProgressVm(List<ProgressModel> progresses) {
+		List<ProgressViewModel> result = new ArrayList<ProgressViewModel>();
+		
+		for (ProgressModel progress : progresses) {
+			ProgressViewModel progressVm = new ProgressViewModel();
+			progressVm.setUsername(progress.getUser().getUsername());
+			progressVm.setCurrentWordIndex(progress.getCurrentWordIndex());
+			progressVm.setStatus(progress.getGameStatus());
+			result.add(progressVm);
+		}
+		
+		return result;
 	}
 
 	private UserModel getUserFromRoom(UserModel user, RoomModel room) {

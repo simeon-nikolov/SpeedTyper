@@ -2,6 +2,7 @@ package speedtyper.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,13 @@ public class ProgressDaoImpl implements ProgressDao {
 		if (result == null || result.size() == 0) {
 			return null;
 		}
-		return result.get(0);
+		ProgressModel progress = result.get(0);
+		Hibernate.initialize(progress.getUser());
+		return progress;
 	}
 
 	@Override
-	public List<ProgressModel> getGameProgressbyRoom(int roomId) {
+	public List<ProgressModel> getGameProgressesByRoom(int roomId) {
 		Query query = this.session.getCurrentSession().createQuery(
 				"from ProgressModel progress where progress.roomId = :roomId");
 		query.setString("roomId", roomId + "");

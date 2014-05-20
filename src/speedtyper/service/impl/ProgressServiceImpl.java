@@ -26,8 +26,8 @@ public class ProgressServiceImpl implements ProgressService {
 	}
 
 	@Transactional
-	public List<ProgressModel> getGameByRoom(int roomId) {
-		return this.progressDao.getGameProgressbyRoom(roomId);
+	public List<ProgressModel> getGamePregressesByRoom(int roomId) {
+		return this.progressDao.getGameProgressesByRoom(roomId);
 	}
 
 }

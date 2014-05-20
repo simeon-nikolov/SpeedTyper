@@ -7,5 +7,5 @@ import speedtyper.model.ProgressModel;
 public interface ProgressDao {
 	public void update(ProgressModel progres);
 	public ProgressModel getGameProgress(int userId, int roomId);
-	public List<ProgressModel> getGameProgressbyRoom(int roomId);
+	public List<ProgressModel> getGameProgressesByRoom(int roomId);
 }

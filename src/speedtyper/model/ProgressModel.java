@@ -6,11 +6,17 @@ import javax.persistence.*;
 @Table(name = "users_rooms")
 public class ProgressModel {
 	@Id
-	@Column(name = "user_id")
+	@Column(name = "room_id")
 	private int userId;
 	@Id
 	@Column(name = "room_id")
 	private int roomId;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+	@JoinColumns( {
+        @JoinColumn(name="username", referencedColumnName = "username"),
+        } )
+	private UserModel user;
 	@Column(name = "current_word_index")
 	private int currentWordIndex;
 	@Column(name = "game_status")
@@ -19,11 +25,12 @@ public class ProgressModel {
 	public ProgressModel() {
 	}
 
-	public ProgressModel(int userId, int roomId, int currentWordIndex,
+	public ProgressModel(int userId, int roomId,UserModel user, int currentWordIndex,
 			String gameStatus) {
 		super();
 		this.userId = userId;
 		this.roomId = roomId;
+		this.user = user;
 		this.currentWordIndex = currentWordIndex;
 		this.gameStatus = gameStatus;
 	}
@@ -34,6 +41,10 @@ public class ProgressModel {
 
 	public int getRoomId() {
 		return roomId;
+	}
+	
+	public UserModel getUser() {
+		return user;
 	}
 
 	public int getCurrentWordIndex() {
