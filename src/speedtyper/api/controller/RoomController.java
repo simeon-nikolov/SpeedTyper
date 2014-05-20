@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,10 @@ import speedtyper.service.UserService;
 @RequestMapping(value = "/rooms")
 public class RoomController {
 	private static final String SESSION_KEY_PARAM_NAME = "sessionkey";
+	private static Random randomGenerator = new Random();
 
 	@Autowired
-	RoomService roomService;
+	private RoomService roomService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -63,6 +65,10 @@ public class RoomController {
 		RoomViewModel roomViewModel = null;
 		
 		if (this.isAuthenticated(sessionKey)) {
+			List<TextModel> allTexts = textService.getAllTexts();
+			int index = randomGenerator.nextInt(allTexts.size());
+			TextModel text = allTexts.get(index);
+			room.setTextId(text.getId());
 			room.setCreatorId(userService.getUserBySessionKey(sessionKey).getId());
 			RoomModel roomModel = this.roomCreateModelToRoomModel(room);
 			roomService.add(roomModel);

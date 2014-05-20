@@ -1,4 +1,4 @@
-<form name="registerForm" ng-controller="RegisterController as registerCtrl" novalidate ng-submit="registerForm.$valid && registerCtrl.register()">
+<form name="register-form" ng-controller="RegisterController as registerCtrl" novalidate ng-submit="register-form.$valid && registerCtrl.register()">
 <fieldset>
     <legend>Register</legend>
     <div id="register-form-content" class="k-content">
@@ -6,12 +6,12 @@
             <ul class="forms">
                 <li>
                     <label for="tb-usernameReg">Username: </label>
-                    <input type="text" id="tb-usernameReg" ng-model="registerCtrl.registerModel.username" required ng-minlength="6" ng-maxlength="20" class="k-textbox" />
+                    <input type="text" id="tb-usernameReg" ng-model="registerCtrl.registerModel.username" ng-minlength="6" ng-maxlength="20" class="k-textbox" />
                     <em>(between 6 - 20 characters)</em>
                 </li>
                 <li>
                     <label for="tb-passwordReg">Password: </label>
-                    <input type="password" id="tb-passwordReg" ng-model="registerCtrl.registerModel.password" required ng-minlength="6" ng-maxlength="25" class="k-textbox" />
+                    <input type="password" id="tb-passwordReg" ng-model="registerCtrl.registerModel.password" ng-minlength="6" ng-maxlength="25" class="k-textbox" />
                     <em>(between 6 - 25 characters)</em>
                 </li>
                 <li>

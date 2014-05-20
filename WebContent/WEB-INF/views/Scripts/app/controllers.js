@@ -98,6 +98,8 @@ function RoomsController($scope, $http) {
 }
 
 function CreateRoomController($scope, $http, $location) {
+	this.isAuthenticated = isAuthenticated(sessionkey);
+	
 	this.roomModel = {
 		"creatorId" : userId,
 		"maxParticipants" : "",
@@ -108,11 +110,14 @@ function CreateRoomController($scope, $http, $location) {
 		$http({
 			method : 'POST',
 			url : url + "/rooms/create",
+			data : this.roomModel,
 			headers : {
 				'sessionkey' : sessionkey
 			}
 		}).success(function(roomDetails) {
-			
+			alert("ok");
+			var id = roomDetails.id;
+			$location.path("/rooms/details/" + id);
 		});
 	}
 }
