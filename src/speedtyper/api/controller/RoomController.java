@@ -2,6 +2,7 @@ package speedtyper.api.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,10 +20,12 @@ import speedtyper.api.viewmodel.JsonResponse;
 import speedtyper.api.viewmodel.RoomCreateModel;
 import speedtyper.api.viewmodel.RoomDetailsModel;
 import speedtyper.api.viewmodel.RoomViewModel;
+import speedtyper.model.HighscoreModel;
 import speedtyper.model.RoomModel;
 import speedtyper.model.RoomStatus;
 import speedtyper.model.TextModel;
 import speedtyper.model.UserModel;
+import speedtyper.service.HighscoreService;
 import speedtyper.service.RoomService;
 import speedtyper.service.TextService;
 import speedtyper.service.UserService;
@@ -39,6 +42,8 @@ public class RoomController {
 	private UserService userService;
 	@Autowired
 	private TextService textService;
+	@Autowired
+	private HighscoreService highscoreService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
@@ -198,8 +203,12 @@ public class RoomController {
 			throw new IllegalArgumentException("User is not authenticated!");
 		}
 		
+		Date currentTimeDate = new Date(); 
 		UserModel user = this.userService.getUserBySessionKey(sessionKey);
 		RoomModel room = this.roomService.getRoom(roomId);
+		HighscoreModel highscore = highscoreService.
+				getHighscore(user.getId(), room.getId());
+		
 		
 		return null;
 	}
