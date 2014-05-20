@@ -1,14 +1,12 @@
-<form name="createRoomForm">
-	<label>Max. Participants: 
-		<select ng-model="roomsModel.maxParticipants" id="max-participants-count">
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-		</select>
-	</label>
-	<label>Choose text: 
-		<select ng-model="roomsModel.textId" id="text-id">
-			<option ng-repeat="text in texts" value="{{text.id}}">{{text.text}}</option>
-		</select>
-	</label>
+<form ng-show="isAuthenticated()" name="createRoomForm" novalidate ng-controller="CreateRoomController as createRoomCtrl"
+		ng-submit="createRoomForm.$valid && createRoomCtrl.creatRoom()">
+	<label for="room-name">Name: </label>
+	<input type="text" id="room-name" ng-model="roomModel.name" value="" class="k-textbox" required />
+	<label for="max-participants-count">Max. Participants: </label> 
+	<select ng-model="roomsModel.maxParticipants" id="max-participants-count" required>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+	</select>
+	<button type="submit" class="k-button">Create</button>
 </form>

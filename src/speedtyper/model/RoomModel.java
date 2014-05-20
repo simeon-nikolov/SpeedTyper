@@ -11,6 +11,8 @@ public class RoomModel {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	@Column
+	private String name;
 	@ManyToOne
     @JoinColumn(name="creator_id")
 	private UserModel creator;
@@ -44,6 +46,14 @@ public class RoomModel {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public UserModel getCreator() {

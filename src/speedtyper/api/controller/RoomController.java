@@ -204,12 +204,13 @@ public class RoomController {
 	}
 	
 	private RoomDetailsModel roomModelToRoomDetailModel(RoomModel room) {
-		RoomDetailsModel roomDM = new RoomDetailsModel();
-		roomDM.setId(room.getId());
-		roomDM.setCreator(room.getCreator().getUsername());
-		roomDM.setMaxParticipants(room.getMaxParticipants());
-		roomDM.setParticipantsCount(room.getParticipantsCount());
-		roomDM.setStatus(room.getStatus());
+		RoomDetailsModel roomDm = new RoomDetailsModel();
+		roomDm.setId(room.getId());
+		roomDm.setName(room.getName());
+		roomDm.setCreator(room.getCreator().getUsername());
+		roomDm.setMaxParticipants(room.getMaxParticipants());
+		roomDm.setParticipantsCount(room.getParticipantsCount());
+		roomDm.setStatus(room.getStatus());
 		
 		List<String> participants = new ArrayList<String>();
 		
@@ -217,23 +218,24 @@ public class RoomController {
 			participants.add(user.getUsername());
 		}
 		
-		roomDM.setParticipants(participants);
-		roomDM.setText(room.getText().getText());
+		roomDm.setParticipants(participants);
+		roomDm.setText(room.getText().getText());
 		
-		return roomDM;
+		return roomDm;
 	}
 	
 	private RoomViewModel roomModelToRoomViewModel(RoomModel roomModel) {
-		RoomViewModel roomVM = new RoomViewModel();
+		RoomViewModel roomVm = new RoomViewModel();
 		
-		roomVM.setId(roomModel.getId());
-		roomVM.setCreator(roomModel.getCreator().getUsername());
-		roomVM.setParticipants(roomModel.getParticipantsCount());
-		roomVM.setMaxParticipants(roomModel.getMaxParticipants());
-		roomVM.setStatus(roomModel.getStatus());
-		roomVM.setText(roomModel.getText().getText());
+		roomVm.setId(roomModel.getId());
+		roomVm.setName(roomModel.getName());
+		roomVm.setCreator(roomModel.getCreator().getUsername());
+		roomVm.setParticipants(roomModel.getParticipantsCount());
+		roomVm.setMaxParticipants(roomModel.getMaxParticipants());
+		roomVm.setStatus(roomModel.getStatus());
+		roomVm.setText(roomModel.getText().getText());
 
-		return roomVM;
+		return roomVm;
 	}
 	
 	private RoomModel roomCreateModelToRoomModel(RoomCreateModel room) {
@@ -244,6 +246,7 @@ public class RoomController {
 		
 		RoomModel roomModel = new RoomModel();
 		
+		roomModel.setName(room.getName());
 		roomModel.setCreator(creator);
 		roomModel.setText(text);
 		roomModel.setUsers(users);

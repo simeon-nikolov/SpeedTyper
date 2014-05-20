@@ -97,25 +97,23 @@ function RoomsController($scope, $http) {
 	});
 }
 
-function CreateRoomController($scope, $http) {
+function CreateRoomController($scope, $http, $location) {
 	this.roomModel = {
 		"creatorId" : userId,
 		"maxParticipants" : "",
 		"textId" : ""
 	};
 	
-	$http({
-		method : 'GET',
-		url : url + "/texts/all",
-		headers : {
-			'sessionkey' : sessionkey
-		}
-	}).success(function(texts) {
-		$scope.texts = texts;
-	});
-	
 	this.create = function() {
-		
+		$http({
+			method : 'POST',
+			url : url + "/rooms/create",
+			headers : {
+				'sessionkey' : sessionkey
+			}
+		}).success(function(roomDetails) {
+			
+		});
 	}
 }
 

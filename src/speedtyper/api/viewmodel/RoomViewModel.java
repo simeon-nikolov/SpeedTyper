@@ -2,6 +2,7 @@ package speedtyper.api.viewmodel;
 
 public class RoomViewModel {
 	private int id;
+	private String name;
 	private String creator;
 	private String status;
 	private int participants;
@@ -17,6 +18,14 @@ public class RoomViewModel {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getCreator() {
