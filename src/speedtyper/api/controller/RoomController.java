@@ -17,15 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
+import speedtyper.api.viewmodel.ProgressViewModel;
 import speedtyper.api.viewmodel.RoomCreateModel;
 import speedtyper.api.viewmodel.RoomDetailsModel;
 import speedtyper.api.viewmodel.RoomViewModel;
 import speedtyper.model.HighscoreModel;
+import speedtyper.model.ProgressModel;
 import speedtyper.model.RoomModel;
 import speedtyper.model.RoomStatus;
 import speedtyper.model.TextModel;
 import speedtyper.model.UserModel;
 import speedtyper.service.HighscoreService;
+import speedtyper.service.ProgressService;
 import speedtyper.service.RoomService;
 import speedtyper.service.TextService;
 import speedtyper.service.UserService;
@@ -44,6 +47,8 @@ public class RoomController {
 	private TextService textService;
 	@Autowired
 	private HighscoreService highscoreService;
+	@Autowired
+	private ProgressService progressService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
@@ -170,7 +175,7 @@ public class RoomController {
 		return new JsonResponse("OK", "You have successfully left the room!");
 	}
 	
-	@RequestMapping(value="/start/{roomId}", method=RequestMethod.PUT)
+	@RequestMapping(value="/{roomId}/start", method=RequestMethod.PUT)
 	@ResponseBody
 	public JsonResponse start(@RequestHeader Map<String, String> headers,
 			@PathVariable int roomId) {
@@ -193,24 +198,39 @@ public class RoomController {
 		return new JsonResponse("OK", "The game successfully started!");
 	}
 	
-	@RequestMapping(value = "/finish/{roomId}", method = RequestMethod.PUT)
-	@ResponseBody
-	public JsonResponse finish(@RequestHeader Map<String, String> headers, 
-			@PathVariable int roomId) {
+	@RequestMapping(value = "/{roomId}/submit", method = RequestMethod.PUT)
+	public List<ProgressViewModel> submit(@RequestHeader Map<String, String> headers, 
+			@PathVariable int roomId, String word) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		
 		if (!isAuthenticated(sessionKey)) {
 			throw new IllegalArgumentException("User is not authenticated!");
 		}
 		
-		Date currentTimeDate = new Date(); 
-		UserModel user = this.userService.getUserBySessionKey(sessionKey);
-		RoomModel room = this.roomService.getRoom(roomId);
-		HighscoreModel highscore = highscoreService.
-				getHighscore(user.getId(), room.getId());
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		RoomModel room = roomService.getRoom(roomId);
+		ProgressModel progress = progressService.
+				getGameProgress(user.getId(), room.getId());
+		TextModel text = room.getText();
+		int wordIndex = progress.getCurrentWordIndex();
+		
 		
 		
 		return null;
+	}
+	
+	private void finishGame(int roomId) {
+//		if (!isAuthenticated(sessionKey)) {
+//			throw new IllegalArgumentException("User is not authenticated!");
+//		}
+//		
+//		Date currentTimeDate = new Date(); 
+//		//UserModel user = this.userService.getUserBySessionKey(sessionKey);
+//		RoomModel room = this.roomService.getRoom(roomId);
+//		HighscoreModel highscore = highscoreService.
+//				getHighscore(user.getId(), room.getId());
+//		
+		// TO DO ...
 	}
 
 	private UserModel getUserFromRoom(UserModel user, RoomModel room) {

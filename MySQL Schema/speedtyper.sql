@@ -112,6 +112,8 @@ DROP TABLE IF EXISTS `users_rooms`;
 CREATE TABLE `users_rooms` (
   `user_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
+  `current_word_index` int(11) NOT NULL DEFAULT '0',
+  `game_status` varchar(45) DEFAULT 'not_started',
   PRIMARY KEY (`user_id`,`room_id`),
   KEY `FK_users_rooms_rooms_idx` (`room_id`),
   CONSTRAINT `FK_users_rooms_rooms` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -128,4 +130,4 @@ CREATE TABLE `users_rooms` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-20 23:36:36
+-- Dump completed on 2014-05-21  0:54:20
