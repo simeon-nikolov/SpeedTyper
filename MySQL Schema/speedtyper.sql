@@ -51,7 +51,7 @@ CREATE TABLE `rooms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `status` varchar(45) NOT NULL,
-  `participants` int(11) NOT NULL,
+  `participants_count` int(11) NOT NULL,
   `max_participants` int(11) NOT NULL,
   `text_id` int(11) NOT NULL,
   `creator_id` int(11) NOT NULL,
@@ -128,4 +128,4 @@ CREATE TABLE `users_rooms` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-20 12:42:16
+-- Dump completed on 2014-05-20 16:14:59

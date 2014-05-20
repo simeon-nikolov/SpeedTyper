@@ -15,8 +15,15 @@
 </div>
 
 <script>
-	// 	var c = document.getElementById("progress-canvas");
-	// 	var ctx = c.getContext("2d");
-	// 	ctx.fillStyle = "#0000FF";
-	// 	ctx.fillRect(5, 10, 7, 10);
+	$(document).ready(function() {
+		$("#canvas").attr("width", "500px");
+		$("#canvas").attr("height", "400px");
+		var c = document.getElementById("progress-canvas");
+		var ctx = c.getContext("2d");
+		var image = new Image();
+        image.src = "Images/rider-blue.png";
+        ctx.drawImage(image, 0, 0);
+// 		ctx.fillStyle = "#0000FF";
+// 		ctx.fillRect(5, 10, 7, 10);
+	});
 </script>

@@ -26,14 +26,7 @@
 }
 
 #progress-canvas {
-/* 	margin-top: 20px; */
-/* 	margin-left: 20px; */
-/* 	margin-right: 30px; */
-/* 	margin-bottom: 25px; */
 	border: 1px solid #000;
-	width: 500px;
-	height: 150px;
-	background-color: #ccc;
 }
 
 .name {
@@ -41,7 +34,6 @@
 }
 
 .names-container {
-	background-color: #ccc;
 	text-align: right;
 }
 
