@@ -61,7 +61,7 @@ CREATE TABLE `rooms` (
   KEY `FK_rooms_users_idx` (`creator_id`),
   CONSTRAINT `FK_rooms_texts` FOREIGN KEY (`text_id`) REFERENCES `texts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_rooms_users` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,4 +128,4 @@ CREATE TABLE `users_rooms` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-20 16:14:59
+-- Dump completed on 2014-05-20 23:36:36

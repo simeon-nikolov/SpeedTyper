@@ -158,8 +158,26 @@ function ViewProfileController($http) {
 	});
 }
 
-function SingleRoomController($rootScope, $http, $routeParams) {
+function SingleRoomController($rootScope, $scope, $http, $routeParams) {
 	var id = $routeParams.id;
+	
+	$scope.word = "";
+	$scope.currentIndex = 0;
+	$scope.allWords = [];
+	
+	$scope.checkTyping = function(ev) {
+		if (ev.which == 32) {
+			alert($scope.word);
+			$scope.word = $scope.word.replace(/\s+/g, '');
+			if ($scope.word === $scope.allWords[$scope.currentIndex]) {
+				
+				if ($scope.currentIndex < $scope.allWords.length) {
+					$scope.currentIndex++;
+				}
+				$scope.word = "";
+			}
+		}
+	}
 	
 	$http({
 		method : "GET",
@@ -169,9 +187,11 @@ function SingleRoomController($rootScope, $http, $routeParams) {
 		}
 	}).success(function(roomDetails) {
 		$rootScope.roomDetails = roomDetails;
+		$scope.allWords = roomDetails.text.split(' ');
 	});
 	
 	var username = localStorage.getItem("username");
+	
 	$rootScope.usernameFilter = function(otherUsername) {
 		return username !== otherUsername;
 	};

@@ -42,6 +42,10 @@
 	width: 30%;
 }
 
+#word-input {
+	border-color: #636363;
+}
+
 .clearfix:after {
 	visibility: hidden;
 	display: block;

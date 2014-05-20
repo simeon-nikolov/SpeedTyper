@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
@@ -166,7 +165,7 @@ public class RoomController {
 		return new JsonResponse("OK", "You have successfully left the room!");
 	}
 	
-	@RequestMapping(value="/{roomId}/start", method=RequestMethod.PUT)
+	@RequestMapping(value="/start/{roomId}", method=RequestMethod.PUT)
 	@ResponseBody
 	public JsonResponse start(@RequestHeader Map<String, String> headers,
 			@PathVariable int roomId) {
@@ -187,6 +186,22 @@ public class RoomController {
 		}
 		
 		return new JsonResponse("OK", "The game successfully started!");
+	}
+	
+	@RequestMapping(value = "/finish/{roomId}", method = RequestMethod.PUT)
+	@ResponseBody
+	public JsonResponse finish(@RequestHeader Map<String, String> headers, 
+			@PathVariable int roomId) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		
+		if (!isAuthenticated(sessionKey)) {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		UserModel user = this.userService.getUserBySessionKey(sessionKey);
+		RoomModel room = this.roomService.getRoom(roomId);
+		
+		return null;
 	}
 
 	private UserModel getUserFromRoom(UserModel user, RoomModel room) {

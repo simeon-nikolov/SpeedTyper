@@ -10,7 +10,7 @@
 	<p id="text">{{roomDetails.text}}</p>
 	
 	<div>
-		<input type="text" placeholder="Type here..." class="k-textbox" />
+		<input type="text" placeholder="Type here..." ng-keypress="checkTyping($event)" ng-model="word" id="word-input" novalidate class="k-textbox" />
 	</div>
 </div>
 
@@ -21,20 +21,21 @@
 		var xStartCoord = 5;
 		var xEndCoord = 265;
 		DrawImage(0, xStartCoord);
+		DrawImage(1, xStartCoord);
 		
 		setTimeout(function() {markText(0)}, 3000);
+		
 		
 		function markText(index) {
 			var textP = $('#text')
 			var text = textP.text().split(' ');
-			text[index] = '<span style="background-color: #ff0;">' + text[index] + '</span>';
+			text[index] = '<mark>' + text[index] + '</mark>';
 			$('#text').html(text.join(' '));
 		};
 		
 		
 		
 		function DrawImage(index, xCoord) {
-			//alert(x + y);
  			var c = document.getElementById("progress-canvas");
  			var ctx = c.getContext("2d");
  			var blueImg = new Image();
@@ -50,7 +51,7 @@
  			images.push(redImg);
  			images.push(greenImg);
  			images.push(yellowImg);
- 			var yCoords = [5, 15, 25, 35];
+ 			var yCoords = [5, 35, 65, 95];
  	    	ctx.drawImage(images[index], xCoord, yCoords[index]);
 	    }
         
