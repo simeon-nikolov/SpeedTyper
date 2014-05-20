@@ -1,5 +1,5 @@
 <div ng-controller="CreateRoomController as createRoomCtrl" ng-show="createRoomCtrl.isAuthenticated">
-	<form name="create-room-form" novalidate ng-submit="createRoomCtrl.create()" >
+	<form name="createRoomForm" novalidate ng-submit="createRoomCtrl.create()" >
 		<label for="room-name">Name: </label>
 		<input type="text" id="room-name" ng-model="createRoomCtrl.roomModel.name" value="" class="k-textbox" required />
 		<label for="max-participants">Max. Participants: </label> 

@@ -10,7 +10,7 @@
 	<p id="text">{{roomDetails.text}}</p>
 	
 	<div>
-		<input type="text" class="k-textbox" />
+		<input type="text" placeholder="Type here..." class="k-textbox" />
 	</div>
 </div>
 
@@ -18,12 +18,45 @@
 	$(document).ready(function() {
 		$("#canvas").attr("width", "500px");
 		$("#canvas").attr("height", "400px");
-		var c = document.getElementById("progress-canvas");
-		var ctx = c.getContext("2d");
-		var image = new Image();
-        image.src = "Images/rider-blue.png";
-        ctx.drawImage(image, 0, 0);
+		var xStartCoord = 5;
+		var xEndCoord = 265;
+		DrawImage(0, xStartCoord);
+		
+		setTimeout(function() {markText(0)}, 3000);
+		
+		function markText(index) {
+			var textP = $('#text')
+			var text = textP.text().split(' ');
+			text[index] = '<span style="background-color: #ff0;">' + text[index] + '</span>';
+			$('#text').html(text.join(' '));
+		};
+		
+		
+		
+		function DrawImage(index, xCoord) {
+			//alert(x + y);
+ 			var c = document.getElementById("progress-canvas");
+ 			var ctx = c.getContext("2d");
+ 			var blueImg = new Image();
+ 			var redImg = new Image();
+ 			var greenImg = new Image();
+ 			var yellowImg = new Image();
+ 			blueImg.src = "Images/rider-blue.png";
+ 			redImg.src = "Images/rider-red.png";
+ 			greenImg.src = "Images/rider-green.png";
+ 			yellowImg.src = "Images/rider-yellow.png";
+ 			var images = [];
+ 			images.push(blueImg);
+ 			images.push(redImg);
+ 			images.push(greenImg);
+ 			images.push(yellowImg);
+ 			var yCoords = [5, 15, 25, 35];
+ 	    	ctx.drawImage(images[index], xCoord, yCoords[index]);
+	    }
+        
 // 		ctx.fillStyle = "#0000FF";
 // 		ctx.fillRect(5, 10, 7, 10);
 	});
+	
+	
 </script>

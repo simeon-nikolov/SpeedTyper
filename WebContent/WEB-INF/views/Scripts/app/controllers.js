@@ -115,11 +115,25 @@ function CreateRoomController($scope, $http, $location) {
 				'sessionkey' : sessionkey
 			}
 		}).success(function(roomDetails) {
-			alert("ok");
 			var id = roomDetails.id;
 			$location.path("/rooms/details/" + id);
 		});
 	}
+}
+
+function JoinRoomController($rootScope, $http, $routeParams, $location) {
+	var id = $routeParams.id;
+	
+	$http({
+		method : "PUT",
+		url : url + "/rooms/join/" + id,
+		headers : {
+			"sessionkey" : sessionkey
+		}
+	}).success(function(roomDetails) {
+		$rootScope.roomDetails = roomDetails;
+		$location.path("/rooms/details/" + id);
+	});
 }
 
 function ViewProfileController($http) {
@@ -141,21 +155,6 @@ function ViewProfileController($http) {
 		self.userModel.username = user.username;
 		self.userModel.email = user.email;
 		self.userModel.wordsPerMinute = user.wordsPerMinute;
-	});
-}
-
-function JoinRoomController($rootScope, $http, $routeParams, $location) {
-	var id = $routeParams.id;
-	
-	$http({
-		method : "PUT",
-		url : url + "/rooms/join/" + id,
-		headers : {
-			"sessionkey" : sessionkey
-		}
-	}).success(function(roomDetails) {
-		$rootScope.roomDetails = roomDetails;
-		$location.path("/rooms/details/" + id);
 	});
 }
 
