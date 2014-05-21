@@ -200,7 +200,7 @@ public class RoomController {
 	
 	@RequestMapping(value = "/{roomId}/submit", method = RequestMethod.PUT)
 	public List<ProgressViewModel> submit(@RequestHeader Map<String, String> headers, 
-			@PathVariable int roomId, String word) {
+			@PathVariable int roomId, @RequestBody String word) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		
 		if (!isAuthenticated(sessionKey)) {

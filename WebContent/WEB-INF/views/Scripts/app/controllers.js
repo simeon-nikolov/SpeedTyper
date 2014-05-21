@@ -174,7 +174,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams) {
 				$http({
 					method : "PUT",
 					url : url + "/rooms/" + id +"/submit",
-					data: $scope.word,
+					data: JSON.stringify($scope.word),
 					headers : {
 						"sessionkey" : sessionkey
 					}

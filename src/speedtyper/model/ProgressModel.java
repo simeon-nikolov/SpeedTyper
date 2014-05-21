@@ -5,16 +5,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users_rooms")
 public class ProgressModel {
-	@ManyToOne
-	@JoinTable(name="users",
-	    joinColumns=@JoinColumn(name="user_id"),
-	    inverseJoinColumns=@JoinColumn(name="id"))
-	private UserModel user;
-	@ManyToOne
-	@JoinTable(name="rooms",
-	    joinColumns=@JoinColumn(name="room_id"),
-	    inverseJoinColumns=@JoinColumn(name="id"))
-	private RoomModel room;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	@Column(name="user_id")
+	private int userId;
+	@Column(name="room_id")
+	private int roomId;
 	@Column(name = "current_word_index")
 	private int currentWordIndex;
 	@Column(name = "game_status")
@@ -23,29 +20,38 @@ public class ProgressModel {
 	public ProgressModel() {
 	}
 
-	public ProgressModel(UserModel user, RoomModel room, int currentWordIndex,
-			String gameStatus) {
+	public ProgressModel(int id, int userId, int roomId, 
+			int currentWordIndex, String gameStatus) {
 		super();
-		this.user = user;
-		this.room = room;
+		this.id = id;
+		this.userId = userId;
+		this.roomId = roomId;
 		this.currentWordIndex = currentWordIndex;
 		this.gameStatus = gameStatus;
 	}
 	
-	public UserModel getUser() {
-		return user;
+	public int getId() {
+		return id;
 	}
 	
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getUserId() {
+		return userId;
+	}
+	
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public RoomModel getRoom() {
-		return room;
+	public int getRoomId() {
+		return roomId;
 	}
 	
-	public void setRoom(RoomModel room) {
-		this.room = room;
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
 	public int getCurrentWordIndex() {
