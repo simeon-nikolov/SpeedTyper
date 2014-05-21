@@ -5,8 +5,8 @@
 	</div>
 	<canvas class="left" id="progress-canvas"></canvas>
 	<div id="game-progress-status">
-		<p>Test</p>
-	</div>>
+		<p ng-repeat="progress in progresses track by $index">{{progress.currentWordIndex}}</p>
+	</div>
 </div>
 
 <div>
@@ -20,47 +20,12 @@
 
 <script>
 	$(document).ready(function() {
-		$("#canvas").attr("width", "500px");
-		$("#canvas").attr("height", "400px");
-		var xStartCoord = 5;
-		var xEndCoord = 265;
-		DrawImage(0, xStartCoord);
-		DrawImage(1, xStartCoord);
-		
-		setTimeout(function() {markText(0)}, 3000);
 		
 		
-		function markText(index) {
-			var textP = $('#text')
+		setTimeout(function() {
+			var textP = $('#text');
 			var text = textP.text().split(' ');
-			text[index] = '<mark>' + text[index] + '</mark>';
-			$('#text').html(text.join(' '));
-		};
-		
-		
-		
-		function DrawImage(index, xCoord) {
- 			var c = document.getElementById("progress-canvas");
- 			var ctx = c.getContext("2d");
- 			var blueImg = new Image();
- 			var redImg = new Image();
- 			var greenImg = new Image();
- 			var yellowImg = new Image();
- 			blueImg.src = "Images/rider-blue.png";
- 			redImg.src = "Images/rider-red.png";
- 			greenImg.src = "Images/rider-green.png";
- 			yellowImg.src = "Images/rider-yellow.png";
- 			var images = [];
- 			images.push(blueImg);
- 			images.push(redImg);
- 			images.push(greenImg);
- 			images.push(yellowImg);
- 			var yCoords = [5, 35, 65, 95];
- 	    	ctx.drawImage(images[index], xCoord, yCoords[index]);
-	    }
-        
-// 		ctx.fillStyle = "#0000FF";
-// 		ctx.fillRect(5, 10, 7, 10);
+			markText(0, text)}, 3000);
 	});
 	
 	

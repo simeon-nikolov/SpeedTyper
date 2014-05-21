@@ -136,6 +136,87 @@ function JoinRoomController($rootScope, $http, $routeParams, $location) {
 	});
 }
 
+function SingleRoomController($rootScope, $scope, $http, $routeParams) {
+	var id = $routeParams.id;
+	
+	$("#progress-canvas").attr("width", "300px");
+	$("#progress-canvas").attr("height", "150px");
+	var xStartCoord = 5;
+	var xEndCoord = 265;
+	var c = document.getElementById("progress-canvas");
+	var ctx = c.getContext("2d");
+	var blueImg = new Image();
+	var redImg = new Image();
+	var greenImg = new Image();
+	var yellowImg = new Image();
+	blueImg.src = "Images/rider-blue.png";
+	redImg.src = "Images/rider-red.png";
+	greenImg.src = "Images/rider-green.png";
+	yellowImg.src = "Images/rider-yellow.png";
+	var images = [];
+	images.push(blueImg);
+	images.push(redImg);
+	images.push(greenImg);
+	images.push(yellowImg);
+	
+	drawImage(ctx, images, 0, xStartCoord);
+	drawImage(ctx, images, 1, xStartCoord);
+	
+	$scope.progresses = [];
+	$scope.word = "";
+	$scope.currentIndex = 0;
+	$scope.allWords = [];
+	
+	$scope.checkTyping = function(ev) {
+		if (ev.which == 32) {
+			$scope.word = $scope.word.replace(/\s+/g, '');
+			if ($scope.word === $scope.allWords[$scope.currentIndex]) {
+				$http({
+					method : "PUT",
+					url : url + "/rooms/" + id +"/submit",
+					data: $scope.word,
+					headers : {
+						"sessionkey" : sessionkey
+					}
+				}).success(function(progresses) {
+					$scope.progresses = progresses;
+					if ($scope.currentIndex < $scope.allWords.length) {
+						$scope.currentIndex++;
+					}
+					markText($scope.currentIndex, $scope.allWords);
+					$scope.word = "";
+				}).error(function() {
+					if ($scope.currentIndex < $scope.allWords.length) {
+						$scope.currentIndex++;
+					}
+					markText($scope.currentIndex, $scope.allWords);
+					var xCoord = ($scope.currentIndex / $scope.allWords.length) * xEndCoord;
+					drawImage(ctx, images, 0, xCoord);
+					$scope.word = "";
+				});
+			}
+		}
+	}
+	
+	$http({
+		method : "GET",
+		url : url + "/rooms/details/" + id,
+		headers : {
+			"sessionkey" : sessionkey
+		}
+	}).success(function(roomDetails) {
+		$rootScope.roomDetails = roomDetails;
+		$scope.allWords = roomDetails.text.split(' ');
+		$scope.progresses = new Array(roomDetails.participants.length);
+	});
+	
+	var username = localStorage.getItem("username");
+	
+	$rootScope.usernameFilter = function(otherUsername) {
+		return username !== otherUsername;
+	};
+}
+
 function ViewProfileController($http) {
 	this.userModel = {
 			"username": "",
@@ -158,44 +239,20 @@ function ViewProfileController($http) {
 	});
 }
 
-function SingleRoomController($rootScope, $scope, $http, $routeParams) {
-	var id = $routeParams.id;
-	
-	$scope.word = "";
-	$scope.currentIndex = 0;
-	$scope.allWords = [];
-	
-	$scope.checkTyping = function(ev) {
-		if (ev.which == 32) {
-			alert($scope.word);
-			$scope.word = $scope.word.replace(/\s+/g, '');
-			if ($scope.word === $scope.allWords[$scope.currentIndex]) {
-				
-				if ($scope.currentIndex < $scope.allWords.length) {
-					$scope.currentIndex++;
-				}
-				$scope.word = "";
-			}
-		}
-	}
-	
-	$http({
-		method : "GET",
-		url : url + "/rooms/details/" + id,
-		headers : {
-			"sessionkey" : sessionkey
-		}
-	}).success(function(roomDetails) {
-		$rootScope.roomDetails = roomDetails;
-		$scope.allWords = roomDetails.text.split(' ');
-	});
-	
-	var username = localStorage.getItem("username");
-	
-	$rootScope.usernameFilter = function(otherUsername) {
-		return username !== otherUsername;
-	};
+function drawImage(ctx, images, index, xCoord) {
+	var xEndCoord = 265;
+	var yCoords = [5, 35, 65, 95];
+	var yClearCoord = (30 * index) + 5;
+	ctx.fillStyle = "#FFFFFF";
+	ctx.fillRect(0, yClearCoord, xEndCoord, yClearCoord + 20);
+ 	ctx.drawImage(images[index], xCoord, yCoords[index]);
 }
+
+function markText(index, words) {
+	var text = $.extend(true, [], words);
+	text[index] = '<mark>' + text[index] + '</mark>';
+	$('#text').html(text.join(' '));
+};
 
 function showRoomsGrid($scope) {
 	$("#rooms-grid").kendoGrid({
