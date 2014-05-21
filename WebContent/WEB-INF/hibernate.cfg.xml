@@ -10,6 +10,5 @@
         <mapping class="speedtyper.model.TextModel" />
         <mapping class="speedtyper.model.HighscoreModel" />
         <mapping class="speedtyper.model.ProgressModel" />
-        <mapping class="speedtyper.model.ProgressPK" />
     </session-factory>         
 </hibernate-configuration>
