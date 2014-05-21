@@ -1,16 +1,20 @@
 <div class="clearfix">
-	<div class="names-container left">
+	<div id="names-container" class="left">
 		<div class="name">You:</div>
 		<div class="name" ng-repeat="name in roomDetails.participants | filter:usernameFilter">{{name}}: </div>
 	</div>
 	<canvas class="left" id="progress-canvas"></canvas>
+	<div id="game-progress-status">
+		<p>Test</p>
+	</div>>
 </div>
 
 <div>
 	<p id="text">{{roomDetails.text}}</p>
 	
 	<div>
-		<input type="text" placeholder="Type here..." ng-keypress="checkTyping($event)" ng-model="word" id="word-input" novalidate class="k-textbox" />
+		<input type="text" placeholder="Type here..." ng-keypress="checkTyping($event)" 
+			ng-model="word" id="word-input" novalidate class="k-textbox" />
 	</div>
 </div>
 

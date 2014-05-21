@@ -219,17 +219,16 @@ public class RoomController {
 			throw new IllegalArgumentException("The word does not match!");
 		}
 		
-		wordIndex++;
-		progress.setCurrentWordIndex(wordIndex);
+		progress.setCurrentWordIndex(wordIndex + 1);
 		progressService.update(progress);
 		List<ProgressModel> gameProgresses = progressService.
 				getGamePregressesByRoom(roomId);
 		List<ProgressViewModel> result = listProgressModelToProgressVm(gameProgresses);
 		
-		return null;
+		return result;
 	}
 	
-	private void finishGame(int roomId) {
+	private void finishGame(UserModel user, int roomId) {
 //		if (!isAuthenticated(sessionKey)) {
 //			throw new IllegalArgumentException("User is not authenticated!");
 //		}
