@@ -73,18 +73,18 @@ public class RoomController {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		RoomViewModel roomViewModel = null;
 		
-		if (this.isAuthenticated(sessionKey)) {
-			List<TextModel> allTexts = textService.getAllTexts();
-			int index = randomGenerator.nextInt(allTexts.size());
-			TextModel text = allTexts.get(index);
-			room.setTextId(text.getId());
-			room.setCreatorId(userService.getUserBySessionKey(sessionKey).getId());
-			RoomModel roomModel = this.roomCreateModelToRoomModel(room);
-			roomService.add(roomModel);
-			roomViewModel = roomModelToRoomViewModel(roomModel);
-		} else {
+		if (!isAuthenticated(sessionKey)) {
 			throw new IllegalArgumentException("User is not authenticated!");
 		}
+		
+		List<TextModel> allTexts = textService.getAllTexts();
+		int index = randomGenerator.nextInt(allTexts.size());
+		TextModel text = allTexts.get(index);
+		room.setTextId(text.getId());
+		room.setCreatorId(userService.getUserBySessionKey(sessionKey).getId());
+		RoomModel roomModel = this.roomCreateModelToRoomModel(room);
+		roomService.add(roomModel);
+		roomViewModel = roomModelToRoomViewModel(roomModel);
 		
 		return roomViewModel;
 	}
@@ -96,29 +96,29 @@ public class RoomController {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		RoomDetailsModel roomResult = null;
 		
-		if (this.isAuthenticated(sessionKey)) {
-			RoomModel room = roomService.getRoom(roomId);
-			if (room.getStatus().equals(RoomStatus.AVAIBLE.toString())) {
-				UserModel user = userService.getUserBySessionKey(sessionKey);
-				Collection<UserModel> usersCollection = room.getUsers();
-				
-				if (!usersCollection.contains(user)) {
-					usersCollection.add(user);
-					room.setUsers(usersCollection);
-					room.setParticipantsCount(room.getParticipantsCount() + 1);
-				}
-				
-				if (room.getParticipantsCount() == room.getMaxParticipants()) {
-					room.setStatus(RoomStatus.FULL.toString());
-				}
-				
-				roomService.update(room);
-				roomResult = roomModelToRoomDetailModel(room);
-			} else {
-				throw new IllegalArgumentException("Room is not avaible!");
-			}
-		} else {
+		if (!isAuthenticated(sessionKey)) {
 			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		RoomModel room = roomService.getRoom(roomId);
+		if (room.getStatus().equals(RoomStatus.AVAIBLE.toString())) {
+			UserModel user = userService.getUserBySessionKey(sessionKey);
+			Collection<UserModel> usersCollection = room.getUsers();
+			
+			if (!usersCollection.contains(user)) {
+				usersCollection.add(user);
+				room.setUsers(usersCollection);
+				room.setParticipantsCount(room.getParticipantsCount() + 1);
+			}
+			
+			if (room.getParticipantsCount() == room.getMaxParticipants()) {
+				room.setStatus(RoomStatus.FULL.toString());
+			}
+			
+			roomService.update(room);
+			roomResult = roomModelToRoomDetailModel(room);
+		} else {
+			throw new IllegalArgumentException("Room is not avaible!");
 		}
 		
 		return roomResult;
@@ -131,21 +131,21 @@ public class RoomController {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		RoomDetailsModel roomResult = null;
 		
-		if (this.isAuthenticated(sessionKey)) {
-			RoomModel room = roomService.getRoom(roomId);
-			UserModel user = userService.getUserBySessionKey(sessionKey);
-			Collection<UserModel> usersCollection = room.getUsers();
-			user = this.getUserFromRoom(user, room);
-			
-			if (usersCollection.contains(user)) {
-				roomResult = this.roomModelToRoomDetailModel(room);
-			} else {
-				throw new IllegalArgumentException("User does not participate in this room!");
-			}
-		} else {
+		if (!isAuthenticated(sessionKey)) {
 			throw new IllegalArgumentException("User is not authenticated!");
 		}
 		
+		RoomModel room = roomService.getRoom(roomId);
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		Collection<UserModel> usersCollection = room.getUsers();
+		user = this.getUserFromRoom(user, room);
+		
+		if (usersCollection.contains(user)) {
+			roomResult = this.roomModelToRoomDetailModel(room);
+		} else {
+			throw new IllegalArgumentException("User does not participate in this room!");
+		}
+	
 		return roomResult;
 	}
 	
@@ -155,21 +155,21 @@ public class RoomController {
 			@PathVariable int roomId) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		
-		if (isAuthenticated(sessionKey)) {
-			UserModel user = userService.getUserBySessionKey(sessionKey);
-			RoomModel room = roomService.getRoom(roomId);
-			Collection<UserModel> users = room.getUsers();
-			user = getUserFromRoom(user, room);
-			if (users.remove(user)) {
-				room.setUsers(users);
-				room.setParticipantsCount(room.getParticipantsCount() - 1);
-				room.setStatus(RoomStatus.AVAIBLE.toString());
-				roomService.update(room);
-			} else {
-				throw new IllegalArgumentException("User does not belong to this room!");
-			}
-		} else {
+		if (!isAuthenticated(sessionKey)) {
 			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		RoomModel room = roomService.getRoom(roomId);
+		Collection<UserModel> users = room.getUsers();
+		user = getUserFromRoom(user, room);
+		if (users.remove(user)) {
+			room.setUsers(users);
+			room.setParticipantsCount(room.getParticipantsCount() - 1);
+			room.setStatus(RoomStatus.AVAIBLE.toString());
+			roomService.update(room);
+		} else {
+			throw new IllegalArgumentException("User does not belong to this room!");
 		}
 		
 		return new JsonResponse("OK", "You have successfully left the room!");
@@ -181,19 +181,19 @@ public class RoomController {
 			@PathVariable int roomId) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		
-		if (isAuthenticated(sessionKey)) {
-			UserModel user = userService.getUserBySessionKey(sessionKey);
-			RoomModel room = roomService.getRoom(roomId);
-			
-			if (room.getCreator().getId() != user.getId()) {
-				throw new IllegalArgumentException("You don't have rights to start the game!");
-			}
-			
-			room.setStatus(RoomStatus.STARTED.toString());
-			roomService.update(room);
-		} else {
+		if (!isAuthenticated(sessionKey)) {
 			throw new IllegalArgumentException("User is not authenticated!");
 		}
+		
+		UserModel user = userService.getUserBySessionKey(sessionKey);
+		RoomModel room = roomService.getRoom(roomId);
+		
+		if (room.getCreator().getId() != user.getId()) {
+			throw new IllegalArgumentException("You don't have rights to start the game!");
+		}
+		
+		room.setStatus(RoomStatus.STARTED.toString());
+		roomService.update(room);
 		
 		return new JsonResponse("OK", "The game successfully started!");
 	}

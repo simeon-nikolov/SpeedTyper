@@ -152,23 +152,48 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout)
 	$scope.word = "";
 	$scope.currentIndex = 0;
 	$scope.allWords = [];
+	$scope.status;
 	
-	$timeout(function() {
-		if (sendGetRequest) {
+	$scope.update = function() {
+		if ($scope.status != "started") {
+			$http({
+				method : "GET",
+				url : url + "/rooms/details/" + id,
+				headers : {
+					"sessionkey" : sessionkey
+				}
+			}).success(function(roomDetails) {
+				$rootScope.roomDetails = roomDetails;
+				$scope.allWords = roomDetails.text.split(' ');
+				$scope.progresses = new Array(roomDetails.participants.length);
+				images = initializeImages();
+				for (var i = 0; i < roomDetails.participants; i++) {
+					drawImage(ctx, images, i, xStartCoord);
+				}
+			});
+		} else if (sendGetRequest) {
 			$http({
 				method : "GET",
 				url : url + "/rooms/" + id + "/progress",
 				headers : {
 					"sessionkey" : sessionkey
 				}
+			}).success(function(progresses) {
+				$scope.progresses = progresses;
+				for (var i = 0; i < progresses.length; i++) {
+					var xCoord = (progresses[i].currentIndex / $scope.allWords.length) * xEndCoord;
+					drawImage(ctx, images, i, xCoord);
+				}
 			});
-		} else {
-			sendGetRequest = true;
-		} 
-	});
+		}
+		sendGetRequest = true;
+		$timeout($scope.update, 1000);
+	};
+	
+	$timeout($scope.update, 1000);
 	
 	$scope.checkTyping = function(ev) {
-		if (ev.which == 32) {
+		if (ev.which == 32 && $scope.status == "started") {
 			$scope.word = $scope.word.replace(/\s+/g, '');
 			if ($scope.word === $scope.allWords[$scope.currentIndex]) {
 				$http({
@@ -184,32 +209,18 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout)
 						$scope.currentIndex++;
 					}
 					markText($scope.currentIndex, $scope.allWords);
-					var xCoord = ($scope.currentIndex / $scope.allWords.length) * xEndCoord;
-					drawImage(ctx, images, 0, xCoord);
 					$scope.word = "";
 					$scope.progresses = progresses;
+					for (var i = 0; i < progresses.length; i++) {
+						var xCoord = (progresses[i].currentIndex / $scope.allWords.length) * xEndCoord;
+						drawImage(ctx, images, i, xCoord);
+					}
 				}).error(function() {
 					alert("Error");
 				});
 			}
 		}
 	};
-	
-	$http({
-		method : "GET",
-		url : url + "/rooms/details/" + id,
-		headers : {
-			"sessionkey" : sessionkey
-		}
-	}).success(function(roomDetails) {
-		$rootScope.roomDetails = roomDetails;
-		$scope.allWords = roomDetails.text.split(' ');
-		$scope.progresses = new Array(roomDetails.participants.length);
-		images = initializeImages();
-		for (var i = 0; i < roomDetails.participants; i++) {
-			drawImage(ctx, images, i, xStartCoord);
-		}
-	});
 	
 	$scope.showStatus = function(progress) {
 		if (progress == null) {
