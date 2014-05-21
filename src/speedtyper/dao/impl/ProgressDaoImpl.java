@@ -34,7 +34,7 @@ public class ProgressDaoImpl implements ProgressDao {
 			return null;
 		}
 		ProgressModel progress = result.get(0);
-		Hibernate.initialize(progress.getUser());
+		//Hibernate.initialize(progress.getUser());
 		return progress;
 	}
 

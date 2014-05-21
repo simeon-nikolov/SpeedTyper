@@ -5,18 +5,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users_rooms")
 public class ProgressModel {
-	@Id
-	@Column(name = "room_id")
-	private int userId;
-	@Id
-	@Column(name = "room_id")
-	private int roomId;
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-	@JoinColumns( {
-        @JoinColumn(name="username", referencedColumnName = "username"),
-        } )
+	@ManyToOne
+	@JoinTable(name="users",
+	    joinColumns=@JoinColumn(name="user_id"),
+	    inverseJoinColumns=@JoinColumn(name="id"))
 	private UserModel user;
+	@ManyToOne
+	@JoinTable(name="rooms",
+	    joinColumns=@JoinColumn(name="room_id"),
+	    inverseJoinColumns=@JoinColumn(name="id"))
+	private RoomModel room;
 	@Column(name = "current_word_index")
 	private int currentWordIndex;
 	@Column(name = "game_status")
@@ -25,26 +23,29 @@ public class ProgressModel {
 	public ProgressModel() {
 	}
 
-	public ProgressModel(int userId, int roomId,UserModel user, int currentWordIndex,
+	public ProgressModel(UserModel user, RoomModel room, int currentWordIndex,
 			String gameStatus) {
 		super();
-		this.userId = userId;
-		this.roomId = roomId;
 		this.user = user;
+		this.room = room;
 		this.currentWordIndex = currentWordIndex;
 		this.gameStatus = gameStatus;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public int getRoomId() {
-		return roomId;
 	}
 	
 	public UserModel getUser() {
 		return user;
+	}
+	
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+
+	public RoomModel getRoom() {
+		return room;
+	}
+	
+	public void setRoom(RoomModel room) {
+		this.room = room;
 	}
 
 	public int getCurrentWordIndex() {
