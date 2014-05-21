@@ -199,6 +199,7 @@ public class RoomController {
 	}
 	
 	@RequestMapping(value = "/{roomId}/submit", method = RequestMethod.PUT)
+	@ResponseBody
 	public List<ProgressViewModel> submit(@RequestHeader Map<String, String> headers, 
 			@PathVariable int roomId, @RequestBody String word) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
@@ -228,6 +229,23 @@ public class RoomController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/{roomId}/progress", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ProgressViewModel> progress(@RequestHeader Map<String, String> headers, 
+			@PathVariable int roomId) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		
+		if (!isAuthenticated(sessionKey)) {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+
+		List<ProgressModel> gameProgresses = progressService.
+				getGamePregressesByRoom(roomId);
+		List<ProgressViewModel> result = listProgressModelToProgressVm(gameProgresses);
+		
+		return result;
+	}
+	
 	private void finishGame(UserModel user, int roomId) {
 //		if (!isAuthenticated(sessionKey)) {
 //			throw new IllegalArgumentException("User is not authenticated!");
@@ -247,7 +265,8 @@ public class RoomController {
 		
 		for (ProgressModel progress : progresses) {
 			ProgressViewModel progressVm = new ProgressViewModel();
-			progressVm.setUsername(progress.getUser().getUsername());
+			UserModel user = userService.getUserById(progress.getUserId());
+			progressVm.setUsername(user.getUsername());
 			progressVm.setCurrentWordIndex(progress.getCurrentWordIndex());
 			progressVm.setStatus(progress.getGameStatus());
 			result.add(progressVm);

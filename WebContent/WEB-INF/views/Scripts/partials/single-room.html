@@ -5,7 +5,7 @@
 	</div>
 	<canvas class="left" id="progress-canvas"></canvas>
 	<div id="game-progress-status">
-		<p ng-repeat="progress in progresses track by $index">{{progress.currentWordIndex}}</p>
+		<p ng-repeat="progress in progresses track by $index" ng-show="showStatus(progress)">{{progress.status}}</p>
 	</div>
 </div>
 

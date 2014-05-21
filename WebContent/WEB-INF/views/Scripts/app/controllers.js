@@ -118,7 +118,7 @@ function CreateRoomController($scope, $http, $location) {
 			var id = roomDetails.id;
 			$location.path("/rooms/details/" + id);
 		});
-	}
+	};
 }
 
 function JoinRoomController($rootScope, $http, $routeParams, $location) {
@@ -136,7 +136,7 @@ function JoinRoomController($rootScope, $http, $routeParams, $location) {
 	});
 }
 
-function SingleRoomController($rootScope, $scope, $http, $routeParams) {
+function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout) {
 	var id = $routeParams.id;
 	
 	$("#progress-canvas").attr("width", "300px");
@@ -145,27 +145,27 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams) {
 	var xEndCoord = 265;
 	var c = document.getElementById("progress-canvas");
 	var ctx = c.getContext("2d");
-	var blueImg = new Image();
-	var redImg = new Image();
-	var greenImg = new Image();
-	var yellowImg = new Image();
-	blueImg.src = "Images/rider-blue.png";
-	redImg.src = "Images/rider-red.png";
-	greenImg.src = "Images/rider-green.png";
-	yellowImg.src = "Images/rider-yellow.png";
 	var images = [];
-	images.push(blueImg);
-	images.push(redImg);
-	images.push(greenImg);
-	images.push(yellowImg);
-	
-	drawImage(ctx, images, 0, xStartCoord);
-	drawImage(ctx, images, 1, xStartCoord);
+	var sendGetRequest = true;
 	
 	$scope.progresses = [];
 	$scope.word = "";
 	$scope.currentIndex = 0;
 	$scope.allWords = [];
+	
+	$timeout(function() {
+		if (sendGetRequest) {
+			$http({
+				method : "GET",
+				url : url + "/rooms/" + id + "/progress",
+				headers : {
+					"sessionkey" : sessionkey
+				}
+			});
+		} else {
+			sendGetRequest = true;
+		} 
+	});
 	
 	$scope.checkTyping = function(ev) {
 		if (ev.which == 32) {
@@ -173,19 +173,13 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams) {
 			if ($scope.word === $scope.allWords[$scope.currentIndex]) {
 				$http({
 					method : "PUT",
-					url : url + "/rooms/" + id +"/submit",
+					url : url + "/rooms/" + id + "/submit",
 					data: JSON.stringify($scope.word),
 					headers : {
 						"sessionkey" : sessionkey
 					}
 				}).success(function(progresses) {
-					$scope.progresses = progresses;
-					if ($scope.currentIndex < $scope.allWords.length) {
-						$scope.currentIndex++;
-					}
-					markText($scope.currentIndex, $scope.allWords);
-					$scope.word = "";
-				}).error(function() {
+					sendGetRequest = false;
 					if ($scope.currentIndex < $scope.allWords.length) {
 						$scope.currentIndex++;
 					}
@@ -193,10 +187,13 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams) {
 					var xCoord = ($scope.currentIndex / $scope.allWords.length) * xEndCoord;
 					drawImage(ctx, images, 0, xCoord);
 					$scope.word = "";
+					$scope.progresses = progresses;
+				}).error(function() {
+					alert("Error");
 				});
 			}
 		}
-	}
+	};
 	
 	$http({
 		method : "GET",
@@ -208,12 +205,23 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams) {
 		$rootScope.roomDetails = roomDetails;
 		$scope.allWords = roomDetails.text.split(' ');
 		$scope.progresses = new Array(roomDetails.participants.length);
+		images = initializeImages();
+		for (var i = 0; i < roomDetails.participants; i++) {
+			drawImage(ctx, images, i, xStartCoord);
+		}
 	});
+	
+	$scope.showStatus = function(progress) {
+		if (progress == null) {
+			return false;
+		}
+		return progress.status == "finished";
+	};
 	
 	var username = localStorage.getItem("username");
 	
-	$rootScope.usernameFilter = function(otherUsername) {
-		return username !== otherUsername;
+	$scope.usernameFilter = function(otherUsername) {
+		return username != otherUsername;
 	};
 }
 
@@ -237,6 +245,23 @@ function ViewProfileController($http) {
 		self.userModel.email = user.email;
 		self.userModel.wordsPerMinute = user.wordsPerMinute;
 	});
+}
+
+function initializeImages() {
+	var blueImg = new Image();
+	var redImg = new Image();
+	var greenImg = new Image();
+	var yellowImg = new Image();
+	blueImg.src = "Images/rider-blue.png";
+	redImg.src = "Images/rider-red.png";
+	greenImg.src = "Images/rider-green.png";
+	yellowImg.src = "Images/rider-yellow.png";
+	var images = [];
+	images.push(blueImg);
+	images.push(redImg);
+	images.push(greenImg);
+	images.push(yellowImg);
+	return images;
 }
 
 function drawImage(ctx, images, index, xCoord) {
