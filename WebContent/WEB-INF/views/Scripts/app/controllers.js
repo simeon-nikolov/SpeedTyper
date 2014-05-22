@@ -190,7 +190,11 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 		$timeout($scope.update, 1000);
 	};
 	
-	$timeout($scope.update, 1000);
+	var updatePromise = $timeout($scope.update, 1000);
+	
+	$scope.$on('$locationChangeStart', function(){
+	    $timeout.cancel(updatePromise);
+	});
 	
 	$scope.checkTyping = function(ev) {
 		if (ev.which == 32 && $scope.status == "started") {
@@ -222,8 +226,24 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 		}
 	};
 	
+	var counter = 3;
+	
 	$scope.startGame = function() {
-		
+		$http({
+			method : "PUT",
+			url : url + "/rooms/" + id + "/start",
+			headers : {
+				"sessionkey" : sessionkey
+			}
+		}).success(function(roomModel) {
+			$scope.status = roomModel.status;
+			var startTime = roomModel.startTime;
+			var currentTime = new Date().getTime();
+			counter = startTime - currentTime;
+			console.log(counter);
+		}).error(function(error) {
+			alert("Error");
+		});
 	};
 	
 	$scope.leaveGame = function() {
@@ -247,6 +267,14 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 		return progress.status == "finished";
 	};
 	
+	$scope.showGameStatus = function() {
+		if ($scope.status == "started") {
+			return "Game started!";
+		} else {
+			return "Game not started!";
+		}
+	};
+	
 	var username = localStorage.getItem("username");
 	
 	$scope.usernameFilter = function(otherUsername) {
@@ -254,6 +282,9 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	};
 	
 	$scope.isCreator = function() {
+		if ($rootScope.roomDetails == null) {
+			return false;
+		}
 		return username == $rootScope.roomDetails.creator;
 	};
 }

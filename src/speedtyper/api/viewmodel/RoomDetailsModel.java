@@ -1,5 +1,7 @@
 package speedtyper.api.viewmodel;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class RoomDetailsModel {
@@ -11,6 +13,7 @@ public class RoomDetailsModel {
 	private int participantsCount;
 	private int maxParticipants;
 	private String text;
+	private long startTime;
 
 	public RoomDetailsModel() {
 	}
@@ -79,4 +82,12 @@ public class RoomDetailsModel {
 		this.text = text;
 	}
 
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long time) {
+		this.startTime = time;
+	}
+	
 }

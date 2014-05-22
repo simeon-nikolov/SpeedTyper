@@ -1,5 +1,6 @@
 package speedtyper.api.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -116,7 +117,7 @@ public class RoomController {
 			}
 			
 			roomService.update(room);
-			roomResult = roomModelToRoomDetailModel(room);
+			roomResult = roomModelToRoomDetailsModel(room);
 		} else {
 			throw new IllegalArgumentException("Room is not avaible!");
 		}
@@ -141,7 +142,7 @@ public class RoomController {
 		user = this.getUserFromRoom(user, room);
 		
 		if (usersCollection.contains(user)) {
-			roomResult = this.roomModelToRoomDetailModel(room);
+			roomResult = this.roomModelToRoomDetailsModel(room);
 		} else {
 			throw new IllegalArgumentException("User does not participate in this room!");
 		}
@@ -177,7 +178,7 @@ public class RoomController {
 	
 	@RequestMapping(value="/{roomId}/start", method=RequestMethod.PUT)
 	@ResponseBody
-	public JsonResponse start(@RequestHeader Map<String, String> headers,
+	public RoomDetailsModel start(@RequestHeader Map<String, String> headers,
 			@PathVariable int roomId) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		
@@ -192,10 +193,15 @@ public class RoomController {
 			throw new IllegalArgumentException("You don't have rights to start the game!");
 		}
 		
+		long currentTime = new Date().getTime();
 		room.setStatus(RoomStatus.STARTED.toString());
-		roomService.update(room);
+		Timestamp startTime = new Timestamp(currentTime + 3L);
+		room.setStartTime(startTime);
+		//roomService.update(room);
 		
-		return new JsonResponse("OK", "The game successfully started!");
+		RoomDetailsModel result = roomModelToRoomDetailsModel(room);
+		
+		return result;
 	}
 	
 	@RequestMapping(value = "/{roomId}/submit", method = RequestMethod.PUT)
@@ -295,7 +301,7 @@ public class RoomController {
 		return roomsViewModel;
 	}
 	
-	private RoomDetailsModel roomModelToRoomDetailModel(RoomModel room) {
+	private RoomDetailsModel roomModelToRoomDetailsModel(RoomModel room) {
 		RoomDetailsModel roomDm = new RoomDetailsModel();
 		roomDm.setId(room.getId());
 		roomDm.setName(room.getName());
@@ -303,6 +309,7 @@ public class RoomController {
 		roomDm.setMaxParticipants(room.getMaxParticipants());
 		roomDm.setParticipantsCount(room.getParticipantsCount());
 		roomDm.setStatus(room.getStatus());
+		roomDm.setStartTime(room.getStartTime().getTime());
 		
 		List<String> participants = new ArrayList<String>();
 		

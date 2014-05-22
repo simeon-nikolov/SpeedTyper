@@ -55,6 +55,7 @@ CREATE TABLE `rooms` (
   `max_participants` int(11) NOT NULL,
   `text_id` int(11) NOT NULL,
   `creator_id` int(11) NOT NULL,
+  `starts_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `FK_rooms_texts_idx` (`text_id`),
@@ -110,15 +111,18 @@ DROP TABLE IF EXISTS `users_rooms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_rooms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
   `current_word_index` int(11) NOT NULL DEFAULT '0',
-  `game_status` varchar(45) DEFAULT 'not_started',
-  PRIMARY KEY (`user_id`,`room_id`),
+  `game_status` varchar(45) NOT NULL DEFAULT 'not_started',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `FK_users_rooms_users_idx` (`user_id`),
   KEY `FK_users_rooms_rooms_idx` (`room_id`),
   CONSTRAINT `FK_users_rooms_rooms` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_user_rooms_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_users_rooms_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -130,4 +134,4 @@ CREATE TABLE `users_rooms` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-21  0:54:20
+-- Dump completed on 2014-05-22 18:25:58
