@@ -22,6 +22,7 @@ import speedtyper.api.viewmodel.ProgressViewModel;
 import speedtyper.api.viewmodel.RoomCreateModel;
 import speedtyper.api.viewmodel.RoomDetailsModel;
 import speedtyper.api.viewmodel.RoomViewModel;
+import speedtyper.model.GameProgressStatus;
 import speedtyper.model.HighscoreModel;
 import speedtyper.model.ProgressModel;
 import speedtyper.model.RoomModel;
@@ -38,6 +39,7 @@ import speedtyper.service.UserService;
 @RequestMapping(value = "/rooms")
 public class RoomController {
 	private static final String SESSION_KEY_PARAM_NAME = "sessionkey";
+	private static final int COUNTDOWN = 10;
 	private static Random randomGenerator = new Random();
 
 	@Autowired
@@ -146,6 +148,16 @@ public class RoomController {
 		} else {
 			throw new IllegalArgumentException("User does not participate in this room!");
 		}
+		
+		if (room.getStatus().equals(RoomStatus.STARTED.toString())) {
+			long currentTime = new Date().getTime();
+			long startTime = room.getStartTime().getTime();
+			int countdown = (int) ((startTime - currentTime) / 1000);
+			roomResult.setCountdown(countdown);
+			ProgressModel progress = progressService.getGameProgress(user.getId(), roomId);
+			progress.setGameStatus(GameProgressStatus.STARTED.toString());
+			progressService.update(progress);
+		}
 	
 		return roomResult;
 	}
@@ -195,11 +207,12 @@ public class RoomController {
 		
 		long currentTime = new Date().getTime();
 		room.setStatus(RoomStatus.STARTED.toString());
-		Timestamp startTime = new Timestamp(currentTime + 3L);
+		Timestamp startTime = new Timestamp(currentTime + (COUNTDOWN * 1000));
 		room.setStartTime(startTime);
-		//roomService.update(room);
+		roomService.update(room);
 		
 		RoomDetailsModel result = roomModelToRoomDetailsModel(room);
+		result.setCountdown(COUNTDOWN);
 		
 		return result;
 	}
@@ -226,7 +239,16 @@ public class RoomController {
 			throw new IllegalArgumentException("The word does not match!");
 		}
 		
+		if (progress.getCurrentWordIndex() == 0) {
+			progress.setGameStatus(GameProgressStatus.TYPING.toString());
+		}
+		
 		progress.setCurrentWordIndex(wordIndex + 1);
+		
+		if (progress.getCurrentWordIndex() == words.length) {
+			progress.setGameStatus(GameProgressStatus.FINISHED.toString());
+		}
+		
 		progressService.update(progress);
 		List<ProgressModel> gameProgresses = progressService.
 				getGamePregressesByRoom(roomId);
@@ -309,7 +331,6 @@ public class RoomController {
 		roomDm.setMaxParticipants(room.getMaxParticipants());
 		roomDm.setParticipantsCount(room.getParticipantsCount());
 		roomDm.setStatus(room.getStatus());
-		roomDm.setStartTime(room.getStartTime().getTime());
 		
 		List<String> participants = new ArrayList<String>();
 		

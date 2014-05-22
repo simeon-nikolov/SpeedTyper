@@ -145,7 +145,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	var xEndCoord = 265;
 	var c = document.getElementById("progress-canvas");
 	var ctx = c.getContext("2d");
-	var images = [];
+	var images = initializeImages();
 	var sendGetRequest = true;
 	
 	$scope.progresses = [];
@@ -153,6 +153,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	$scope.currentIndex = 0;
 	$scope.allWords = [];
 	$scope.status;
+	$scope.isStarting = false;
 	
 	$scope.update = function() {
 		if ($scope.status != "started") {
@@ -166,9 +167,16 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 				$rootScope.roomDetails = roomDetails;
 				$scope.allWords = roomDetails.text.split(' ');
 				$scope.progresses = new Array(roomDetails.participants.length);
-				images = initializeImages();
 				for (var i = 0; i < roomDetails.participantsCount; i++) {
 					drawImage(ctx, images, i, xStartCoord);
+				}
+				
+				if (roomDetails.status == "started") {
+					$scope.status = roomDetails.status;
+					$scope.isStarting = true;
+					$scope.countdown = roomDetails.countdown;
+					sendGetRequest = false;
+					$timeout($scope.countdownCount, 1000);
 				}
 			});
 		} else if (sendGetRequest) {
@@ -181,7 +189,10 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 			}).success(function(progresses) {
 				$scope.progresses = progresses;
 				for (var i = 0; i < progresses.length; i++) {
-					var xCoord = (progresses[i].currentIndex / $scope.allWords.length) * xEndCoord;
+					var xCoord = xStartCoord;
+					if (progresses[i].currentWordIndex != 0) {
+						xCoord = (progresses[i].currentWordIndex / $scope.allWords.length) * xEndCoord;
+					}
 					drawImage(ctx, images, i, xCoord);
 				}
 			});
@@ -197,9 +208,10 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	});
 	
 	$scope.checkTyping = function(ev) {
-		if (ev.which == 32 && $scope.status == "started") {
-			$scope.word = $scope.word.replace(/\s+/g, '');
-			if ($scope.word === $scope.allWords[$scope.currentIndex]) {
+		if (ev.which == 32 && $scope.status == "started" && !$scope.isStarting) {
+			var word = $scope.word;
+			word = word.replace(/\s+/g, '');
+			if (word == $scope.allWords[$scope.currentIndex]) {
 				$http({
 					method : "PUT",
 					url : url + "/rooms/" + id + "/submit",
@@ -208,7 +220,6 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 						"sessionkey" : sessionkey
 					}
 				}).success(function(progresses) {
-					sendGetRequest = false;
 					if ($scope.currentIndex < $scope.allWords.length) {
 						$scope.currentIndex++;
 					}
@@ -216,7 +227,10 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 					$scope.word = "";
 					$scope.progresses = progresses;
 					for (var i = 0; i < progresses.length; i++) {
-						var xCoord = (progresses[i].currentIndex / $scope.allWords.length) * xEndCoord;
+						var xCoord = xStartCoord;
+						if (progresses[i].currentWordIndex != 0) {
+							xCoord = (progresses[i].currentWordIndex / $scope.allWords.length) * xEndCoord;
+						}
 						drawImage(ctx, images, i, xCoord);
 					}
 				}).error(function(error) {
@@ -225,8 +239,30 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 			}
 		}
 	};
+		
+	$scope.countdown = 0;
+	$scope.showCountdown = function() {
+		return $scope.countdown > 0;
+	};
 	
-	var counter = 3;
+	$scope.countdownCount = function() {
+		if ($scope.countdown > 0) {
+			$scope.countdown--;
+			$timeout($scope.countdownCount, 1000);
+			sendGetRequest = false;
+		} 
+		if ($scope.countdown == 0) {
+			startTyping();
+			sendGetRequest = true;
+		}
+	};
+	
+	function startTyping() {
+		var textP = $('#text');
+		var text = textP.text().split(' ');
+		markText(0, text);
+		$scope.isStarting = false;
+	};
 	
 	$scope.startGame = function() {
 		$http({
@@ -235,12 +271,11 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 			headers : {
 				"sessionkey" : sessionkey
 			}
-		}).success(function(roomModel) {
-			$scope.status = roomModel.status;
-			var startTime = roomModel.startTime;
-			var currentTime = new Date().getTime();
-			counter = startTime - currentTime;
-			console.log(counter);
+		}).success(function(roomDetails) {
+			$scope.status = roomDetails.status;
+			$scope.isStarting = true;
+			$scope.countdown = roomDetails.countdown;
+			$timeout($scope.countdownCount, 1000);
 		}).error(function(error) {
 			alert("Error");
 		});
@@ -268,7 +303,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	};
 	
 	$scope.showGameStatus = function() {
-		if ($scope.status == "started") {
+		if ($scope.status == "started" && !$scope.isStarting) {
 			return "Game started!";
 		} else {
 			return "Game not started!";

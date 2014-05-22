@@ -12,7 +12,10 @@
 		<button class="k-button" ng-click="startGame()" ng-show="isCreator()">Start Game</button>
 		<button class="k-button" ng-click="leaveGame()">Leave Game</button>
 	</div>
-	<div ig="game-status"><p>{{showGameStatus()}}</p></div>
+	<div id="game-status" class="left">
+		<p>{{showGameStatus()}}</p>
+		<p ng-show="showCountdown()">Game will start in: {{countdown}} seconds!</p>
+	</div>
 </div>
 
 <div>
@@ -23,16 +26,3 @@
 			ng-model="word" id="word-input" novalidate class="k-textbox" />
 	</div>
 </div>
-
-<script>
-	$(document).ready(function() {
-		
-		
-		setTimeout(function() {
-			var textP = $('#text');
-			var text = textP.text().split(' ');
-			markText(0, text)}, 3000);
-	});
-	
-	
-</script>

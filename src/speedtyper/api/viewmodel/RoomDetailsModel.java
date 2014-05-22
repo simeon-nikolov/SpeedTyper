@@ -13,7 +13,7 @@ public class RoomDetailsModel {
 	private int participantsCount;
 	private int maxParticipants;
 	private String text;
-	private long startTime;
+	private int countdown;
 
 	public RoomDetailsModel() {
 	}
@@ -82,12 +82,12 @@ public class RoomDetailsModel {
 		this.text = text;
 	}
 
-	public long getStartTime() {
-		return startTime;
+	public int getCountdown() {
+		return countdown;
 	}
 
-	public void setStartTime(long time) {
-		this.startTime = time;
+	public void setCountdown(int countdown) {
+		this.countdown = countdown;
 	}
 	
 }
