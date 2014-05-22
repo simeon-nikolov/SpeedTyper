@@ -136,7 +136,7 @@ function JoinRoomController($rootScope, $http, $routeParams, $location) {
 	});
 }
 
-function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout) {
+function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout, $location) {
 	var id = $routeParams.id;
 	
 	$("#progress-canvas").attr("width", "300px");
@@ -167,7 +167,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout)
 				$scope.allWords = roomDetails.text.split(' ');
 				$scope.progresses = new Array(roomDetails.participants.length);
 				images = initializeImages();
-				for (var i = 0; i < roomDetails.participants; i++) {
+				for (var i = 0; i < roomDetails.participantsCount; i++) {
 					drawImage(ctx, images, i, xStartCoord);
 				}
 			});
@@ -215,11 +215,29 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout)
 						var xCoord = (progresses[i].currentIndex / $scope.allWords.length) * xEndCoord;
 						drawImage(ctx, images, i, xCoord);
 					}
-				}).error(function() {
+				}).error(function(error) {
 					alert("Error");
 				});
 			}
 		}
+	};
+	
+	$scope.startGame = function() {
+		
+	};
+	
+	$scope.leaveGame = function() {
+		$http({
+			method : "PUT",
+			url : url + "/rooms/" + id + "/leave",
+			headers : {
+				"sessionkey" : sessionkey
+			}
+		}).success(function(data) {
+			$location.path("/rooms/");
+		}).error(function(error) {
+			alert("Error");
+		});
 	};
 	
 	$scope.showStatus = function(progress) {
@@ -233,6 +251,10 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout)
 	
 	$scope.usernameFilter = function(otherUsername) {
 		return username != otherUsername;
+	};
+	
+	$scope.isCreator = function() {
+		return username == $rootScope.roomDetails.creator;
 	};
 }
 

@@ -149,7 +149,7 @@ public class RoomController {
 		return roomResult;
 	}
 	
-	@RequestMapping(value = "/leave/{roomId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{roomId}/leave", method = RequestMethod.PUT)
 	@ResponseBody
 	public JsonResponse leave(@RequestHeader Map<String, String> headers,
 			@PathVariable int roomId) {

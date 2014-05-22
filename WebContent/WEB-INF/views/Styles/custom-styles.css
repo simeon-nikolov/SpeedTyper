@@ -38,6 +38,16 @@
 	text-align: right;
 }
 
+#game-progress-status {
+	width: 100px;
+	mardin-left: 30px;
+	display: inline-block;
+}
+
+#game-buttons {
+	margin-left: 100px;
+}
+
 #text {
 	width: 30%;
 }
