@@ -23,6 +23,7 @@
 	
 	<div>
 		<input type="text" placeholder="Type here..." ng-keypress="checkTyping($event)" 
-			ng-model="word" id="word-input" novalidate class="k-textbox" ng-disabled="disabledTyping()" />
+			ng-model="word" id="word-input" novalidate class="k-textbox" ng-disabled="disabledTyping()" /> 
+		<span ng-show="showError" class="k-block k-error-colored">{{inputErrorMessage}}</span>
 	</div>
 </div>

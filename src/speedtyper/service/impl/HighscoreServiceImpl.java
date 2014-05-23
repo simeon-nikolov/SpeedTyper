@@ -47,8 +47,8 @@ public class HighscoreServiceImpl implements HighscoreService {
 	}
 
 	@Transactional
-	public List<HighscoreModel> getAll() {
-		return this.highscoreDao.getAll();
+	public List<HighscoreModel> getTop100() {
+		return this.highscoreDao.getTop100();
 	}
 
 }

@@ -11,5 +11,5 @@ public interface HighscoreDao {
 	public HighscoreModel getHighscore(int userId, int roomId);
 	public HighscoreModel getHighscoreByUserId(int userId);
 	public HighscoreModel getHighscoreById(int id);
-	public List<HighscoreModel> getAll();
+	public List<HighscoreModel> getTop100();
 }

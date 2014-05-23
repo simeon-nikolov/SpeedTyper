@@ -46,6 +46,11 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 				templateUrl: "Scripts/partials/profile.html",
 				controller: ViewProfileController
 			})
+			.when("/profile/edit", 
+			{
+				templateUrl: "Scripts/partials/edit-profile.html",
+				controller: EditProfileController
+			})
 			.when("/highscore", 
 			{
 				templateUrl: "Scripts/partials/highscore.html",

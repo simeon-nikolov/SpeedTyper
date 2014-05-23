@@ -70,8 +70,10 @@ public class HighscoreDaoImpl implements HighscoreDao {
 	}
 
 	@Override
-	public List<HighscoreModel> getAll() {
-		return session.getCurrentSession().createQuery("from HighscoreModel").list();
+	public List<HighscoreModel> getTop100() {
+		return session.getCurrentSession()
+				.createQuery("from HighscoreModel highscore order by highscore.wordsPerMinute desc")
+				.setMaxResults(100).list();
 	}
 
 }

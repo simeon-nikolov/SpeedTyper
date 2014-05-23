@@ -131,10 +131,28 @@ public class UserController {
 			@RequestBody UserProfileModel userProfile) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		String email = userProfile.getEmail();
-		this.validateEmail(email);
+		String username = userProfile.getUsername();
+		
 		UserModel user = this.getUserBySessionKey(sessionKey);
-
-		user.setEmail(email);
+		
+		if (username != null && username != "") {
+			if (userService.getUserByUsername(username) != null) {
+				throw new IllegalArgumentException("Username is already taken!");
+			}
+			
+			user.setUsername(username);
+		}
+		
+		if (email != null && email != "") {
+			this.validateEmail(email);
+			
+			if (userService.getUserByEmail(email) != null) {
+				throw new IllegalArgumentException("E-mail is already taken!");
+			}
+			
+			user.setEmail(email);
+		}
+		
 		userService.update(user);
 		UserProfileModel userProfle = userModelToUserProfileModel(user);
 

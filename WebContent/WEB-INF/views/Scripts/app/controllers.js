@@ -83,11 +83,34 @@ function RegisterController($rootScope, $http, $location) {
 }
 
 function HighscoreController($scope, $http, $timeout) {
+	$scope.highscores = [];
+	var updatePromise;
 	
+	$scope.getHighscores = function() {
+		$http({
+			method : 'GET',
+			url : url + "/highscores/",
+			headers : {
+				'sessionkey' : sessionkey
+			}
+		}).success(function(highscores) {
+			$scope.highscores = highscores;
+			showHighscoresGrid($scope.highscores);
+		});
+		
+		updatePromise = $timeout($scope.getHighscores, 1000);
+	};
+	
+	$scope.$on('$locationChangeStart', function(){
+	    $timeout.cancel(updatePromise);
+	});
+	
+	$scope.getHighscores();
 }
 
 function RoomsController($scope, $http, $timeout) {
 	$scope.rooms = [];
+	var updatePromise;
 	
 	$scope.getRooms = function() {
 		$http({
@@ -101,7 +124,7 @@ function RoomsController($scope, $http, $timeout) {
 			showRoomsGrid($scope.rooms);
 		});
 		
-		$timeout($scope.getRooms, 1000);
+		updatePromise = $timeout($scope.getRooms, 1000);
 	};
 	
 	$scope.$on('$locationChangeStart', function(){
@@ -171,6 +194,8 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	$scope.allWords = [];
 	$scope.status;
 	$scope.isStarting = false;
+	$scope.showError = false;
+	$scope.inputErrorMessage = "";
 	
 	userId = localStorage.getItem("userId");
 	
@@ -247,6 +272,8 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	});
 	
 	$scope.checkTyping = function(ev) {
+		$scope.showError = false;
+		
 		if (ev.which == 32 && $scope.status == "started" && !$scope.isStarting) {
 			var word = $scope.word;
 			word = word.replace(/\s+/g, '');
@@ -269,8 +296,12 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 					$scope.progresses = progresses;
 					$scope.drawProgresses(progresses);
 				}).error(function(error) {
-					alert("Error");
+					$scope.showError = true;
+					$scope.inputErrorMessage = error;
 				});
+			} else {
+				$scope.showError = true;
+				$scope.inputErrorMessage = "Word does not match!";
 			}
 		}
 	};
@@ -386,6 +417,31 @@ function ViewProfileController($http) {
 	});
 }
 
+function EditProfileController($scope, $http, $location) {
+	this.userModel = {
+			"username": localStorage.getItem("username"),
+			"email": "",
+			"wordsPerMinute": ""
+	};
+	
+	var self = this;
+	
+	this.editProfile = function() {
+		$http({
+			method : 'PUT',
+			url : url + "/user/edit",
+			headers : {
+				'sessionkey' : sessionkey
+			},
+			data: self.userModel
+		}).success(function(profile) {
+			var username = profile.username;
+			localStorage.setItem("username", username)
+			$location.path("/profile");
+		});
+	}
+}
+
 function initializeImages() {
 	var blueImg = new Image();
 	var redImg = new Image();
@@ -417,6 +473,29 @@ function markText(index, words) {
 	text[index] = '<mark>' + text[index] + '</mark>';
 	$('#text').html(text.join(' '));
 };
+
+function showHighscoresGrid(highscores) {
+	$("#highscores-grid").kendoGrid({
+    	dataSource: highscores,
+    	groupable: false,
+        sortable: true,
+        pageable: {
+            refresh: true,
+            pageSizes: true,
+            buttonCount: 5
+        },
+        columns: [{
+            field: "username",
+            title: "Username",
+        }, {
+            field: "wordsPerMinute",
+            title: "Words Per Minute",
+        }, {
+            title: "Time to finish (in seconds)",
+            template: "#=timeToFinish# sec."
+        }]
+    });
+}
 
 function showRoomsGrid(rooms) {
 	$("#rooms-grid").kendoGrid({

@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -294,6 +293,18 @@ public class RoomController {
 		highscore.setTimeToFinish(timeToFinish);
 		highscore.setWordsPerMinute(wordsPerMinute);
 		highscoreService.add(highscore);
+		
+		List<HighscoreModel> highscores = (List<HighscoreModel>) highscoreService.
+				getHighscoreById(user.getId());
+		int averageWpm = 0;
+		
+		for (HighscoreModel stats : highscores) {
+			averageWpm += stats.getWordsPerMinute();
+		}
+		
+		averageWpm = averageWpm / highscores.size();
+		user.setWordsPerMinute(averageWpm);
+		userService.update(user);
 	}
 	
 	// http://en.wikipedia.org/wiki/Words_per_minute
