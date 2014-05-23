@@ -5,8 +5,7 @@
 	</div>
 	<canvas class="left" id="progress-canvas"></canvas>
 	<div class="left" id="game-progress-status">
-		<p ng-show="showFinishStatus(status)">{{status}}</p>
-		<p ng-repeat="progress in progresses" ng-show="showFinishStatus(progress)">{{progress.status}}</p>
+		<p ng-repeat="progress in progresses track by $index" ng-show="showFinishStatus(progress)">{{progress.status}}</p>
 		&nbsp;
 	</div>
 	<div id="game-buttons" class="left">
@@ -24,6 +23,6 @@
 	
 	<div>
 		<input type="text" placeholder="Type here..." ng-keypress="checkTyping($event)" 
-			ng-model="word" id="word-input" novalidate class="k-textbox" />
+			ng-model="word" id="word-input" novalidate class="k-textbox" ng-disabled="disabledTyping()" />
 	</div>
 </div>

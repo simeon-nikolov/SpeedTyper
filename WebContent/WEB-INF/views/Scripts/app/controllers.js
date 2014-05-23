@@ -281,6 +281,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 		var text = textP.text().split(' ');
 		markText(0, text);
 		$scope.isStarting = false;
+		$("#word-input").focus();
 	};
 	
 	$scope.startGame = function() {
@@ -340,6 +341,10 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 			return false;
 		}
 		return username == $rootScope.roomDetails.creator;
+	};
+	
+	$scope.disabledTyping = function() {
+		return ($scope.status != "started") || $scope.isStarting;
 	};
 }
 
