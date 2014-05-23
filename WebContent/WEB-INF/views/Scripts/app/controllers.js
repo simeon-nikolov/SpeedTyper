@@ -297,7 +297,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 					$scope.drawProgresses(progresses);
 				}).error(function(error) {
 					$scope.showError = true;
-					$scope.inputErrorMessage = error;
+					$scope.inputErrorMessage = "Error";
 				});
 			} else {
 				$scope.showError = true;
