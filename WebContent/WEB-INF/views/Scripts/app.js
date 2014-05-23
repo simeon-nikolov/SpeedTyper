@@ -46,6 +46,11 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 				templateUrl: "Scripts/partials/profile.html",
 				controller: ViewProfileController
 			})
+			.when("/highscore", 
+			{
+				templateUrl: "Scripts/partials/highscore.html",
+				controller: HighscoreController
+			})
 			.otherwise(
 			{ 
 				redirectTo: "/" }

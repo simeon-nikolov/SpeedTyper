@@ -82,6 +82,10 @@ function RegisterController($rootScope, $http, $location) {
 	};
 }
 
+function HighscoreController($scope, $http, $timeout) {
+	
+}
+
 function RoomsController($scope, $http, $timeout) {
 	$scope.rooms = [];
 	
