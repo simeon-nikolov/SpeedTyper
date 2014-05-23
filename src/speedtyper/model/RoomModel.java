@@ -2,7 +2,6 @@ package speedtyper.model;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.*;
 

@@ -253,6 +253,7 @@ public class RoomController {
 		
 		if (progress.getCurrentWordIndex() == words.length) {
 			progress.setGameStatus(GameProgressStatus.FINISHED.toString());
+			this.finishGame(user, room, words);
 		}
 		
 		progressService.update(progress);
@@ -280,15 +281,35 @@ public class RoomController {
 		return result;
 	}
 	
-	private void finishGame(UserModel user, int roomId) {		
-		Date currentTimeDate = new Date(); 
-		RoomModel room = this.roomService.getRoom(roomId);
+	private void finishGame(UserModel user, RoomModel room, String[] words) {		
 		HighscoreModel highscore = highscoreService.
 				getHighscore(user.getId(), room.getId());
-		
-		// TO DO ...
+		long currentTime = new Date().getTime();
+		long startTime = room.getStartTime().getTime();
+		int timeToFinish = (int) ((currentTime - startTime) / 1000L);
+		int wordsPerMinute = getWordsPerMinute(timeToFinish, words);
+		highscore.setRoom(room);
+		highscore.setUser(user);
+		highscore.setTimeStarted(new Date(startTime));
+		highscore.setTimeToFinish(timeToFinish);
+		highscore.setWordsPerMinute(wordsPerMinute);
+		highscoreService.add(highscore);
 	}
 	
+	// http://en.wikipedia.org/wiki/Words_per_minute
+	private int getWordsPerMinute(int timeToFinish, String[] words) {
+		int allChars = 0;
+		
+		for (String word : words) {
+			allChars+=word.length();
+		}
+		
+		int charsPerMinute = (allChars / timeToFinish) * 60;
+		int wordsPerMinute = (int) Math.ceil(charsPerMinute / 5.0);
+		
+		return wordsPerMinute;
+	}
+
 	private List<ProgressViewModel> listProgressModelToProgressVm(List<ProgressModel> progresses) {
 		List<ProgressViewModel> result = new ArrayList<ProgressViewModel>();
 		
