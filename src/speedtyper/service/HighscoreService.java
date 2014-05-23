@@ -9,7 +9,7 @@ public interface HighscoreService {
 	public void update(HighscoreModel highscore);
 	public void delete(int id);
 	public HighscoreModel getHighscore(int userId, int roomId);
-	public HighscoreModel getHighscoreByUserId(int userId);
+	public List<HighscoreModel> getHighscoreByUserId(int userId);
 	public HighscoreModel getHighscoreById(int id);
 	public List<HighscoreModel> getTop100();
 }

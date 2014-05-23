@@ -37,7 +37,7 @@ public class HighscoreServiceImpl implements HighscoreService {
 	}
 
 	@Transactional
-	public HighscoreModel getHighscoreByUserId(int userId) {
+	public List<HighscoreModel> getHighscoreByUserId(int userId) {
 		return this.highscoreDao.getHighscoreByUserId(userId);
 	}
 

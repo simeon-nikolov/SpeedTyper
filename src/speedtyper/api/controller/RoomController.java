@@ -294,8 +294,7 @@ public class RoomController {
 		highscore.setWordsPerMinute(wordsPerMinute);
 		highscoreService.add(highscore);
 		
-		List<HighscoreModel> highscores = (List<HighscoreModel>) highscoreService.
-				getHighscoreById(user.getId());
+		List<HighscoreModel> highscores = highscoreService.getHighscoreByUserId(user.getId());
 		int averageWpm = 0;
 		
 		for (HighscoreModel stats : highscores) {
