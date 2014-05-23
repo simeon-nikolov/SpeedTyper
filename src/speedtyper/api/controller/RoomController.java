@@ -42,6 +42,7 @@ import speedtyper.service.UserService;
 public class RoomController {
 	private static final String SESSION_KEY_PARAM_NAME = "sessionkey";
 	private static final int COUNTDOWN = 10;
+	private static final int TEXT_MAX_CHARS = 23;
 	private static Random randomGenerator = new Random();
 
 	@Autowired
@@ -379,7 +380,17 @@ public class RoomController {
 		roomVm.setParticipants(roomModel.getParticipantsCount());
 		roomVm.setMaxParticipants(roomModel.getMaxParticipants());
 		roomVm.setStatus(roomModel.getStatus());
-		roomVm.setText(roomModel.getText().getText());
+		
+		String text = "";
+		
+		if (roomModel.getText().getText().length() > TEXT_MAX_CHARS) {
+			text = roomModel.getText().getText().
+					substring(0, TEXT_MAX_CHARS - 3).concat("...");
+		} else {
+			text = roomModel.getText().getText();
+		}
+		
+		roomVm.setText(text);
 
 		return roomVm;
 	}

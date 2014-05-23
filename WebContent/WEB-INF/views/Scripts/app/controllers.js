@@ -82,19 +82,29 @@ function RegisterController($rootScope, $http, $location) {
 	};
 }
 
-function RoomsController($scope, $http) {
+function RoomsController($scope, $http, $timeout) {
 	$scope.rooms = [];
 	
-	$http({
-		method : 'GET',
-		url : url + "/rooms/",
-		headers : {
-			'sessionkey' : sessionkey
-		}
-	}).success(function(rooms) {
-		$scope.rooms = rooms;
-		showRoomsGrid($scope);
+	$scope.getRooms = function() {
+		$http({
+			method : 'GET',
+			url : url + "/rooms/",
+			headers : {
+				'sessionkey' : sessionkey
+			}
+		}).success(function(rooms) {
+			$scope.rooms = rooms;
+			showRoomsGrid($scope.rooms);
+		});
+		
+		$timeout($scope.getRooms, 1000);
+	};
+	
+	$scope.$on('$locationChangeStart', function(){
+	    $timeout.cancel(updatePromise);
 	});
+	
+	$scope.getRooms();
 }
 
 function CreateRoomController($scope, $http, $location) {
@@ -404,9 +414,9 @@ function markText(index, words) {
 	$('#text').html(text.join(' '));
 };
 
-function showRoomsGrid($scope) {
+function showRoomsGrid(rooms) {
 	$("#rooms-grid").kendoGrid({
-    	dataSource: $scope.rooms,
+    	dataSource: rooms,
     	groupable: false,
         sortable: true,
         pageable: {
