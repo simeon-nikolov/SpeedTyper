@@ -63,6 +63,10 @@
 	border-color: #636363;
 }
 
+#room-name {
+	border-color: #636363;
+}
+
 .clearfix:after {
 	visibility: hidden;
 	display: block;

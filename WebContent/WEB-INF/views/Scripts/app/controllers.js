@@ -102,7 +102,7 @@ function CreateRoomController($scope, $http, $location) {
 	
 	this.roomModel = {
 		"creatorId" : userId,
-		"maxParticipants" : "",
+		"maxParticipants" : 2,
 		"textId" : ""
 	};
 	

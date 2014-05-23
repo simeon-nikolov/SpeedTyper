@@ -1,9 +1,6 @@
 package speedtyper.api.viewmodel;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class RoomDetailsModel {
 	private int id;
