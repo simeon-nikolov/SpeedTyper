@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import speedtyper.api.viewmodel.JsonResponse;
+import speedtyper.api.viewmodel.ParticipantModel;
 import speedtyper.api.viewmodel.ProgressViewModel;
 import speedtyper.api.viewmodel.RoomCreateModel;
 import speedtyper.api.viewmodel.RoomDetailsModel;
@@ -211,6 +213,10 @@ public class RoomController {
 		room.setStartTime(startTime);
 		roomService.update(room);
 		
+		ProgressModel progress = progressService.getGameProgress(user.getId(), roomId);
+		progress.setGameStatus(GameProgressStatus.STARTED.toString());
+		progressService.update(progress);
+		
 		RoomDetailsModel result = roomModelToRoomDetailsModel(room);
 		result.setCountdown(COUNTDOWN);
 		
@@ -274,17 +280,12 @@ public class RoomController {
 		return result;
 	}
 	
-	private void finishGame(UserModel user, int roomId) {
-//		if (!isAuthenticated(sessionKey)) {
-//			throw new IllegalArgumentException("User is not authenticated!");
-//		}
-//		
-//		Date currentTimeDate = new Date(); 
-//		//UserModel user = this.userService.getUserBySessionKey(sessionKey);
-//		RoomModel room = this.roomService.getRoom(roomId);
-//		HighscoreModel highscore = highscoreService.
-//				getHighscore(user.getId(), room.getId());
-//		
+	private void finishGame(UserModel user, int roomId) {		
+		Date currentTimeDate = new Date(); 
+		RoomModel room = this.roomService.getRoom(roomId);
+		HighscoreModel highscore = highscoreService.
+				getHighscore(user.getId(), room.getId());
+		
 		// TO DO ...
 	}
 	
@@ -294,6 +295,7 @@ public class RoomController {
 		for (ProgressModel progress : progresses) {
 			ProgressViewModel progressVm = new ProgressViewModel();
 			UserModel user = userService.getUserById(progress.getUserId());
+			progressVm.setUserId(user.getId());
 			progressVm.setUsername(user.getUsername());
 			progressVm.setCurrentWordIndex(progress.getCurrentWordIndex());
 			progressVm.setStatus(progress.getGameStatus());
@@ -332,10 +334,13 @@ public class RoomController {
 		roomDm.setParticipantsCount(room.getParticipantsCount());
 		roomDm.setStatus(room.getStatus());
 		
-		List<String> participants = new ArrayList<String>();
+		List<ParticipantModel> participants = new ArrayList<ParticipantModel>();
 		
 		for (UserModel user : room.getUsers()) {
-			participants.add(user.getUsername());
+			ParticipantModel participant = new ParticipantModel();
+			participant.setUserId(user.getId());
+			participant.setUsername(user.getUsername());
+			participants.add(participant);
 		}
 		
 		roomDm.setParticipants(participants);

@@ -1,12 +1,21 @@
 package speedtyper.api.viewmodel;
 
 public class ProgressViewModel {
+	private int userId;
 	private String username;
 	private int currentWordIndex;
 	private String status;
 	
 	public ProgressViewModel() {}
 
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 	public String getUsername() {
 		return username;
 	}

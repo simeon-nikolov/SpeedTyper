@@ -1,16 +1,17 @@
 <div class="clearfix">
 	<div id="names-container" class="left">
 		<div class="name">You:</div>
-		<div class="name" ng-repeat="name in roomDetails.participants | filter:usernameFilter">{{name}}: </div>
+		<div class="name" ng-repeat="participant in roomDetails.participants | filter:usernameFilter">{{participant.username}}: </div>
 	</div>
 	<canvas class="left" id="progress-canvas"></canvas>
 	<div class="left" id="game-progress-status">
-		<p ng-repeat="progress in progresses track by $index" ng-show="showStatus(progress)">{{progress.status}}</p>
+		<p ng-show="showFinishStatus(status)">{{status}}</p>
+		<p ng-repeat="progress in progresses" ng-show="showFinishStatus(progress)">{{progress.status}}</p>
 		&nbsp;
 	</div>
 	<div id="game-buttons" class="left">
-		<button class="k-button" ng-click="startGame()" ng-show="isCreator()">Start Game</button>
 		<button class="k-button" ng-click="leaveGame()">Leave Game</button>
+		<button class="k-button" ng-click="startGame()" ng-show="isCreator()">Start Game</button>
 	</div>
 	<div id="game-status" class="left">
 		<p>{{showGameStatus()}}</p>

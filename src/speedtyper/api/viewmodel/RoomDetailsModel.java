@@ -3,13 +3,14 @@ package speedtyper.api.viewmodel;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class RoomDetailsModel {
 	private int id;
 	private String name;
 	private String status;
 	private String creator;
-	private List<String> participants;
+	private List<ParticipantModel> participants;
 	private int participantsCount;
 	private int maxParticipants;
 	private String text;
@@ -50,11 +51,11 @@ public class RoomDetailsModel {
 		this.creator = creator;
 	}
 
-	public List<String> getParticipants() {
+	public List<ParticipantModel> getParticipants() {
 		return participants;
 	}
 
-	public void setParticipants(List<String> participants) {
+	public void setParticipants(List<ParticipantModel> participants) {
 		this.participants = participants;
 	}
 	

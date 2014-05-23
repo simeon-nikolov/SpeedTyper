@@ -147,6 +147,9 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	var ctx = c.getContext("2d");
 	var images = initializeImages();
 	var sendGetRequest = true;
+	var sortFunction = function(a, b) { 
+		  return a.id - b.id;
+	};
 	
 	$scope.progresses = [];
 	$scope.word = "";
@@ -154,6 +157,33 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	$scope.allWords = [];
 	$scope.status;
 	$scope.isStarting = false;
+	
+	userId = localStorage.getItem("userId");
+	
+	$scope.drawProgresses = function(progresses) {
+		var xCoord = xStartCoord;
+		var currentUserProgress = $.grep(progresses, function(e){ return e.userId == userId; })[0];
+		if (currentUserProgress.currentWordIndex != 0) {
+			xCoord = (currentUserProgress.currentWordIndex / $scope.allWords.length) * xEndCoord;
+		}
+		drawImage(ctx, images, 0, xCoord);
+		var index;
+	    for (var i = 0; i < progresses.length; i++) {
+	        if (progresses[i].userId == currentUserProgress.userId) {
+	        	index = i;
+	        	break;
+	        }
+	    }
+		progresses.splice(index, 1);
+		progresses.sort(sortFunction);
+		for (var i = 0; i < progresses.length; i++) {
+			xCoord = xStartCoord;
+			if (progresses[i].currentWordIndex != 0) {
+				xCoord = (progresses[i].currentWordIndex / $scope.allWords.length) * xEndCoord;
+			}
+			drawImage(ctx, images, i + 1, xCoord);
+		}
+	};
 	
 	$scope.update = function() {
 		if ($scope.status != "started") {
@@ -164,7 +194,9 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 					"sessionkey" : sessionkey
 				}
 			}).success(function(roomDetails) {
+				$scope.status = roomDetails.status;
 				$rootScope.roomDetails = roomDetails;
+				$rootScope.roomDetails.participants.sort(sortFunction);
 				$scope.allWords = roomDetails.text.split(' ');
 				$scope.progresses = new Array(roomDetails.participants.length);
 				for (var i = 0; i < roomDetails.participantsCount; i++) {
@@ -172,7 +204,6 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 				}
 				
 				if (roomDetails.status == "started") {
-					$scope.status = roomDetails.status;
 					$scope.isStarting = true;
 					$scope.countdown = roomDetails.countdown;
 					sendGetRequest = false;
@@ -188,13 +219,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 				}
 			}).success(function(progresses) {
 				$scope.progresses = progresses;
-				for (var i = 0; i < progresses.length; i++) {
-					var xCoord = xStartCoord;
-					if (progresses[i].currentWordIndex != 0) {
-						xCoord = (progresses[i].currentWordIndex / $scope.allWords.length) * xEndCoord;
-					}
-					drawImage(ctx, images, i, xCoord);
-				}
+				$scope.drawProgresses(progresses);
 			});
 		}
 		sendGetRequest = true;
@@ -212,27 +237,21 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 			var word = $scope.word;
 			word = word.replace(/\s+/g, '');
 			if (word == $scope.allWords[$scope.currentIndex]) {
+				$scope.word = "";
 				$http({
 					method : "PUT",
 					url : url + "/rooms/" + id + "/submit",
-					data: JSON.stringify($scope.word),
+					data: JSON.stringify(word),
 					headers : {
 						"sessionkey" : sessionkey
 					}
 				}).success(function(progresses) {
-					if ($scope.currentIndex < $scope.allWords.length) {
+					if ($scope.currentIndex < $scope.allWords.length - 1) {
 						$scope.currentIndex++;
+						markText($scope.currentIndex, $scope.allWords);
 					}
-					markText($scope.currentIndex, $scope.allWords);
-					$scope.word = "";
 					$scope.progresses = progresses;
-					for (var i = 0; i < progresses.length; i++) {
-						var xCoord = xStartCoord;
-						if (progresses[i].currentWordIndex != 0) {
-							xCoord = (progresses[i].currentWordIndex / $scope.allWords.length) * xEndCoord;
-						}
-						drawImage(ctx, images, i, xCoord);
-					}
+					$scope.drawProgresses(progresses);
 				}).error(function(error) {
 					alert("Error");
 				});
@@ -295,7 +314,7 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 		});
 	};
 	
-	$scope.showStatus = function(progress) {
+	$scope.showFinishStatus = function(progress) {
 		if (progress == null) {
 			return false;
 		}
@@ -312,8 +331,8 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 	
 	var username = localStorage.getItem("username");
 	
-	$scope.usernameFilter = function(otherUsername) {
-		return username != otherUsername;
+	$scope.usernameFilter = function(participant) {
+		return username != participant.username;
 	};
 	
 	$scope.isCreator = function() {

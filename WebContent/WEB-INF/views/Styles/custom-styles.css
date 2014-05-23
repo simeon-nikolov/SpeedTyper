@@ -40,8 +40,11 @@
 
 #game-progress-status {
 	width: 100px;
-	mardin-left: 30px;
-	display: inline-block;
+}
+
+#game-progress-status > p {
+	padding-left: 10px;
+	padding-top: 25px;
 }
 
 #game-status {
