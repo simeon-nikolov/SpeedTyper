@@ -11,10 +11,10 @@ public class HighscoreModel {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id")
 	private UserModel user;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="room_id")
 	private RoomModel room;
 	@Column(name="words_per_minute")

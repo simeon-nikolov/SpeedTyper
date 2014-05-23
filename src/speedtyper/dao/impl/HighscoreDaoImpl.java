@@ -34,8 +34,11 @@ public class HighscoreDaoImpl implements HighscoreDao {
 	@Override
 	public HighscoreModel getHighscore(int userId, int roomId) {
 		Query query = session.getCurrentSession().createQuery(
-				"from HighscoreModel highscore where highscore.userId = :userId"
-				+ "and highscore.roomId = :roomId");
+				"select highscore from HighscoreModel highscore "
+//				+ "left join fetch highscore.user "
+//				+ "left join fetch highscore.room "
+				+ "where highscore.user.id = :userId "
+				+ "and highscore.room.id = :roomId");
 		query.setString("userId", userId + "");
 		query.setString("roomId", roomId + "");
 		query.setMaxResults(1);
@@ -49,7 +52,9 @@ public class HighscoreDaoImpl implements HighscoreDao {
 	@Override
 	public HighscoreModel getHighscoreByUserId(int userId) {
 		Query query = session.getCurrentSession().createQuery(
-				"from HighscoreModel highscore where highscore.userId = :userId");
+				"from HighscoreModel highscore "
+//				+ "left join fetch highscore.user "
+				+ "where highscore.user.id = :userId");
 		query.setString("userId", userId + "");
 		query.setMaxResults(1);
 		List result = query.list();

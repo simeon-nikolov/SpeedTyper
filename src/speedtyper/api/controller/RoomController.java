@@ -283,8 +283,7 @@ public class RoomController {
 	}
 	
 	private void finishGame(UserModel user, RoomModel room, String[] words) {		
-		HighscoreModel highscore = highscoreService.
-				getHighscore(user.getId(), room.getId());
+		HighscoreModel highscore = new HighscoreModel();
 		long currentTime = new Date().getTime();
 		long startTime = room.getStartTime().getTime();
 		int timeToFinish = (int) ((currentTime - startTime) / 1000L);
