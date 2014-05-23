@@ -249,6 +249,8 @@ function SingleRoomController($rootScope, $scope, $http, $routeParams, $timeout,
 					if ($scope.currentIndex < $scope.allWords.length - 1) {
 						$scope.currentIndex++;
 						markText($scope.currentIndex, $scope.allWords);
+					} else if ($scope.currentIndex == $scope.allWords.length - 1) {
+						$('#text').html($scope.allWords.join(' '));
 					}
 					$scope.progresses = progresses;
 					$scope.drawProgresses(progresses);
