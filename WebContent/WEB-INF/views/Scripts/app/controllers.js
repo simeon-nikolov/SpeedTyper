@@ -508,6 +508,9 @@ function showRoomsGrid(rooms) {
             buttonCount: 5
         },
         columns: [{
+            field: "name",
+            title: "Name",
+        }, {
             field: "creator",
             title: "Creator",
         }, {
