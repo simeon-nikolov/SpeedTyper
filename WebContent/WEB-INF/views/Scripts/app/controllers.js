@@ -2,8 +2,23 @@ var url = "/SpeedTyper";
 var sessionkey = localStorage.getItem("sessionkey");
 var userId = localStorage.getItem("userId");
 
-function HomeController($rootScope, $http) {
-
+function HomeController($rootScope, $scope, $http, $location) {
+	$scope.isAuthenticated = function() {
+		return isAuthenticated(sessionkey);
+	};
+	
+	$scope.joinRandom = function() {
+		$http({
+			method : "PUT",
+			url : url + "/rooms/join/random",
+			headers : {
+				"sessionkey" : sessionkey
+			}
+		}).success(function(roomDetails) {
+			$rootScope.roomDetails = roomDetails;
+			$location.path("/rooms/details/" + roomDetails.id);
+		});
+	};
 }
 
 function MenuController($rootScope, $http) {	

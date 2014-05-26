@@ -129,6 +129,45 @@ public class RoomController {
 		return roomResult;
 	}
 	
+	@RequestMapping(value="/join/random", method=RequestMethod.PUT)
+	@ResponseBody
+	public RoomDetailsModel joinRandom(@RequestHeader Map<String, String> headers) {
+		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
+		RoomDetailsModel roomResult = null;
+		
+		if (!isAuthenticated(sessionKey)) {
+			throw new IllegalArgumentException("User is not authenticated!");
+		}
+		
+		
+		List<RoomModel> rooms = roomService.getAvaibleRooms();
+		int index = randomGenerator.nextInt(rooms.size());
+		int roomId = rooms.get(index).getId();
+		
+		RoomModel room = roomService.getRoom(roomId);
+		if (room.getStatus().equals(RoomStatus.AVAIBLE.toString())) {
+			UserModel user = userService.getUserBySessionKey(sessionKey);
+			Collection<UserModel> usersCollection = room.getUsers();
+			
+			if (!usersCollection.contains(user)) {
+				usersCollection.add(user);
+				room.setUsers(usersCollection);
+				room.setParticipantsCount(room.getParticipantsCount() + 1);
+			}
+			
+			if (room.getParticipantsCount() == room.getMaxParticipants()) {
+				room.setStatus(RoomStatus.FULL.toString());
+			}
+			
+			roomService.update(room);
+			roomResult = roomModelToRoomDetailsModel(room);
+		} else {
+			throw new IllegalArgumentException("Room is not avaible!");
+		}
+		
+		return roomResult;
+	}
+	
 	@RequestMapping(value = "/details/{roomId}", method = RequestMethod.GET)
 	@ResponseBody
 	public RoomDetailsModel getRoomDetails(@RequestHeader Map<String, String> headers,
