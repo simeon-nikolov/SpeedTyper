@@ -8,7 +8,8 @@ public interface HighscoreService {
 	public void add(HighscoreModel highscore);
 	public void update(HighscoreModel highscore);
 	public void delete(int id);
-	public HighscoreModel getHighscoreByUserId(int userId);
+	public HighscoreModel getHighscore(int userId, int roomId);
+	public List<HighscoreModel> getHighscoreByUserId(int userId);
 	public HighscoreModel getHighscoreById(int id);
-	public List<HighscoreModel> getAll();
+	public List<HighscoreModel> getTop100();
 }

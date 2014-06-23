@@ -1,0 +1,24 @@
+<form name="editProfileForm" ng-controller="EditProfileController as editProfileCtrl" 
+	novalidate ng-submit="editProfileForm.$valid && editProfileCtrl.editProfile()">
+<fieldset>
+    <legend>Edit profile</legend>
+    <div id="edit-form-content" class="k-content">
+        <div>
+            <ul class="forms">
+                <li>
+                    <label for="tb-username">Username: </label>
+                    <input type="text" id="tb-username" ng-model="editProfileCtrl.userModel.username" ng-minlength="6" ng-maxlength="20" class="k-textbox" />
+                    <em>(between 6 - 20 characters)</em>
+                </li>
+                <li>
+                    <label for="tb-email">E-mail: </label>
+                    <input type="email" id="tb-email" ng-model="editProfileCtrl.userModel.email" class="k-textbox" />
+                </li>
+                <li>
+                    <button class="k-button" type="submit">Submit</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</fieldset>
+</form>

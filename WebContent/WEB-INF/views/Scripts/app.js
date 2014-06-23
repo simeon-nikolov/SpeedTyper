@@ -26,6 +26,11 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 				templateUrl: "Scripts/partials/all-rooms.html", 
 				controller: RoomsController 
 			})
+			.when("/rooms/create", 
+			{ 
+				templateUrl: "Scripts/partials/create-room.html", 
+				controller: CreateRoomController 
+			})
 			.when("/rooms/join/:id", 
 			{ 
 				templateUrl: "Scripts/partials/join-room.html", 
@@ -40,6 +45,16 @@ angular.module("SpeedTyperSPA", ['ngRoute'])
 			{
 				templateUrl: "Scripts/partials/profile.html",
 				controller: ViewProfileController
+			})
+			.when("/profile/edit", 
+			{
+				templateUrl: "Scripts/partials/edit-profile.html",
+				controller: EditProfileController
+			})
+			.when("/highscore", 
+			{
+				templateUrl: "Scripts/partials/highscore.html",
+				controller: HighscoreController
 			})
 			.otherwise(
 			{ 

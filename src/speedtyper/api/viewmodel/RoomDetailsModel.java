@@ -4,12 +4,14 @@ import java.util.List;
 
 public class RoomDetailsModel {
 	private int id;
+	private String name;
 	private String status;
 	private String creator;
-	private List<String> participants;
+	private List<ParticipantModel> participants;
 	private int participantsCount;
 	private int maxParticipants;
 	private String text;
+	private int countdown;
 
 	public RoomDetailsModel() {
 	}
@@ -20,6 +22,14 @@ public class RoomDetailsModel {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getStatus() {
@@ -38,11 +48,11 @@ public class RoomDetailsModel {
 		this.creator = creator;
 	}
 
-	public List<String> getParticipants() {
+	public List<ParticipantModel> getParticipants() {
 		return participants;
 	}
 
-	public void setParticipants(List<String> participants) {
+	public void setParticipants(List<ParticipantModel> participants) {
 		this.participants = participants;
 	}
 	
@@ -70,4 +80,12 @@ public class RoomDetailsModel {
 		this.text = text;
 	}
 
+	public int getCountdown() {
+		return countdown;
+	}
+
+	public void setCountdown(int countdown) {
+		this.countdown = countdown;
+	}
+	
 }

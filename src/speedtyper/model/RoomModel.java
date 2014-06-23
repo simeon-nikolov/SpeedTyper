@@ -1,5 +1,6 @@
 package speedtyper.model;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import javax.persistence.*;
@@ -11,6 +12,8 @@ public class RoomModel {
 	@Column
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	@Column
+	private String name;
 	@ManyToOne
     @JoinColumn(name="creator_id")
 	private UserModel creator;
@@ -28,14 +31,17 @@ public class RoomModel {
 	@ManyToOne
 	@JoinColumn(name="text_id")
 	private TextModel text;
+	@Column(name="starts_at")
+	private Timestamp startTime;
 	
 	public RoomModel () {}
 	public RoomModel(String status, int participantsCount, Collection<UserModel> users, 
-			TextModel text) {
+			TextModel text, Timestamp startTime) {
 		this.status = status;
 		this.participantsCount = participantsCount;
 		this.users = users;
 		this.text = text;
+		this.startTime = startTime;
 	}
 
 	public int getId() {
@@ -44,6 +50,14 @@ public class RoomModel {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public UserModel getCreator() {
@@ -92,6 +106,14 @@ public class RoomModel {
 
 	public void setText(TextModel text) {
 		this.text = text;
+	}
+	
+	public Timestamp getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Timestamp time) {
+		this.startTime = time;
 	}
 	
 }

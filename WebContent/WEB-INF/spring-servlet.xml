@@ -83,6 +83,7 @@
 
 	<mvc:resources mapping="/Scripts/**" location="/WEB-INF/views/Scripts/" />
 	<mvc:resources mapping="/Styles/**" location="/WEB-INF/views/Styles/" />
+	<mvc:resources mapping="/Images/**" location="/WEB-INF/views/Images/" />
 	<mvc:annotation-driven />
 
 </beans>

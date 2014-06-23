@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,7 +69,8 @@ public class UserController {
 		LoggedUserModel loggedUser = new LoggedUserModel();
 		loggedUser.setUsername(user.getUsername());
 		loggedUser.setSessionKey(user.getSessionKey());
-
+		loggedUser.setId(user.getId());
+		
 		return loggedUser;
 	}
 
@@ -91,6 +94,7 @@ public class UserController {
 			userService.update(user);
 			loggedUserModel.setUsername(username);
 			loggedUserModel.setSessionKey(sessionKey);
+			loggedUserModel.setId(user.getId());
 		} else {
 			throw new IllegalArgumentException("Password is incorrect!");
 		}
@@ -129,10 +133,28 @@ public class UserController {
 			@RequestBody UserProfileModel userProfile) {
 		String sessionKey = headers.get(SESSION_KEY_PARAM_NAME);
 		String email = userProfile.getEmail();
-		this.validateEmail(email);
+		String username = userProfile.getUsername();
+		
 		UserModel user = this.getUserBySessionKey(sessionKey);
-
-		user.setEmail(email);
+		
+		if (username != null && username != "") {
+			if (userService.getUserByUsername(username) != null) {
+				throw new IllegalArgumentException("Username is already taken!");
+			}
+			
+			user.setUsername(username);
+		}
+		
+		if (email != null && email != "") {
+			this.validateEmail(email);
+			
+			if (userService.getUserByEmail(email) != null) {
+				throw new IllegalArgumentException("E-mail is already taken!");
+			}
+			
+			user.setEmail(email);
+		}
+		
 		userService.update(user);
 		UserProfileModel userProfle = userModelToUserProfileModel(user);
 

@@ -1,22 +1,29 @@
 <div class="clearfix">
-	<div class="names-container left">
+	<div id="names-container" class="left">
 		<div class="name">You:</div>
-		<div class="name" ng-repeat="name in roomDetails.participants | filter:usernameFilter">{{name}}: </div>
+		<div class="name" ng-repeat="participant in roomDetails.participants | filter:usernameFilter">{{participant.username}}: </div>
 	</div>
 	<canvas class="left" id="progress-canvas"></canvas>
+	<div class="left" id="game-progress-status">
+		<p ng-repeat="progress in progresses track by $index" ng-show="showFinishStatus(progress)">{{progress.status}}</p>
+		&nbsp;
+	</div>
+	<div id="game-buttons" class="left">
+		<button class="k-button" ng-click="leaveGame()">Leave Game</button>
+		<button class="k-button" ng-click="startGame()" ng-show="isCreator()">Start Game</button>
+	</div>
+	<div id="game-status" class="left">
+		<p>{{showGameStatus()}}</p>
+		<p ng-show="showCountdown()">Game will start in: {{countdown}} seconds!</p>
+	</div>
 </div>
 
 <div>
 	<p id="text">{{roomDetails.text}}</p>
 	
 	<div>
-		<input type="text" class="k-textbox" />
+		<input type="text" placeholder="Type here..." ng-keypress="checkTyping($event)" 
+			ng-model="word" id="word-input" novalidate class="k-textbox" ng-disabled="disabledTyping()" /> 
+		<span ng-show="showError" class="k-block k-error-colored">{{inputErrorMessage}}</span>
 	</div>
 </div>
-
-<script>
-	// 	var c = document.getElementById("progress-canvas");
-	// 	var ctx = c.getContext("2d");
-	// 	ctx.fillStyle = "#0000FF";
-	// 	ctx.fillRect(5, 10, 7, 10);
-</script>

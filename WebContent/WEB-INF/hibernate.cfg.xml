@@ -9,5 +9,6 @@
         <mapping class="speedtyper.model.RoomModel" />
         <mapping class="speedtyper.model.TextModel" />
         <mapping class="speedtyper.model.HighscoreModel" />
+        <mapping class="speedtyper.model.ProgressModel" />
     </session-factory>         
 </hibernate-configuration>

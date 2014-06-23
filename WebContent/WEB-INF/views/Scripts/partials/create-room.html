@@ -1,0 +1,19 @@
+<div ng-controller="CreateRoomController as createRoomCtrl" ng-show="createRoomCtrl.isAuthenticated">
+	<form name="createRoomForm" novalidate ng-submit="createRoomCtrl.create()" >
+		<label for="room-name">Name: </label>
+		<input type="text" id="room-name" ng-model="createRoomCtrl.roomModel.name" value="" class="k-textbox" required />
+		<label for="max-participants">Max. Participants: </label> 
+		<select ng-model="createRoomCtrl.roomModel.maxParticipants" id="max-participants" required>
+			<option value="2">2 players</option>
+			<option value="3">3 players</option>
+			<option value="4">4 players</option>
+		</select>
+		<button type="submit" class="k-button">Create</button>
+	</form>
+	
+	<script>
+		$(document).ready(function() {
+			$("#max-participants").kendoDropDownList();
+		});
+	</script>
+</div>

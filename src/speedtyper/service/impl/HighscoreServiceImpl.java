@@ -30,9 +30,14 @@ public class HighscoreServiceImpl implements HighscoreService {
 	public void delete(int id) {
 		this.highscoreDao.delete(id);
 	}
+	
+	@Transactional
+	public HighscoreModel getHighscore(int userId, int roomId) {
+		return this.highscoreDao.getHighscore(userId, roomId);
+	}
 
 	@Transactional
-	public HighscoreModel getHighscoreByUserId(int userId) {
+	public List<HighscoreModel> getHighscoreByUserId(int userId) {
 		return this.highscoreDao.getHighscoreByUserId(userId);
 	}
 
@@ -42,8 +47,8 @@ public class HighscoreServiceImpl implements HighscoreService {
 	}
 
 	@Transactional
-	public List<HighscoreModel> getAll() {
-		return this.highscoreDao.getAll();
+	public List<HighscoreModel> getTop100() {
+		return this.highscoreDao.getTop100();
 	}
 
 }
